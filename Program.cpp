@@ -3,7 +3,6 @@
 #include "VectorDistanceCalculator.h"
 
 int main() {
-	
 	double x, y, z;
 	
 	std::cin >> x >> y >> z;
