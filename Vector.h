@@ -16,8 +16,9 @@ public:
 	double getY() const;
 	void setY(double x);
 	
-	double getY() const;
-	void setY(double x);
+	double getZ() const;
+	void setZ(double x);
+	
 };
 
 #endif // _VECTOR_H
