@@ -27,7 +27,7 @@ void Vector::setZ(double z) {
 	this->z = z;
 }
 
-double Vector::operator[](size_t idx) const {
+double Vector::operator[](unsigned int idx) const {
 	switch (idx) {
 	case 0:
 		return x;

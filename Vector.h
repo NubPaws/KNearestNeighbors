@@ -19,7 +19,7 @@ public:
 	double getZ() const;
 	void setZ(double z);
 	
-	double operator[](size_t idx) const;
+	double operator[](unsigned int idx) const;
 };
 
 #endif // _VECTOR_H

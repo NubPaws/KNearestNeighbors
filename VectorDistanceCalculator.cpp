@@ -35,11 +35,11 @@ double VectorDistanceCalculator::canberra(const Vector v1, const Vector v2) {
 	return canberraSum;
 }
 
-double VectorDistanceCalculator::minkowski(const Vector v1, const Vector v2, const double p) {
+double VectorDistanceCalculator::minkowski(const Vector v1, const Vector v2, const int p) {
 	double distance = 0;
 	for (int i = 0; i < 3; i++) {
 		distance += std::pow(std::abs(v1[i] - v2[i]), p);
 	}
 	
-	return pow(distance, 1 / p);
+	return pow(distance, 1.0 / p);
 }

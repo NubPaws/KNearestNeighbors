@@ -13,7 +13,7 @@ namespace VectorDistanceCalculator {
 	
 	double canberra(const Vector v1, const Vector v2);
 	
-	double minkowski(const Vector v1, const Vector v2, const double p);
+	double minkowski(const Vector v1, const Vector v2, const int p);
 	
 }
 
