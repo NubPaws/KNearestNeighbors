@@ -5,15 +5,15 @@
 
 namespace VectorDistanceCalculator {
 	
-	double euclidean(Vector v1, Vector v2);
+	double euclidean(const Vector v1, const Vector v2);
 	
-	double manhattan(Vector v1, Vector v2);
+	double manhattan(const Vector v1, const Vector v2);
 	
-	double chebyshev(Vector v1, Vector v2);
+	double chebyshev(const Vector v1, const Vector v2);
 	
-	double canberra(Vector v1, Vector v2);
+	double canberra(const Vector v1, const Vector v2);
 	
-	double minkowski(Vector v1, Vector v2);
+	double minkowski(const Vector v1, const Vector v2, const double p);
 	
 }
 

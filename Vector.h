@@ -6,18 +6,20 @@ private:
 	double x;
 	double y;
 	double z;
+	
 public:
 	Vector(double x, double y, double z);
-	~Vector();
 	
 	double getX() const;
 	void setX(double x);
 	
 	double getY() const;
-	void setY(double x);
+	void setY(double y);
 	
-	double getY() const;
-	void setY(double x);
+	double getZ() const;
+	void setZ(double z);
+	
+	double operator[](size_t idx) const;
 };
 
 #endif // _VECTOR_H
