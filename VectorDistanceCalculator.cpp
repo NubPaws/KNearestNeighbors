@@ -3,7 +3,7 @@
 #include <cmath>
 
 double VectorDistanceCalculator::euclidean(const Vector v1, const Vector v2) {
-	//this is the calculation of euclidean distance
+	//euclidean distance is a specific case of minowski equation,in order to save code we just use it
 	return VectorDistanceCalculator::minkowski(v1, v2, 2);
 }
 

@@ -5,8 +5,24 @@
 
 namespace VectorDistanceCalculator {
 	
+	/**
+	 * @brief calculates the euclidean distance of two vectors.
+	 * the euclidean equation is a specific case of minowski equation,where p is equals to 2,in order to save code we just use it.
+	 * the euclidean distance is the square root of the sum of all the distances of two vectors cooardinates in the power of 2.
+	 * 
+	 * @param v1 the first vector.
+	 * @param v2 the second vector.
+	*/
 	double euclidean(const Vector v1, const Vector v2);
 	
+	/**
+	 * @brief calculates the manhattan distance of two vectors.
+	 * the manhattan equation is a specific case of minowski equation,in order to save code we just use it.
+	 * the manhattan distance is the sum of all the distances of two vectors cooardinates.
+	 * 
+	 * @param v1 the first vector.
+	 * @param v2 the second vector.
+	*/
 	double manhattan(const Vector v1, const Vector v2);
 	
 	/**
@@ -30,6 +46,16 @@ namespace VectorDistanceCalculator {
 	 */
 	double canberra(const Vector v1, const Vector v2);
 	
+	/**
+	 * @brief calculates the minkowski distance of two vectors.
+	 * the minkowski equation calculate the sum of of |v1[i]-v2[i]| in the power of p where v1,v2 represents the vecotrs,
+	 * and the i represnt the axis(i = 0 is x,i = i is y and so on)  
+	 * then it returns the sum in the power of 1/p
+	 *
+	 * @param v1 the first vector.
+	 * @param v2 the second vector.
+	 * @param p the order of the distnace.
+	*/
 	double minkowski(const Vector v1, const Vector v2, const int p);
 	
 }
