@@ -1,23 +1,45 @@
 #include <iostream>
 #include <iomanip>
-#include "Vector.h"
+#include <vector>
+#include <string>
+#include <sstream>
 #include "VectorDistanceCalculator.h"
+
+std::vector<double> readVector() {
+	std::vector<double> v;
+	
+	// Make a string to store the line.
+	std::string line = "";
+	// Read the entire line from the user.
+	std::getline(std::cin, line);
+	// Convert the line into a string stream.
+	std::istringstream iss(line);
+	
+	/*
+	While there is still some data to read, read it as a double. Each double is them
+	pushed back into the vector we have.
+	*/
+	double num;
+	while (iss >> num)
+		v.push_back(num);
+	
+	// Return the vector.
+	return v;
+}
 
 bool isWhole(double n) {
 	return n - (long)n == 0;
 }
 
 int main() {
-	// Create the variables to read to.
-	double x, y, z;
+	// Create the vectors and read the data into them.
+	std::vector<double> v1 = readVector();
+	std::vector<double> v2 = readVector();
 	
-	// Read the first vector.
-	std::cin >> x >> y >> z;
-	Vector v1(x, y, z);
-	
-	// Read the second vector.
-	std::cin >> x >> y >> z;
-	Vector v2(x, y, z);
+	if (v1.size() != v2.size()) {
+		std::cout << "Please enter two vectors of the size." << std::endl;
+		return 0;
+	}
 	
 	// Calculate the distances.
 	const int distanceCount = 5;
