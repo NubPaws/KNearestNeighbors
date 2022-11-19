@@ -16,7 +16,8 @@ std::vector<double> readVector() {
 	std::istringstream iss(line);
 	
 	/*
-	While there is still some data to read, read it as a double. Each double is them
+	While there is still some valid data to read
+    , read it as a double. Each double is them
 	pushed back into the vector we have.
 	*/
 	double num;
@@ -27,7 +28,7 @@ std::vector<double> readVector() {
 	return v;
 }
 
-bool isWhole(double n) {
+bool isWhole(const double n) {
 	return n - (long)n == 0;
 }
 
@@ -37,7 +38,8 @@ int main() {
 	std::vector<double> v2 = readVector();
 	
 	if (v1.size() != v2.size()) {
-		std::cout << "Please enter two vectors of the size." << std::endl;
+		std::cout << "Please enter two valid vectors" 
+	                 "- both vectors must contain only numbers and be of the same length." << std::endl;
 		return 0;
 	}
 	
