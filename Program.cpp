@@ -16,9 +16,8 @@ std::vector<double> readVector() {
 	std::istringstream iss(line);
 	
 	/*
-	While there is still some valid data to read
-    , read it as a double. Each double is them
-	pushed back into the vector we have.
+	While there is still some valid data to read, read it as a double. 
+	Each double is then pushed back into the vector we have.
 	*/
 	double num;
 	while (iss >> num)
