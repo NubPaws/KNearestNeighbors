@@ -15,7 +15,8 @@ double VectorDistanceCalculator::manhattan(const std::vector<double>& v1, const 
 double VectorDistanceCalculator::chebyshev(const std::vector<double>& v1, const std::vector<double>& v2) {
 	
 	double dist = 0;
-	for (int i = 0; i < 3; i++) {
+	const unsigned int len = v1.size() >= v2.size() ? v2.size() : v1.size();
+	for (int i = 0; i < len; i++) {
 		double tmp = std::abs(v1[i] - v2[i]);
 		if (tmp > dist)
 			dist = tmp;
@@ -28,7 +29,8 @@ double VectorDistanceCalculator::canberra(const std::vector<double>& v1, const s
 	// The case where both coordinates are 0 is defined as 0/0 = 0
 	double canberraSum = 0;
 	
-	for (int i = 0; i < 3; i++)
+	const unsigned int len = v1.size() >= v2.size() ? v2.size() : v1.size();
+	for (int i = 0; i < len; i++)
 		if (!(v1[i] == 0 && v2[i] == 0))
 			canberraSum += std::abs(v1[i] - v2[i]) / (std::abs(v1[i]) + std::abs(v2[i]));
 	
@@ -37,7 +39,8 @@ double VectorDistanceCalculator::canberra(const std::vector<double>& v1, const s
 
 double VectorDistanceCalculator::minkowski(const std::vector<double>& v1, const std::vector<double>& v2, const int p) {
 	double distance = 0;
-	for (int i = 0; i < 3; i++) {
+	const unsigned int len = v1.size() >= v2.size() ? v2.size() : v1.size();
+	for (int i = 0; i < len; i++) {
 		distance += std::pow(std::abs(v1[i] - v2[i]), p);
 	}
 	
