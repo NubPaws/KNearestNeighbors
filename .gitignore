@@ -2,3 +2,4 @@
 *.exe
 datasets/
 *.o
+CMakeLists.txt
