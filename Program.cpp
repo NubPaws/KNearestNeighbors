@@ -5,6 +5,7 @@
 #include <sstream>
 #include <cstdlib>
 #include "VectorDistanceCalculator.h"
+#include "VectorDataSet.h"
 
 /**
  * @brief Checks if a string can be converted to a double.
@@ -14,9 +15,6 @@
  * @return false If the string cannot be converted to a double.
  */
 bool isNumber(const std::string& str) {
-	if (str.length() == 0)
-		return false;
-	
 	// Flags to check if the number is a negative and if it has a decimal point.
 	bool isNegative = str[0] == '-';
 	bool hasDecimal = false;
@@ -79,43 +77,8 @@ bool isWhole(const double n) {
 	return n - (long)n == 0;
 }
 
-int main() {
-	// Create the vectors and read the data into them.
-	std::vector<double> v1 = readVector();
-	std::vector<double> v2 = readVector();
+int main(int argc, const char* argv[]) {
 	
-	if (v1.size() != v2.size() || v1.size() == 0 || v2.size() == 0) {
-		std::cout << "Please enter two valid vectors" 
-		"- both vectors must contain only numbers and be of the same length." << std::endl;
-		return 0;
-	}
-	
-	// Calculate the distances.
-	const int distanceCount = 5;
-	double distances[distanceCount] = {
-		VectorDistanceCalculator::euclidean(v1, v2),
-		VectorDistanceCalculator::manhattan(v1, v2),
-		VectorDistanceCalculator::chebyshev(v1, v2),
-		VectorDistanceCalculator::canberra(v1, v2),
-		VectorDistanceCalculator::minkowski(v1, v2, 2)
-	};
-	
-	// Set the precision to the full double precision - 16 digits.
-	std::cout << std::setprecision(16);
-	/*
-	For each distance print out the distance. If the number is a whole number we'll
-	manually add a ".0" after it. Otherwise, just let it print the regular way.
-	Make sure to add a new line for each of our distances excluding the first.
-	*/
-	for (int i = 0; i < distanceCount; i++) {
-		if (i > 0)
-			std::cout << std::endl;
-		
-		std::cout << distances[i];
-		
-		if (isWhole(distances[i]))
-			std::cout << ".0";
-	}
 	
 	return 0;
 }

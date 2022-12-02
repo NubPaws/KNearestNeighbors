@@ -3,7 +3,39 @@
 
 #include <vector>
 
-namespace VectorDistanceCalculator {
+namespace VectorCalculation {
+	
+	class DistanceCalculator {
+	public:
+		virtual double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const = 0;
+		
+		double operator()(const std::vector<double>& v1, const std::vector<double>& v2) const;
+	};
+	
+	class EuclideanDistanceCalculator : public DistanceCalculator {
+	public:
+		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
+	};
+	
+	class ManhattanDistanceCalculator : public DistanceCalculator {
+	public:
+		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
+	};
+	
+	class ChebyshevDistanceCalculator : public DistanceCalculator {
+	public:
+		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
+	};
+	
+	class CanberraDistanceCalculator : public DistanceCalculator {
+	public:
+		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
+	};
+	
+	class MinkowskiDistanceCalculator : public DistanceCalculator {
+	public:
+		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
+	};
 	
 	/**
 	 * @brief calculates the euclidean distance of two vectors.
