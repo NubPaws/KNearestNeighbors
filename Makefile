@@ -15,7 +15,7 @@ build: VectorDistanceCalculator.o VectorDataSet.o KNearestNeighbors.o Program.o
 	$(CC) -c -o $@ $<
 
 Program.o: Program.cpp
-	$(CC) -c Program.cpp -o Program
+	$(CC) -c Program.cpp
 
 clean:
 	$(CLN) *.o a.out a.exe

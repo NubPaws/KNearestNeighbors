@@ -78,7 +78,12 @@ bool isWhole(const double n) {
 }
 
 int main(int argc, const char* argv[]) {
+	using VectorCalculation::EuclideanDistanceCalculator;
+	EuclideanDistanceCalculator dist;
 	
+	std::vector<double> a;
+	a.push_back(5);
+	std::cout << dist.calculate(a, a) << std::endl;
 	
 	return 0;
 }
