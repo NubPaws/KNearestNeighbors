@@ -3,42 +3,11 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include <cstdlib>
+
 #include "VectorDistanceCalculator.h"
 #include "VectorDataSet.h"
-
-/**
- * @brief Checks if a string can be converted to a double.
- * 
- * @param str The string to check against.
- * @return true If the string can be converted to a double.
- * @return false If the string cannot be converted to a double.
- */
-bool isNumber(const std::string& str) {
-	// Flags to check if the number is a negative and if it has a decimal point.
-	bool isNegative = str[0] == '-';
-	bool hasDecimal = false;
-	
-	/*
-	Start the loop from the 0th index if the number is not a negative number. Otherwise
-	start it from the 1st index. For each index check if the string only contains numbers
-	and 1 decimal point. If not return out a false value.
-	*/
-	for (int i = isNegative; i < str.length(); i++) {
-		if ((str[i] < '0' || '9' < str[i]) && str[i] != '.')
-			return false;
-		
-		if (str[i] == '.') {
-			if (hasDecimal)
-				return false;
-			hasDecimal = true;
-		}
-	}
-	
-	// If the string only contains a - and a . then return false, otherwise it is a valid string
-	// and we can return true.
-	return str.length() != (isNegative + hasDecimal);
-}
+#include "CommandLineArguments.h"
+#include "StringValidator.h"
 
 /**
  * @brief Reads the vector from the user.
@@ -61,8 +30,8 @@ std::vector<double> readVector() {
 	*/
 	std::string str;
 	while (iss >> str) {
-		if (isNumber(str)) {
-			v.push_back(std::atof(str.c_str()));
+		if (StringValidator::isDouble(str)) {
+			v.push_back(std::stod(str));
 		} else {
 			v.clear();
 			return v;
@@ -73,17 +42,8 @@ std::vector<double> readVector() {
 	return v;
 }
 
-bool isWhole(const double n) {
-	return n - (long)n == 0;
-}
-
 int main(int argc, const char* argv[]) {
-	using VectorCalculation::EuclideanDistanceCalculator;
-	EuclideanDistanceCalculator dist;
-	
-	std::vector<double> a;
-	a.push_back(5);
-	std::cout << dist.calculate(a, a) << std::endl;
+	CommandLineArguments args(argc, argv);
 	
 	return 0;
 }

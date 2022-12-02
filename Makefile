@@ -7,8 +7,14 @@ else
 	CLN=rm
 endif
 
-build: VectorDistanceCalculator.o VectorDataSet.o KNearestNeighbors.o Program.o
-	$(CC) VectorDistanceCalculator.o VectorDataSet.o KNearestNeighbors.o Program.o
+BUILD_FILES = VectorDistanceCalculator.o
+BUILD_FILES += VectorDataSet.o
+BUILD_FILES += KNearestNeighbors.o
+BUILD_FILES += StringValidator.o
+BUILD_FILES += CommandLineArguments.o
+
+build: $(BUILD_FILES) Program.o
+	$(CC) $(BUILD_FILES) Program.o
 
 # Make sure that when a header file is changed, the c file is recompiled
 %.o: %.cpp %.h
