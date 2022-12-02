@@ -10,6 +10,20 @@ namespace VectorCalculation {
 		return this->calculate(v1, v2);
 	}
 	
+	std::unique_ptr<DistanceCalculator> DistanceCalculator::getCalculator(const std::string& name) {
+		if (name == "AUC")
+			return std::unique_ptr<DistanceCalculator>(new EuclideanDistanceCalculator());
+		if (name == "MAN")
+			return std::unique_ptr<DistanceCalculator>(new ManhattanDistanceCalculator());
+		if (name == "CHB")
+			return std::unique_ptr<DistanceCalculator>(new ChebyshevDistanceCalculator());
+		if (name == "CAN")
+			return std::unique_ptr<DistanceCalculator>(new CanberraDistanceCalculator());
+		if (name == "MIN")
+			return std::unique_ptr<DistanceCalculator>(new MinkowskiDistanceCalculator());
+		return std::unique_ptr<DistanceCalculator>(nullptr);
+	}
+	
 	double EuclideanDistanceCalculator::calculate(cVectorRef v1, cVectorRef v2) const {
 		// Euclidean distance is a specific case of minowski equation, in order to save code we just use it.
 		return MinkowskiDistanceCalculator(2).calculate(v1, v2);

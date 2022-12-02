@@ -23,14 +23,14 @@ public:
 	 * @param index The index of the argument (0 is the name of the program).
 	 * @return std::string The argument.
 	 */
-	std::string getStr(const size_t& index) const;
+	std::string getStr(const std::size_t& index) const;
 	/**
 	 * @brief Get the argument at a specific index as an int.
 	 * 
 	 * @param index The index of the argument (0 is the name of the program).
 	 * @return int The argument.
 	 */
-	int getInt(const size_t& index) const;
+	int getInt(const std::size_t& index) const;
 	/**
 	 * @brief Get the argument at a specific index as an double.
 	 * 
@@ -38,6 +38,23 @@ public:
 	 * @return double The argument.
 	 */
 	double getDouble(const std::size_t& index) const;
+	
+	/**
+	 * @brief Checks if the argument at the given index is an int-castable.
+	 * 
+	 * @param index The index to check with.
+	 * @return true If the number is int castable.
+	 * @return false If the number is not int castable.
+	 */
+	bool isInt(const std::size_t& index) const;
+	/**
+	 * @brief Checks if the argument at the given index is an double-castable.
+	 * 
+	 * @param index The index to check with.
+	 * @return true If the number is double castable.
+	 * @return false If the number is not double castable.
+	 */
+	bool isDouble(const std::size_t& index) const;
 	
 	/**
 	 * @brief Get the number of arguments given.
@@ -51,7 +68,7 @@ public:
 	 * @param index The index of the argument (0 is the name of the program).
 	 * @return std::string The argument.
 	 */
-	std::string operator[](const size_t& index) const;
+	std::string operator[](const std::size_t& index) const;
 };
 
 #endif // _COMMAND_LINE_ARGUEMNTS_H

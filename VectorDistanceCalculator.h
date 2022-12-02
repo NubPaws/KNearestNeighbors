@@ -2,6 +2,7 @@
 #define _VECTOR_DISTANCE_CALCULATOR
 
 #include <vector>
+#include <memory>
 
 namespace VectorCalculation {
 	
@@ -24,6 +25,15 @@ namespace VectorCalculation {
 		 * @return double The specified distance between the two vectors.
 		 */
 		double operator()(const std::vector<double>& v1, const std::vector<double>& v2) const;
+		
+		/**
+		 * @brief Get the Calculator object where the name can be:
+		 * AUC/MAN/CHB/CAN/MIN.
+		 * 
+		 * @param name The string representing the vector distance method.
+		 * @return std::unique_ptr<DistanceCalculator> A unique pointer with the class instance, or a nullptr.
+		 */
+		static std::unique_ptr<DistanceCalculator> getCalculator(const std::string& name);
 	};
 	
 	class EuclideanDistanceCalculator : public DistanceCalculator {
@@ -109,6 +119,7 @@ namespace VectorCalculation {
 		void setP(const int& p);
 		int getP() const;
 	};
+	
 }
 
 #endif // _VECTOR_DISTANCE_CALCULATOR

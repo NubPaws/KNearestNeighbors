@@ -13,15 +13,23 @@ std::string CommandLineArguments::getStr(const std::size_t& index) const {
 }
 
 int CommandLineArguments::getInt(const std::size_t& index) const {
-	if (index >= args.size() || StringValidator::isInt(args[index]))
+	if (index >= args.size() || !isInt(index))
 		return -1;
 	return std::stoi(args[index]);
 }
 
 double CommandLineArguments::getDouble(const std::size_t& index) const {
-	if (index >= args.size() || StringValidator::isDouble(args[index]))
+	if (index >= args.size() || !isDouble(index))
 		return -1;
 	return std::stod(args[index]);
+}
+
+bool CommandLineArguments::isInt(const std::size_t& index) const {
+	return index < args.size() && StringValidator::isInt(args[index]);
+}
+
+bool CommandLineArguments::isDouble(const std::size_t& index) const {
+	return index < args.size() && StringValidator::isDouble(args[index]);
 }
 
 std::size_t CommandLineArguments::size() const {

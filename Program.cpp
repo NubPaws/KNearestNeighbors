@@ -1,8 +1,8 @@
 #include <iostream>
-#include <iomanip>
 #include <vector>
 #include <string>
 #include <sstream>
+#include <cstddef>
 
 #include "VectorDistanceCalculator.h"
 #include "VectorDataSet.h"
@@ -44,6 +44,15 @@ std::vector<double> readVector() {
 
 int main(int argc, const char* argv[]) {
 	CommandLineArguments args(argc, argv);
+	
+	const std::size_t kIndex = 1, filenameIndex = 2, algorithmType = 3;
+	// Check command line input.
+	if (args.size() < 4 || !args.isInt(kIndex))
+		return 0;
+	
+	int k = args.getInt(kIndex);
+	std::string filename = args.getStr(filenameIndex);
+	auto distanceAlg = VectorCalculation::DistanceCalculator::getCalculator(args.getStr(algorithmType));
 	
 	return 0;
 }
