@@ -15,20 +15,17 @@ namespace VectorCalculation {
 	class VectorDataSet {
 	private:
 		std::vector<DataEntry> dataset;
-		
 		/**
-		 * @brief this function will calculate the num degree of vector,and will help determine,
-		 * the place of the plant name.
+		 * @brief this function will convert whole line into vector of strings,which will contain
+		 * the words of the line without the commas.
 		 *
 		 * @param s
-		 * @return int which represent the number of white spaces in the string.
+		 * @return vec- vector of strings.
 		 */
-		
-		int commasCouter(std::string s);
-		
+		std::vector<std::string> createStringVector(std::string s);
 		
 		/**
-		* @brief (might be changed) this is a function that creates the dataEntry pair.
+		* @brief this is a function that creates the dataEntry pair.
 		*
 		* @param s string that represent the data from stream.
 		* @return toReturn - the dataEntry pair.
@@ -41,6 +38,7 @@ namespace VectorCalculation {
 		 * @param file the isstream.
 		 */
 		void createDentryVectors(std::istream &file);
+		
 	
 	public:
 		
