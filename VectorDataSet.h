@@ -7,6 +7,7 @@
 #include <vector>
 #include <iterator>
 #include <cstddef>
+#include "StringValidator.h"
 
 namespace VectorCalculation {
 	typedef std::pair<std::vector<double>, std::string> DataEntry;
@@ -14,7 +15,10 @@ namespace VectorCalculation {
 	class VectorDataSet {
 	private:
 		std::vector<DataEntry> dataset;
-	public:
+        int whiteSpaceCouter(std::string s);
+
+    public:
+
 		VectorDataSet(std::istream file);
 		
 		std::size_t size() const;
