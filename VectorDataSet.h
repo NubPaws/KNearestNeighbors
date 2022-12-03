@@ -16,6 +16,7 @@ namespace VectorCalculation {
 	private:
 		std::vector<DataEntry> dataset;
         int whiteSpaceCouter(std::string s);
+        DataEntry getDataEntry(std::string s);
 
     public:
 
