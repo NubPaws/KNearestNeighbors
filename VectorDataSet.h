@@ -15,13 +15,14 @@ namespace VectorCalculation {
 	class VectorDataSet {
 	private:
 		std::vector<DataEntry> dataset;
-        int whiteSpaceCouter(std::string s);
-        DataEntry getDataEntry(std::string s);
+        int commasCouter(std::string s);
+        DataEntry createDataEntry(std::string s);
+        void createDentryVectors(std::istream& file);
 
     public:
 
 		VectorDataSet(std::istream file);
-		
+
 		std::size_t size() const;
 		const DataEntry& operator[](std::size_t index) const;
 	};
