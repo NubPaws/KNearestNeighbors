@@ -7,6 +7,7 @@
 #include "VectorDataSet.h"
 #include "VectorDistanceCalculator.h"
 
+
 namespace VectorCalculation {
 	
 	class KNearestNeighbors {
