@@ -7,7 +7,6 @@
 #include "VectorDataSet.h"
 #include "VectorDistanceCalculator.h"
 
-
 namespace VectorCalculation {
 	
 	class KNearestNeighbors {
@@ -17,9 +16,9 @@ namespace VectorCalculation {
 	public:
 		KNearestNeighbors(VectorDataSet dataset, DistanceCalculator &distance);
 		
-		std::string find(std::size_t k) const;
+		std::string find(const std::vector<double>& item, const std::size_t k);
 	private:
-		
+		void findClosestK(const std::vector<double>& item, std::size_t k);
 	};
 	
 }

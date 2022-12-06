@@ -12,6 +12,7 @@ BUILD_FILES += VectorDataSet.o
 BUILD_FILES += KNearestNeighbors.o
 BUILD_FILES += StringValidator.o
 BUILD_FILES += CommandLineArguments.o
+BUILD_FILES += CSVReader.o
 
 build: $(BUILD_FILES) Program.o
 	$(CC) $(BUILD_FILES) Program.o
