@@ -4,7 +4,8 @@
 #include <sstream>
 #include <cstddef>
 
-#include "VectorDistanceCalculator.h"
+#include "KNearestNeighbors.h"
+#include "VectorDistance.h"
 #include "VectorDataSet.h"
 #include "CommandLineArguments.h"
 #include "StringValidator.h"
@@ -45,14 +46,29 @@ std::vector<double> readVector() {
 int main(int argc, const char* argv[]) {
 	CommandLineArguments args(argc, argv);
 	
-	const std::size_t kIndex = 1, filenameIndex = 2, algorithmType = 3;
+	const std::size_t kIndex = 1, filenameIndex = 2, algorithmIndex = 3;
 	// Check command line input.
-	if (args.size() < 4 || !args.isInt(kIndex))
+	if (args.size() < 4 || !args.isInt(kIndex)) {
+		std::cout << "Please enter command line arguments." << std::endl;
 		return 0;
+	}
 	
 	int k = args.getInt(kIndex);
 	std::string filename = args.getStr(filenameIndex);
-	auto distanceAlg = VectorCalculation::DistanceCalculator::getCalculator(args.getStr(algorithmType));
+	auto distanceAlg = VectorDistance::Calculator::getCalculator(args.getStr(algorithmIndex));
+	
+	VectorDataSet vds(filename);
+	KNearestNeighbors knn(vds, *distanceAlg);
+	std::vector<double> vec = readVector();
+	
+	if (vec.size() != vds.width()) {
+		std::cout << "Make sure to enter a vector of the correct size." << std::endl;
+		return 0;
+	}
+	
+	std::string result = knn.find(vec, kIndex);
+	
+	std::cout << result << std::endl;
 	
 	return 0;
 }

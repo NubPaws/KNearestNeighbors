@@ -1,12 +1,12 @@
-#ifndef _VECTOR_DISTANCE_CALCULATOR
-#define _VECTOR_DISTANCE_CALCULATOR
+#ifndef _VECTOR_DISTANCE
+#define _VECTOR_DISTANCE
 
 #include <vector>
 #include <memory>
 
-namespace VectorCalculation {
+namespace VectorDistance {
 	
-	class DistanceCalculator {
+	class Calculator {
 	public:
 		/**
 		 * @brief Calculates the distance between the two vectors given to it.
@@ -31,12 +31,12 @@ namespace VectorCalculation {
 		 * AUC/MAN/CHB/CAN/MIN.
 		 * 
 		 * @param name The string representing the vector distance method.
-		 * @return std::unique_ptr<DistanceCalculator> A unique pointer with the class instance, or a nullptr.
+		 * @return std::unique_ptr<Calculator> A unique pointer with the class instance, or a nullptr.
 		 */
-		static std::unique_ptr<DistanceCalculator> getCalculator(const std::string& name);
+		static std::unique_ptr<Calculator> getCalculator(const std::string& name);
 	};
 	
-	class EuclideanDistanceCalculator : public DistanceCalculator {
+	class EuclideanCalculator : public Calculator {
 	public:
 		/**
 		 * @brief calculates the euclidean distance of two vectors.
@@ -51,7 +51,7 @@ namespace VectorCalculation {
 		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
 	};
 	
-	class ManhattanDistanceCalculator : public DistanceCalculator {
+	class ManhattanCalculator : public Calculator {
 	public:
 		/**
 		 * @brief Calculates the manhattan distance of two vectors.
@@ -65,7 +65,7 @@ namespace VectorCalculation {
 		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
 	};
 	
-	class ChebyshevDistanceCalculator : public DistanceCalculator {
+	class ChebyshevCalculator : public Calculator {
 	public:
 		/**
 		 * @brief Calculates the Chebyshev distance of two vectors.
@@ -78,7 +78,7 @@ namespace VectorCalculation {
 		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
 	};
 	
-	class CanberraDistanceCalculator : public DistanceCalculator {
+	class CanberraCalculator : public Calculator {
 	public:
 		/**
 		 * @brief Calculates the Canberra distance of the two vectors.
@@ -92,7 +92,7 @@ namespace VectorCalculation {
 		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
 	};
 	
-	class MinkowskiDistanceCalculator : public DistanceCalculator {
+	class MinkowskiCalculator : public Calculator {
 	private:
 		int p;
 	public:
@@ -101,7 +101,7 @@ namespace VectorCalculation {
 		 * 
 		 * @param p The p argument for the Minkowski distance, by default p = 2.
 		 */
-		MinkowskiDistanceCalculator(const int& p = 2);
+		MinkowskiCalculator(const int& p = 2);
 		
 		/**
 		 * @brief calculates the minkowski distance of two vectors.
@@ -122,4 +122,4 @@ namespace VectorCalculation {
 	
 }
 
-#endif // _VECTOR_DISTANCE_CALCULATOR
+#endif // _VECTOR_DISTANCE_ALGS

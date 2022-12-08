@@ -38,7 +38,7 @@ bool StringValidator::isInt(const std::string& str) {
 	and 1 decimal point. If not return out a false value.
 	*/
 	for (int i = isNegative; i < str.length(); i++)
-		if ((str[i] < '0' || '9' < str[i]))
+		if (str[i] < '0' || '9' < str[i])
 			return false;
 	
 	return str.length() != isNegative;

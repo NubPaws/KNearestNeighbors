@@ -1,5 +1,5 @@
 # Choose the compiler.
-CC=g++
+CC = g++
 # Have the right clean command.
 ifeq ($(OS),Windows_NT)
 	CLN=del
@@ -7,22 +7,24 @@ else
 	CLN=rm
 endif
 
-BUILD_FILES = VectorDistanceCalculator.o
+BUILD_FILES  = VectorDistance.o
 BUILD_FILES += VectorDataSet.o
-BUILD_FILES += KNearestNeighbors.o
 BUILD_FILES += StringValidator.o
-BUILD_FILES += CommandLineArguments.o
+BUILD_FILES += KNearestNeighbors.o
 BUILD_FILES += CSVReader.o
+BUILD_FILES += CommandLineArguments.o
 
 build: $(BUILD_FILES) Program.o
 	$(CC) $(BUILD_FILES) Program.o
 
-# Make sure that when a header file is changed, the c file is recompiled
+# Build the algs foldfer
 %.o: %.cpp %.h
 	$(CC) -c -o $@ $<
 
-Program.o: Program.cpp
-	$(CC) -c Program.cpp
-
+# Clean command
 clean:
 	$(CLN) *.o a.out a.exe
+
+# Exercise 2 test.
+ex2_test: build
+	./a.out 3 ./datasets/iris/iris_classified.csv MAN

@@ -4,21 +4,23 @@
 #include <string>
 #include <vector>
 
-namespace VectorCalculation {
+#include "Types.h"
+
+class VectorDataSet {
+public:
 	typedef std::pair<std::vector<double>, std::string> DataEntry;
+private:
+	std::vector<DataEntry> dataset;
+public:
+	VectorDataSet(const std::string& filename);
 	
-	class VectorDataSet {
-	private:
-		std::vector<DataEntry> dataset;
-	public:
-		VectorDataSet(const std::string& filename);
-		
-		std::size_t size() const;
-		
-		void swap(const std::size_t& i, const std::size_t& j);
-		
-		const DataEntry& operator[](std::size_t index) const;
-	};
-}
+	size_t width() const;
+	
+	size_t size() const;
+	
+	void swap(const size_t& i, const size_t& j);
+	
+	const DataEntry& operator[](size_t index) const;
+};
 
 #endif // _VECTOR_DATA_SET_H

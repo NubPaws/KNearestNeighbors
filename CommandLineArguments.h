@@ -3,7 +3,8 @@
 
 #include <string>
 #include <vector>
-#include <cstddef>
+
+#include "Types.h"
 
 class CommandLineArguments {
 private:
@@ -23,21 +24,23 @@ public:
 	 * @param index The index of the argument (0 is the name of the program).
 	 * @return std::string The argument.
 	 */
-	std::string getStr(const std::size_t& index) const;
+	std::string getStr(const size_t& index) const;
+	
 	/**
 	 * @brief Get the argument at a specific index as an int.
 	 * 
 	 * @param index The index of the argument (0 is the name of the program).
 	 * @return int The argument.
 	 */
-	int getInt(const std::size_t& index) const;
+	int getInt(const size_t& index) const;
+	
 	/**
 	 * @brief Get the argument at a specific index as an double.
 	 * 
 	 * @param index The index of the argument (0 is the name of the program).
 	 * @return double The argument.
 	 */
-	double getDouble(const std::size_t& index) const;
+	double getDouble(const size_t& index) const;
 	
 	/**
 	 * @brief Checks if the argument at the given index is an int-castable.
@@ -46,7 +49,8 @@ public:
 	 * @return true If the number is int castable.
 	 * @return false If the number is not int castable.
 	 */
-	bool isInt(const std::size_t& index) const;
+	bool isInt(const size_t& index) const;
+	
 	/**
 	 * @brief Checks if the argument at the given index is an double-castable.
 	 * 
@@ -54,21 +58,22 @@ public:
 	 * @return true If the number is double castable.
 	 * @return false If the number is not double castable.
 	 */
-	bool isDouble(const std::size_t& index) const;
+	bool isDouble(const size_t& index) const;
 	
 	/**
 	 * @brief Get the number of arguments given.
 	 * 
-	 * @return std::size_t The number of arguments given.
+	 * @return size_t The number of arguments given.
 	 */
-	std::size_t size() const;
+	size_t size() const;
+	
 	/**
 	 * @brief Operator overloading for the function getStr.
 	 * 
 	 * @param index The index of the argument (0 is the name of the program).
 	 * @return std::string The argument.
 	 */
-	std::string operator[](const std::size_t& index) const;
+	std::string operator[](const size_t& index) const;
 };
 
 #endif // _COMMAND_LINE_ARGUEMNTS_H

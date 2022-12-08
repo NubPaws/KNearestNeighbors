@@ -1,7 +1,9 @@
-#include "CSVReader.h"
-
 #include <iostream>
+#include <string>
 #include <cstdlib>
+
+#include "CSVReader.h"
+#include "Types.h"
 
 CSVReader::CSVReader(const std::string& filename)
 	: length(0), in(filename, std::ios::in) {
@@ -41,7 +43,7 @@ void CSVReader::loadNextLine() {
 	
 	const std::string delimeter = ",";
 	
-	std::size_t pos;
+	size_t pos;
 	std::string token;
 	while ((pos = ln.find(delimeter)) != std::string::npos) {
 		token = ln.substr(0, pos);

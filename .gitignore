@@ -1,5 +1,6 @@
 .vscode/
-*.exe
 datasets/
+*.exe
+*.out
 *.o
 CMakeLists.txt
