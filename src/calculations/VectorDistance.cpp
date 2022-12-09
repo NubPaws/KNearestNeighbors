@@ -97,16 +97,6 @@ namespace VectorDistance {
 		return this->calculate(v1, v2);
 	}
 	
-	double EuclideanCalculator::calculate(cVectorRef v1, cVectorRef v2) const {
-		// Euclidean distance is a specific case of minowski equation, in order to save code we just use it.
-		return MinkowskiCalculator(2).calculate(v1, v2);
-	} 
-	
-	double ManhattanCalculator::calculate(cVectorRef v1, cVectorRef v2) const {
-		// Manhatan equation is a specific case of minowski equation, in order to save code we just use it.
-		return MinkowskiCalculator(1).calculate(v1, v2);
-	}
-	
 	double ChebyshevCalculator::calculate(cVectorRef v1, cVectorRef v2) const {
 		double dist = 0;
 		const unsigned int len = v1.size() >= v2.size() ? v2.size() : v1.size();
@@ -150,5 +140,14 @@ namespace VectorDistance {
 	int MinkowskiCalculator::getP() const {
 		return p;
 	}
-
+	
+	EuclideanCalculator::EuclideanCalculator()
+		: MinkowskiCalculator(2) {
+	}
+	
+	ManhattanCalculator::ManhattanCalculator()
+		: MinkowskiCalculator(1) {
+	}
+	
+	
 }

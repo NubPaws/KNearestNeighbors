@@ -2,6 +2,7 @@
 #define _VECTOR_DISTANCE
 
 #include <vector>
+#include <string>
 
 #include "Types.h"
 
@@ -120,35 +121,6 @@ namespace VectorDistance {
 		double operator()(const std::vector<double>& v1, const std::vector<double>& v2) const;
 	};
 	
-	class EuclideanCalculator : public DistanceCalculator {
-	public:
-		/**
-		 * @brief calculates the euclidean distance of two vectors.
-		 * The euclidean equation is a specific case of minowski equation, where p is equals to 2,
-		 * in order to save code we just use it. The euclidean distance is the square root of the sum of
-		 * all the distances of two vectors cooardinates in the power of 2.
-		 * 
-		 * @param v1 the first vector.
-		 * @param v2 the second vector.
-		 * @return double The euclidean distance.
-		 */
-		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
-	};
-	
-	class ManhattanCalculator : public DistanceCalculator {
-	public:
-		/**
-		 * @brief Calculates the manhattan distance of two vectors.
-		 * the manhattan equation is a specific case of minowski equation,in order to save code we just use it.
-		 * the manhattan distance is the sum of all the distances of two vectors cooardinates.
-		 * 
-		 * @param v1 the first vector.
-		 * @param v2 the second vector.
-		 * @return double The Manhattan distance.
-		 */
-		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
-	};
-	
 	class ChebyshevCalculator : public DistanceCalculator {
 	public:
 		/**
@@ -203,6 +175,25 @@ namespace VectorDistance {
 		void setP(const int& p);
 		int getP() const;
 	};
+	
+	class EuclideanCalculator : public MinkowskiCalculator {
+	public:
+		/**
+		 * @brief Construct a new Euclidean Calculator object passing the constructor
+		 * of the Minkowski class with the parameter p = 2.
+		 */
+		EuclideanCalculator();
+	};
+	
+	class ManhattanCalculator : public MinkowskiCalculator {
+	public:
+		/**
+		 * @brief Construct a new Manhattan Calculator object passing the constructor
+		 * of the Minkowski class with the parameter p = 1.
+		 */
+		ManhattanCalculator();
+	};
+	
 	
 }
 
