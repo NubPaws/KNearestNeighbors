@@ -1,32 +1,99 @@
+# For further knowledge, this is the site I used.
+# https://riptutorial.com/makefile/example/21376/building-from-different-source-folders-to-different-target-folders
+
+# Setup the src path and the bin path.
+PROJDIR := $(realpath $(CURDIR))
+SRCDIR := $(PROJDIR)/src
+BINDIR := $(PROJDIR)/bin
+
+# Decide whether the commands will be shown or not.
+VERBOSE = FALSE
+
+# Create the list of directories.
+DIRS = . calculations containers input utils
+SOURCEDIRS = $(foreach dir, $(DIRS), $(addprefix $(SRCDIR)/, $(dir)))
+TARGETDIRS = $(foreach dir, $(DIRS), $(addprefix $(BINDIR)/, $(dir)))
+
+# Generate the GCC includes parameters by adding -I before each source folder.
+INCLUDES = $(foreach dir, $(SOURCEDIRS), $(addprefix -I, $(dir)))
+
+# Add this list to VPATH, the place make will look for the source files.
+VPATH = $(SOURCEDIRS)
+
+# CReate a list of *.cpp sources in DIRS.
+SOURCES = $(foreach dir, $(SOURCEDIRS), $(wildcard $(dir)/*.cpp))
+
+# Define objects for all sources.
+OBJS := $(subst $(SRCDIR),$(BINDIR),$(SOURCES:.cpp=.o))
+
+# Define dependencies files for all objects
+DEPS = $(OBJS:.o=.d)
+
 # Choose the compiler.
-CC := g++
-# Have the right clean command.
+CC = g++
+
+#$(info $$SRCDIR is [${SRCDIR}])
+#$(info $$BINDIR is [${BINDIR}])
+#$(info $$OBJS is [${OBJS}])
+#$(info $$TARGETDIRS is [${TARGETDIRS}])
+
+# OS Specific part.
 ifeq ($(OS),Windows_NT)
-	CLN := del
-	F_EXT := exe
+	TARGET = a.exe
+	RM = del /F /Q
+	RMDIR = -rmdir /S /Q
+	MKDIR = -mkdir
+	ERRIGNORE = 2>NUL || VER>NUL
+	SEP=\\ 
 else
-	CLN := rm
-	F_EXT := out
+	TARGET = a.out
+	RM = rm -rf
+	RMDIR = rm -rf
+	MKDIR = mkdir -p
+	ERRIGNORE = 2>/dev/null
+	SEP=/ 
 endif
 
-BUILD_FILES  = VectorDistance.o
-BUILD_FILES += VectorDataSet.o
-BUILD_FILES += StringValidator.o
-BUILD_FILES += KNearestNeighbors.o
-BUILD_FILES += CSVReader.o
-BUILD_FILES += CommandLineArguments.o
+# Remove space after seperator
+PSEP = $(strip $(SEP))
 
-build: $(BUILD_FILES) Program.o
-	$(CC) $(BUILD_FILES) Program.o
+# Hide or not the calls depending of VERBOSE
+ifeq ($(VERBOSE), TRUE)
+	HIDE =
+else
+	HIDE = @
+endif
 
-# Build the algs foldfer
-%.o: %.cpp %.h
-	$(CC) -c -o $@ $<
+# Define the function that will generate each rule.
+define generateRules
+$(1)/%.o: %.cpp
+	@echo BUILDING $$@
+	$(HIDE)$(CC) -c $$(INCLUDES) -o $$(subst /,$$(PSEP),$$@) $$(subst /,$$(PSEP),$$<) -MMD
+endef
 
-# Clean command
+.PHONY: all clean directories
+
+all: directories $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(HIDE)echo Linking $@
+	$(HIDE)$(CC) $(OBJS) -o $(TARGET)
+
+# Include dependencies.
+-include $(DEPS)
+
+# Generate rules
+$(foreach targetdir, $(TARGETDIRS), $(eval $(call generateRules, $(targetdir))))
+
+directories:
+	$(HIDE)$(MKDIR) $(subst /,$(PSEP),$(TARGETDIRS)) $(ERRIGNORE)
+
+# Remove all objects, dependencies and executable files generated during the build.
 clean:
-	$(CLN) *.o a.out a.exe
+	$(HIDE)$(RMDIR) $(subst /,$(PSEP),$(TARGETDIRS)) $(ERRIGNORE)
+	$(HIDE)%(RM) $(TARGET) $(ERRIGNORE)
+	@echo Cleaning done!
 
 # Exercise 2 test.
-ex2_test: build
-	./a.$(F_EXT) 3 ./datasets/iris/iris_classified.csv MAN
+ex2_test: all
+	$(TARGET) 3 ./datasets/iris/iris_classified.csv MAN
