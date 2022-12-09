@@ -1,5 +1,6 @@
 #include <map>
 #include <string>
+#include <algorithm>
 
 #include "KNearestNeighbors.h"
 #include "VectorDataSet.h"
@@ -41,16 +42,45 @@ void KNearestNeighbors::findClosestK(const std::vector<double>& item, size_t k) 
 	if (k >= len)
 		return;
 	
-	double d1, d2;
-	for (size_t i = 0; i < k; i++) {
-		d1 = distance(item, dataset[i].first);
-		for (size_t j = i; j < len; j++) {
-			d2 = distance(item, dataset[j].first);
-			
-			if (d1 > d2) {
-				dataset.swap(i, j);
-				d1 = d2;
-			}
+	// Pre-calculate all distances. Then we can use them later on.
+	std::vector<double> distances;
+	for (size_t i = 0; i < dataset.size(); i++) {
+		distances.push_back(distance(item, dataset[i].first));
+	}
+	
+	size_t foundCount = 1;
+	size_t largestIndex = 0;
+	double d1 = distances[largestIndex];
+	double d2;
+	for (size_t i = 1; i < len; i++) {
+		double d2 = distances[i];
+		// If we have yet to find k elements:
+		if (foundCount < k) {
+			dataset.swap(foundCount, i);
+			std::swap(distances[foundCount], distances[i]);
+			if (d1 < d2)
+				largestIndex = foundCount;
+			foundCount++;
+		} else if (d1 > d2) {
+			// Swap them, get the new max. The index will be in the same spot.
+			dataset.swap(largestIndex, i);
+			std::swap(distances[largestIndex], distances[i]);
+			largestIndex = findMaxDistanceIndex(distances, 0, k);
+			d1 = distances[largestIndex];;
 		}
 	}
+}
+
+size_t KNearestNeighbors::findMaxDistanceIndex(const std::vector<double>& distances, const size_t& i, const size_t& j) const {
+	double d1 = distances[i];
+	double d2;
+	size_t maxIndex = i;
+	for (size_t k = i; k <= j; k++) {
+		d2 = distances[k];
+		if (d1 < d2) {
+			maxIndex = k;
+			d1 = d2;
+		}
+	}
+	return maxIndex;
 }

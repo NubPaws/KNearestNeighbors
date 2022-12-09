@@ -71,7 +71,7 @@ int main(int argc, const char* argv[]) {
 		return 0;
 	}
 	
-	std::string result = knn.find(vec, kIndex);
+	std::string result = knn.find(vec, args.getInt(kIndex));
 	
 	std::cout << result << std::endl;
 	

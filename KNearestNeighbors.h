@@ -2,10 +2,10 @@
 #define _K_NEAREST_NEIGHBORS
 
 #include <string>
-#include <cstddef>
 
 #include "VectorDataSet.h"
 #include "VectorDistance.h"
+#include "Types.h"
 
 class KNearestNeighbors {
 private:
@@ -14,9 +14,11 @@ private:
 public:
 	KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType);
 	
-	std::string find(const std::vector<double>& item, const std::size_t k);
+	std::string find(const std::vector<double>& item, const size_t k);
 private:
-	void findClosestK(const std::vector<double>& item, std::size_t k);
+	void findClosestK(const std::vector<double>& item, size_t k);
+	
+	size_t findMaxDistanceIndex(const std::vector<double>& distances, const size_t& i, const size_t& j) const;
 };
 
 #endif // _K_NEAREST_NEIGHBORS
