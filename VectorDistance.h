@@ -2,7 +2,6 @@
 #define _VECTOR_DISTANCE
 
 #include <vector>
-#include <memory>
 
 #include "Types.h"
 
@@ -10,22 +9,69 @@ namespace VectorDistance {
 	
 	class DistanceCalculator;
 	
+	/**
+	 * @brief Calculator is a class using the strategy design pattern. The idea is that
+	 * you choose a type in this class and call the distance calculation function through
+	 * this class using the operator().
+	 * That way we can pass the type we want and create the calculator based on the type
+	 * that we passed around.
+	 * This also allows changed to the calculation function on the fly.
+	 */
 	class Calculator {
-	private:
-		DistanceCalculator *distCalc;
-		std::string type;
-		static const std::string TYPES[];
 	public:
+		/**
+		 * @brief The enum that we will use, using the class definition to force explicit
+		 * convertions between a Type and an int. The Type::Empty refers to the size of
+		 * types we have (that is why it is at the end of the enum). We can use this to
+		 * iterate over the array of types that we have.
+		 */
 		enum class Type : size_t {
 			Euclidean, Manhattan, Chebyshev, Canberra, Minkowski, Empty
 		};
+		/**
+		 * @brief Get the Calculator::Type based on a string passed to it.
+		 * 
+		 * @param name The name of the type - should be refered from the TYPES string array
+		 * at the top of the code.
+		 * @return VectorDistance::Calculator::Type The type infered from the string that was passed
+		 * or the type Type::Empty if no type was matched.
+		 */
 		static Type getType(const std::string& name);
+	private:
+		static const std::string TYPES[];
 		
+	private:
+		/* 
+		 * The reason we have a DistanceCalculator pointer and not a reference or a variable
+		 * is to allow us to have the polymorphism that we require. We have it as a pointer
+		 * so that whenever we need to move or copy the class we can do so easily. Not having
+		 * to worry about two instanced of Calculator having the same pointer to DistanceCalculation.
+		 */
+		DistanceCalculator *distCalc;
+		Type type;
+		
+	public:
+		/**
+		 * @brief Default constructor for a new Calculator object
+		 */
 		Calculator();
 		
-		Calculator(const Type& name);
+		/**
+		 * @brief Construct a new Calculator object
+		 * 
+		 * @param type The type of distance calculation the user would prefer.
+		 */
+		Calculator(const Type& type);
 		
-		Calculator(const Calculator& c);
+		/*
+		 * The following 5 coonstructor are for the RAII design.
+		 * We have a copy constructor, a copy assignment operator, a move constructor,
+		 * and a move assignment operator.
+		 * We also have a destructor that has the goald to remove the data of the
+		 * DistanceCalculation pointer we have.
+		 */
+		
+		Calculator(const Calculator& other);
 		Calculator& operator=(const Calculator& other);
 		
 		Calculator(Calculator&& other) noexcept;
@@ -33,8 +79,23 @@ namespace VectorDistance {
 		
 		~Calculator();
 		
-		void set(const std::string& name, const int& p = 2);
+		/**
+		 * @brief Sets the calculation method based on the type that was given to it.
+		 * 
+		 * @param type A Calculator::Type that chooses which type we'll have.
+		 * @param p If there is a need for a p parameter we can set it as well.
+		 */
+		void set(const Type& type, const int& p = 2);
 		
+		/**
+		 * @brief Operator to make the Calculator be callable as a function.
+		 * 
+		 * @param v1 The first vector to do the calculation with.
+		 * @param v2 The second vector to do the calculation with.
+		 * @return double THe distance based on the method chosen and the two vectors given.
+		 * returns -1 in case there was no method chosen (which should raise eyebrows because
+		 * a distance cannot be negative in our field).
+		 */
 		double operator()(const std::vector<double>& v1, const std::vector<double>& v2) const;
 	};
 	

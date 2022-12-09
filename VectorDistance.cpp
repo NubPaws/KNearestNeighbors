@@ -20,18 +20,17 @@ namespace VectorDistance {
 	}
 	
 	Calculator::Calculator()
-		: distCalc(nullptr), type("") {
+		: distCalc(nullptr), type(Type::Empty) {
 	}
 	
 	Calculator::Calculator(const Calculator::Type& type)
-		: distCalc(nullptr), type() {
-		if (type != Type::Empty)
-			set(TYPES[(size_t)type]);
+		: distCalc(nullptr), type(Type::Empty) {
+		set(type);
 	}
 	
-	Calculator::Calculator(const Calculator& c)
-		: distCalc(nullptr), type("") {
-		set(c.type);
+	Calculator::Calculator(const Calculator& other)
+		: distCalc(nullptr), type(Type::Empty) {
+		set(other.type);
 	}
 	
 	Calculator& Calculator::operator=(const Calculator& other) {
@@ -42,7 +41,7 @@ namespace VectorDistance {
 	Calculator::Calculator(Calculator&& other) noexcept
 		: distCalc(other.distCalc), type(other.type) {
 		other.distCalc = nullptr;
-		other.type = std::string();
+		other.type = Type::Empty;
 	}
 	
 	Calculator& Calculator::operator=(Calculator&& other) noexcept {
@@ -50,7 +49,7 @@ namespace VectorDistance {
 		type = other.type;
 		
 		other.distCalc = nullptr;
-		other.type = std::string();
+		other.type = Type::Empty;
 		
 		return *this;
 	}
@@ -61,26 +60,36 @@ namespace VectorDistance {
 			delete distCalc;
 	}
 	
-	void Calculator::set(const std::string& name, const int& p) {
-		type = name;
+	void Calculator::set(const Calculator::Type& type, const int& p) {
+		this->type = type;
 		if (distCalc)
 			delete distCalc;
 		
-		if (name == TYPES[(size_t)Type::Euclidean])
-			distCalc = new EuclideanCalculator();
-		else if (name == TYPES[(size_t)Type::Manhattan])
-			distCalc = new ManhattanCalculator();
-		else if (name == TYPES[(size_t)Type::Chebyshev])
-			distCalc = new ChebyshevCalculator();
-		else if (name == TYPES[(size_t)Type::Canberra])
-			distCalc = new CanberraCalculator();
-		else if (name == TYPES[(size_t)Type::Minkowski])
-			distCalc = new MinkowskiCalculator(p);
-		else
-			distCalc = nullptr;
+		switch (type) {
+			case Type::Euclidean:
+				distCalc = new EuclideanCalculator();
+				break;
+			case Type::Manhattan:
+				distCalc = new ManhattanCalculator();
+				break;
+			case Type::Chebyshev:
+				distCalc = new ChebyshevCalculator();
+				break;
+			case Type::Canberra:
+				distCalc = new CanberraCalculator();
+				break;
+			case Type::Minkowski:
+				distCalc = new MinkowskiCalculator(p);
+				break;
+			default:
+				distCalc = nullptr;
+				break;
+		}
 	}
 	
 	double Calculator::operator()(cVectorRef v1, cVectorRef v2) const {
+		if (!distCalc)
+			return -1;
 		return distCalc->calculate(v1, v2);
 	}
 	
@@ -141,5 +150,5 @@ namespace VectorDistance {
 	int MinkowskiCalculator::getP() const {
 		return p;
 	}
-	
+
 }

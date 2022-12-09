@@ -1,10 +1,9 @@
 #include <map>
-#include <iostream>
+#include <string>
 
 #include "KNearestNeighbors.h"
 #include "VectorDataSet.h"
-
-using std::size_t;
+#include "Types.h"
 
 KNearestNeighbors::KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType)
 	: dataset(dataset), distance(distType) {
