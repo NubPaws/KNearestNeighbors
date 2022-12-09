@@ -2,7 +2,7 @@
 #include "StringValidator.h"
 #include "Types.h"
 
-CommandLineArguments::CommandLineArguments(const int& argc, const char **argv) : args() {
+CommandLineArguments::CommandLineArguments(const int& argc, const char **argv) {
 	for (int i = 0; i < argc; i++)
 		args.push_back(std::string(argv[i]));
 }

@@ -1,9 +1,9 @@
-#ifndef _K_NEAREST_NEIGHBORS
-#define _K_NEAREST_NEIGHBORS
+#ifndef _K_NEAREST_NEIGHBORS_H
+#define _K_NEAREST_NEIGHBORS_H
 
 #include <string>
 
-#include "VectorDataSet.h"
+#include "containers/VectorDataSet.h"
 #include "VectorDistance.h"
 #include "Types.h"
 
@@ -57,4 +57,4 @@ private:
 	size_t findMaxDistanceIndex(const std::vector<double>& distances, const size_t& i, const size_t& j) const;
 };
 
-#endif // _K_NEAREST_NEIGHBORS
+#endif // _K_NEAREST_NEIGHBORS_H

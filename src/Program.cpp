@@ -4,11 +4,11 @@
 #include <sstream>
 #include <cstddef>
 
-#include "KNearestNeighbors.h"
-#include "VectorDistance.h"
-#include "VectorDataSet.h"
-#include "CommandLineArguments.h"
-#include "StringValidator.h"
+#include "calculations/KNearestNeighbors.h"
+#include "calculations/VectorDistance.h"
+#include "containers/VectorDataSet.h"
+#include "input/CommandLineArguments.h"
+#include "utils/StringValidator.h"
 
 /**
  * @brief Reads the vector from the user.
@@ -70,7 +70,7 @@ int main(int argc, const char* argv[]) {
 	std::vector<double> vec = readVector(std::cin);
 	
 	// Check the vector's length is okay and that the vector is valid.
-	if (vec.size() != vds.width() || vec.size() != 0) {
+	if (vec.size() != vds.width() || vec.size() == 0) {
 		std::cout << "Make sure to enter a vector of the correct size." << std::endl;
 		return 0;
 	}
