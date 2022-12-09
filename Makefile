@@ -30,7 +30,7 @@ OBJS := $(subst $(SRCDIR),$(BINDIR),$(SOURCES:.cpp=.o))
 DEPS = $(OBJS:.o=.d)
 
 # Choose the compiler.
-CC = g++
+CC = g++ -std=c++11
 
 #$(info $$SRCDIR is [${SRCDIR}])
 #$(info $$BINDIR is [${BINDIR}])
@@ -96,4 +96,4 @@ clean:
 
 # Exercise 2 test.
 ex2_test: all
-	$(TARGET) 3 ./datasets/iris/iris_classified.csv MAN
+	./$(TARGET) 3 ./datasets/iris/iris_classified.csv MAN
