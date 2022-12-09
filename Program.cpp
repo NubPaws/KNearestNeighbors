@@ -57,22 +57,26 @@ int main(int argc, const char* argv[]) {
 	std::string filename = args.getStr(filenameIndex);
 	auto distanceAlg = VectorDistance::Calculator::getType(args.getStr(algorithmIndex));
 	
+	// Check the algorithm chose is valid.
 	if (distanceAlg == VectorDistance::Calculator::Type::Empty) {
 		std::cout << "Please choose a valid distance algorithm." << std::endl;
 		return 0;
 	}
 	
+	// Setup the dataset and the KNN algorithm class.
 	VectorDataSet vds(filename);
 	KNearestNeighbors knn(vds, distanceAlg);
+	// Read the vector from the user.
 	std::vector<double> vec = readVector(std::cin);
 	
-	if (vec.size() != vds.width()) {
+	// Check the vector's length is okay and that the vector is valid.
+	if (vec.size() != vds.width() || vec.size() != 0) {
 		std::cout << "Make sure to enter a vector of the correct size." << std::endl;
 		return 0;
 	}
 	
+	// Print the result to the user after running the algorithm.
 	std::string result = knn.find(vec, args.getInt(kIndex));
-	
 	std::cout << result << std::endl;
 	
 	return 0;

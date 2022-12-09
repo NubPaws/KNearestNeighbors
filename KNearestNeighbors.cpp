@@ -37,6 +37,10 @@ std::string KNearestNeighbors::find(const std::vector<double>& item, const size_
 	return result;
 }
 
+void KNearestNeighbors::setDistanceType(VectorDistance::Calculator::Type distType) {
+	distance.set(distType);
+}
+
 void KNearestNeighbors::findClosestK(const std::vector<double>& item, size_t k) {
 	const size_t len = dataset.size();
 	if (k >= len)
