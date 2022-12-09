@@ -1,29 +1,91 @@
 #include <vector>
 #include <cmath>
 #include <string>
+
 #include "VectorDistance.h"
+#include "Types.h"
 
 namespace VectorDistance {
 	
 	// To make the code a bit shorter and more readable.
 	using cVectorRef = const std::vector<double>&;
 	
-	double Calculator::operator()(cVectorRef v1, cVectorRef v2) const {
-		return this->calculate(v1, v2);
+	const std::string Calculator::TYPES[] = {"AUC", "MAN", "CHB", "CAN", "MIN"};
+	
+	Calculator::Type Calculator::getType(const std::string& name) {
+		for (size_t i = 0; i < (size_t)Type::Empty; i++)
+			if (name == TYPES[i])
+				return (Type)i;
+		return Type::Empty;
 	}
 	
-	std::unique_ptr<Calculator> Calculator::getCalculator(const std::string& name) {
-		if (name == "AUC")
-			return std::unique_ptr<Calculator>(new EuclideanCalculator());
-		if (name == "MAN")
-			return std::unique_ptr<Calculator>(new ManhattanCalculator());
-		if (name == "CHB")
-			return std::unique_ptr<Calculator>(new ChebyshevCalculator());
-		if (name == "CAN")
-			return std::unique_ptr<Calculator>(new CanberraCalculator());
-		if (name == "MIN")
-			return std::unique_ptr<Calculator>(new MinkowskiCalculator());
-		return std::unique_ptr<Calculator>(nullptr);
+	Calculator::Calculator()
+		: distCalc(nullptr), type("") {
+	}
+	
+	Calculator::Calculator(const Calculator::Type& type)
+		: distCalc(nullptr), type() {
+		if (type != Type::Empty)
+			set(TYPES[(size_t)type]);
+	}
+	
+	Calculator::Calculator(const Calculator& c)
+		: distCalc(nullptr), type("") {
+		set(c.type);
+	}
+	
+	Calculator& Calculator::operator=(const Calculator& other) {
+		set(other.type);
+		return *this;
+	}
+	
+	Calculator::Calculator(Calculator&& other) noexcept
+		: distCalc(other.distCalc), type(other.type) {
+		other.distCalc = nullptr;
+		other.type = std::string();
+	}
+	
+	Calculator& Calculator::operator=(Calculator&& other) noexcept {
+		distCalc = other.distCalc;
+		type = other.type;
+		
+		other.distCalc = nullptr;
+		other.type = std::string();
+		
+		return *this;
+	}
+	
+	
+	Calculator::~Calculator() {
+		if (distCalc)
+			delete distCalc;
+	}
+	
+	void Calculator::set(const std::string& name, const int& p) {
+		type = name;
+		if (distCalc)
+			delete distCalc;
+		
+		if (name == TYPES[(size_t)Type::Euclidean])
+			distCalc = new EuclideanCalculator();
+		else if (name == TYPES[(size_t)Type::Manhattan])
+			distCalc = new ManhattanCalculator();
+		else if (name == TYPES[(size_t)Type::Chebyshev])
+			distCalc = new ChebyshevCalculator();
+		else if (name == TYPES[(size_t)Type::Canberra])
+			distCalc = new CanberraCalculator();
+		else if (name == TYPES[(size_t)Type::Minkowski])
+			distCalc = new MinkowskiCalculator(p);
+		else
+			distCalc = nullptr;
+	}
+	
+	double Calculator::operator()(cVectorRef v1, cVectorRef v2) const {
+		return distCalc->calculate(v1, v2);
+	}
+	
+	double DistanceCalculator::operator()(cVectorRef v1, cVectorRef v2) const {
+		return this->calculate(v1, v2);
 	}
 	
 	double EuclideanCalculator::calculate(cVectorRef v1, cVectorRef v2) const {

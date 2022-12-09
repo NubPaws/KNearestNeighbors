@@ -4,9 +4,41 @@
 #include <vector>
 #include <memory>
 
+#include "Types.h"
+
 namespace VectorDistance {
 	
+	class DistanceCalculator;
+	
 	class Calculator {
+	private:
+		DistanceCalculator *distCalc;
+		std::string type;
+		static const std::string TYPES[];
+	public:
+		enum class Type : size_t {
+			Euclidean, Manhattan, Chebyshev, Canberra, Minkowski, Empty
+		};
+		static Type getType(const std::string& name);
+		
+		Calculator();
+		
+		Calculator(const Type& name);
+		
+		Calculator(const Calculator& c);
+		Calculator& operator=(const Calculator& other);
+		
+		Calculator(Calculator&& other) noexcept;
+		Calculator& operator=(Calculator&& other) noexcept;
+		
+		~Calculator();
+		
+		void set(const std::string& name, const int& p = 2);
+		
+		double operator()(const std::vector<double>& v1, const std::vector<double>& v2) const;
+	};
+	
+	class DistanceCalculator {
 	public:
 		/**
 		 * @brief Calculates the distance between the two vectors given to it.
@@ -25,18 +57,9 @@ namespace VectorDistance {
 		 * @return double The specified distance between the two vectors.
 		 */
 		double operator()(const std::vector<double>& v1, const std::vector<double>& v2) const;
-		
-		/**
-		 * @brief Get the Calculator object where the name can be:
-		 * AUC/MAN/CHB/CAN/MIN.
-		 * 
-		 * @param name The string representing the vector distance method.
-		 * @return std::unique_ptr<Calculator> A unique pointer with the class instance, or a nullptr.
-		 */
-		static std::unique_ptr<Calculator> getCalculator(const std::string& name);
 	};
 	
-	class EuclideanCalculator : public Calculator {
+	class EuclideanCalculator : public DistanceCalculator {
 	public:
 		/**
 		 * @brief calculates the euclidean distance of two vectors.
@@ -51,7 +74,7 @@ namespace VectorDistance {
 		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
 	};
 	
-	class ManhattanCalculator : public Calculator {
+	class ManhattanCalculator : public DistanceCalculator {
 	public:
 		/**
 		 * @brief Calculates the manhattan distance of two vectors.
@@ -65,7 +88,7 @@ namespace VectorDistance {
 		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
 	};
 	
-	class ChebyshevCalculator : public Calculator {
+	class ChebyshevCalculator : public DistanceCalculator {
 	public:
 		/**
 		 * @brief Calculates the Chebyshev distance of two vectors.
@@ -78,7 +101,7 @@ namespace VectorDistance {
 		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
 	};
 	
-	class CanberraCalculator : public Calculator {
+	class CanberraCalculator : public DistanceCalculator {
 	public:
 		/**
 		 * @brief Calculates the Canberra distance of the two vectors.
@@ -92,7 +115,7 @@ namespace VectorDistance {
 		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
 	};
 	
-	class MinkowskiCalculator : public Calculator {
+	class MinkowskiCalculator : public DistanceCalculator {
 	private:
 		int p;
 	public:

@@ -15,13 +15,13 @@
  * 
  * @return std::vector<double> The vector the user entered or an empty vector if the input was invalid.
  */
-std::vector<double> readVector() {
+std::vector<double> readVector(std::istream& input) {
 	std::vector<double> v;
 	
 	// Make a string to store the line.
 	std::string line = "";
 	// Read the entire line from the user.
-	std::getline(std::cin, line);
+	std::getline(input, line);
 	// Convert the line into a string stream.
 	std::istringstream iss(line);
 	
@@ -55,11 +55,16 @@ int main(int argc, const char* argv[]) {
 	
 	int k = args.getInt(kIndex);
 	std::string filename = args.getStr(filenameIndex);
-	auto distanceAlg = VectorDistance::Calculator::getCalculator(args.getStr(algorithmIndex));
+	auto distanceAlg = VectorDistance::Calculator::getType(args.getStr(algorithmIndex));
+	
+	if (distanceAlg == VectorDistance::Calculator::Type::Empty) {
+		std::cout << "Please choose a valid distance algorithm." << std::endl;
+		return 0;
+	}
 	
 	VectorDataSet vds(filename);
-	KNearestNeighbors knn(vds, *distanceAlg);
-	std::vector<double> vec = readVector();
+	KNearestNeighbors knn(vds, distanceAlg);
+	std::vector<double> vec = readVector(std::cin);
 	
 	if (vec.size() != vds.width()) {
 		std::cout << "Make sure to enter a vector of the correct size." << std::endl;

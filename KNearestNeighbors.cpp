@@ -1,12 +1,14 @@
 #include <map>
+#include <iostream>
 
 #include "KNearestNeighbors.h"
 #include "VectorDataSet.h"
 
 using std::size_t;
 
-KNearestNeighbors::KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator &distance)
-	: dataset(dataset), distance(distance) {
+KNearestNeighbors::KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType)
+	: dataset(dataset), distance(distType) {
+	
 }
 
 std::string KNearestNeighbors::find(const std::vector<double>& item, const size_t k) {

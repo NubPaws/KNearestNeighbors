@@ -10,9 +10,9 @@
 class KNearestNeighbors {
 private:
 	VectorDataSet dataset;
-	VectorDistance::Calculator &distance;
+	VectorDistance::Calculator distance;
 public:
-	KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator &distance);
+	KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType);
 	
 	std::string find(const std::vector<double>& item, const std::size_t k);
 private:

@@ -1,10 +1,12 @@
 # Choose the compiler.
-CC = g++
+CC := g++
 # Have the right clean command.
 ifeq ($(OS),Windows_NT)
-	CLN=del
+	CLN := del
+	F_EXT := exe
 else
-	CLN=rm
+	CLN := rm
+	F_EXT := out
 endif
 
 BUILD_FILES  = VectorDistance.o
@@ -27,4 +29,4 @@ clean:
 
 # Exercise 2 test.
 ex2_test: build
-	./a.out 3 ./datasets/iris/iris_classified.csv MAN
+	./a.$(F_EXT) 3 ./datasets/iris/iris_classified.csv MAN
