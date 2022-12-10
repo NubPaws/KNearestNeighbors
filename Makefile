@@ -1,6 +1,3 @@
-# For further knowledge, this is the site I used.
-# https://riptutorial.com/makefile/example/21376/building-from-different-source-folders-to-different-target-folders
-
 # Setup the src path and the bin path.
 PROJDIR := $(realpath $(CURDIR))
 SRCDIR := $(PROJDIR)/src
@@ -11,8 +8,13 @@ VERBOSE = FALSE
 
 # Create the list of directories.
 DIRS = . calculations containers input utils
-SOURCEDIRS = $(foreach dir, $(DIRS), $(addprefix $(SRCDIR)/, $(dir)))
-TARGETDIRS = $(foreach dir, $(DIRS), $(addprefix $(BINDIR)/, $(dir)))
+# First add the prefixes
+_SOURCEDIRS = $(foreach dir, $(DIRS), $(addprefix $(SRCDIR)/, $(dir)))
+_TARGETDIRS = $(foreach dir, $(DIRS), $(addprefix $(BINDIR)/, $(dir)))
+# Then, whenever we encounter /. we we want to substitute it with nothing as
+# to not make paths that are valid, but weird, like /./
+SOURCEDIRS = $(foreach dir, $(_SOURCEDIRS), $(subst /.,,$(dir)))
+TARGETDIRS = $(foreach dir, $(_TARGETDIRS), $(subst /.,,$(dir)))
 
 # Generate the GCC includes parameters by adding -I before each source folder.
 INCLUDES = $(foreach dir, $(SOURCEDIRS), $(addprefix -I, $(dir)))
@@ -32,10 +34,10 @@ DEPS = $(OBJS:.o=.d)
 # Choose the compiler.
 CC = g++ -std=c++11
 
-#$(info $$SRCDIR is [${SRCDIR}])
-#$(info $$BINDIR is [${BINDIR}])
-#$(info $$OBJS is [${OBJS}])
-#$(info $$TARGETDIRS is [${TARGETDIRS}])
+# $(info $$SRCDIR is [${SRCDIR}])
+# $(info $$BINDIR is [${BINDIR}])
+# $(info $$OBJS is [${OBJS}])
+# $(info $$TARGETDIRS is [${TARGETDIRS}])
 
 # OS Specific part.
 ifeq ($(OS),Windows_NT)
@@ -91,7 +93,7 @@ directories:
 # Remove all objects, dependencies and executable files generated during the build.
 clean:
 	$(HIDE)$(RMDIR) $(subst /,$(PSEP),$(TARGETDIRS)) $(ERRIGNORE)
-	$(HIDE)%(RM) $(TARGET) $(ERRIGNORE)
+	$(HIDE)$(RM) $(TARGET) $(ERRIGNORE)
 	@echo Cleaning done!
 
 # Exercise 2 test.
