@@ -2,7 +2,6 @@
 #define _TYPES_H
 
 #include <cstddef>
-#include <vector>
 
 using std::size_t;
 
