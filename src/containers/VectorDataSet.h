@@ -8,7 +8,7 @@
 
 class VectorDataSet {
 public:
-	typedef std::pair<std::vector<double>, std::string> DataEntry;
+	typedef std::pair<Vector, std::string> DataEntry;
 private:
 	std::vector<DataEntry> dataset;
 public:

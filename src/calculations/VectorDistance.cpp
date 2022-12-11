@@ -7,9 +7,6 @@
 
 namespace VectorDistance {
 	
-	// To make the code a bit shorter and more readable.
-	using cVectorRef = const std::vector<double>&;
-	
 	const std::string Calculator::TYPES[] = {"AUC", "MAN", "CHB", "CAN", "MIN"};
 	
 	Calculator::Type Calculator::getType(const std::string& name) {
@@ -87,17 +84,17 @@ namespace VectorDistance {
 		}
 	}
 	
-	double Calculator::operator()(cVectorRef v1, cVectorRef v2) const {
+	double Calculator::operator()(const Vector& v1, const Vector& v2) const {
 		if (!distCalc)
 			return -1;
 		return distCalc->calculate(v1, v2);
 	}
 	
-	double DistanceCalculator::operator()(cVectorRef v1, cVectorRef v2) const {
+	double DistanceCalculator::operator()(const Vector& v1, const Vector& v2) const {
 		return this->calculate(v1, v2);
 	}
 	
-	double ChebyshevCalculator::calculate(cVectorRef v1, cVectorRef v2) const {
+	double ChebyshevCalculator::calculate(const Vector& v1, const Vector& v2) const {
 		double dist = 0;
 		const unsigned int len = v1.size() >= v2.size() ? v2.size() : v1.size();
 		for (int i = 0; i < len; i++) {
@@ -109,7 +106,7 @@ namespace VectorDistance {
 		return dist;
 	}
 	
-	double CanberraCalculator::calculate(cVectorRef v1, cVectorRef v2) const {
+	double CanberraCalculator::calculate(const Vector& v1, const Vector& v2) const {
 		// The case where both coordinates are 0 is defined as 0/0 = 0
 		double canberraSum = 0;
 		
@@ -123,7 +120,7 @@ namespace VectorDistance {
 	
 	MinkowskiCalculator::MinkowskiCalculator(const int& p) : p(p) {}
 	
-	double MinkowskiCalculator::calculate(cVectorRef v1, cVectorRef v2) const {
+	double MinkowskiCalculator::calculate(const Vector& v1, const Vector& v2) const {
 		double distance = 0;
 		const unsigned int len = v1.size() >= v2.size() ? v2.size() : v1.size();
 		for (int i = 0; i < len; i++) {

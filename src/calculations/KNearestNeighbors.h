@@ -28,7 +28,7 @@ public:
 	 * @param k How deep to do the search.
 	 * @return std::string The name of what the item is like.
 	 */
-	std::string find(const std::vector<double>& item, const size_t k);
+	std::string find(const Vector& item, const size_t k);
 	
 	/**
 	 * @brief Set the distance calculation method.
@@ -44,7 +44,7 @@ private:
 	 * @param item The vector get the closest items to it.
 	 * @param k How many close items you need.
 	 */
-	void findClosestK(const std::vector<double>& item, size_t k);
+	void findClosestK(const Vector& item, size_t k);
 	
 	/**
 	 * @brief Finds the index of the farthest away vector.
@@ -54,7 +54,7 @@ private:
 	 * @param j The end of the check.
 	 * @return size_t The index of the farthest away vector.
 	 */
-	size_t findMaxDistanceIndex(const std::vector<double>& distances, const size_t& i, const size_t& j) const;
+	size_t findMaxDistanceIndex(const Vector& distances, size_t i, size_t j) const;
 };
 
 #endif // _K_NEAREST_NEIGHBORS_H

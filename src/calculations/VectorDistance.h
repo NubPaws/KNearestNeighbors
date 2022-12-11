@@ -97,7 +97,7 @@ namespace VectorDistance {
 		 * returns -1 in case there was no method chosen (which should raise eyebrows because
 		 * a distance cannot be negative in our field).
 		 */
-		double operator()(const std::vector<double>& v1, const std::vector<double>& v2) const;
+		double operator()(const Vector& v1, const Vector& v2) const;
 	};
 	
 	class DistanceCalculator {
@@ -109,7 +109,7 @@ namespace VectorDistance {
 		 * @param v2 The second vector in the calculation.
 		 * @return double The specified distance between the two vectors.
 		 */
-		virtual double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const = 0;
+		virtual double calculate(const Vector& v1, const Vector& v2) const = 0;
 		
 		/**
 		 * @brief Calls the calculate function with the same arguments given to it.
@@ -118,7 +118,7 @@ namespace VectorDistance {
 		 * @param v2 The second vector in the calculation.
 		 * @return double The specified distance between the two vectors.
 		 */
-		double operator()(const std::vector<double>& v1, const std::vector<double>& v2) const;
+		double operator()(const Vector& v1, const Vector& v2) const;
 	};
 	
 	class ChebyshevCalculator : public DistanceCalculator {
@@ -131,7 +131,7 @@ namespace VectorDistance {
 		 * @param v2 The second vector.
 		 * @return double THe Chebyshev distance.
 		 */
-		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
+		double calculate(const Vector& v1, const Vector& v2) const override;
 	};
 	
 	class CanberraCalculator : public DistanceCalculator {
@@ -145,7 +145,7 @@ namespace VectorDistance {
 		 * @param v2 The second vector.
 		 * @return The Canberra distance of the two vectors.
 		 */	
-		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
+		double calculate(const Vector& v1, const Vector& v2) const override;
 	};
 	
 	class MinkowskiCalculator : public DistanceCalculator {
@@ -170,7 +170,7 @@ namespace VectorDistance {
 		 * @param p the order of the distnace.
 		 * @return double The Minkowski distnace
 		*/
-		double calculate(const std::vector<double>& v1, const std::vector<double>& v2) const override;
+		double calculate(const Vector& v1, const Vector& v2) const override;
 		
 		void setP(const int& p);
 		int getP() const;

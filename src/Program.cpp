@@ -4,19 +4,19 @@
 #include <sstream>
 #include <cstddef>
 
-#include "calculations/KNearestNeighbors.h"
-#include "calculations/VectorDistance.h"
-#include "containers/VectorDataSet.h"
-#include "input/CommandLineArguments.h"
-#include "utils/StringValidator.h"
+#include "KNearestNeighbors.h"
+#include "VectorDistance.h"
+#include "VectorDataSet.h"
+#include "CommandLineArguments.h"
+#include "StringValidator.h"
 
 /**
  * @brief Reads the vector from the user.
  * 
- * @return std::vector<double> The vector the user entered or an empty vector if the input was invalid.
+ * @return Vector The vector the user entered or an empty vector if the input was invalid.
  */
-std::vector<double> readVector(std::istream& input) {
-	std::vector<double> v;
+Vector readVector(std::istream& input) {
+	Vector v;
 	
 	// Make a string to store the line.
 	std::string line = "";
@@ -67,7 +67,7 @@ int main(int argc, const char* argv[]) {
 	VectorDataSet vds(filename);
 	KNearestNeighbors knn(vds, distanceAlg);
 	// Read the vector from the user.
-	std::vector<double> vec = readVector(std::cin);
+	Vector vec = readVector(std::cin);
 	
 	// Check the vector's length is okay and that the vector is valid.
 	if (vec.size() != vds.width() || vec.size() == 0) {
