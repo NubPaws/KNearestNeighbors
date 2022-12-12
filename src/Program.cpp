@@ -66,18 +66,20 @@ int main(int argc, const char* argv[]) {
 	// Setup the dataset and the KNN algorithm class.
 	VectorDataSet vds(filename);
 	KNearestNeighbors knn(vds, distanceAlg);
-	// Read the vector from the user.
-	Vector vec = readVector(std::cin);
-	
-	// Check the vector's length is okay and that the vector is valid.
-	if (vec.size() != vds.width() || vec.size() == 0) {
-		std::cout << "Make sure to enter a vector of the correct size." << std::endl;
-		return 0;
+	while (true) {
+		// Read the vector from the user.
+		Vector vec = readVector(std::cin);
+		
+		// Check the vector's length is okay and that the vector is valid.
+		if (vec.size() != vds.width() || vec.size() == 0) {
+			std::cout << "Make sure to enter a valid vector of the correct size." << std::endl;
+			continue;
+		}
+		
+		// Print the result to the user after running the algorithm.
+		std::string result = knn.find(vec, args.getInt(kIndex));
+		std::cout << result << std::endl;
 	}
-	
-	// Print the result to the user after running the algorithm.
-	std::string result = knn.find(vec, args.getInt(kIndex));
-	std::cout << result << std::endl;
 	
 	return 0;
 }
