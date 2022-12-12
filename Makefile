@@ -97,5 +97,10 @@ clean:
 	@echo Cleaning done!
 
 # Exercise 2 test.
-ex2_test: all
+ex2_test1: all
 	./$(TARGET) 3 ./datasets/iris/iris_classified.csv MAN
+
+# Exercise 2 test.
+ex2_test2: all
+	./$(TARGET) 3 ./datasets/beans/beans_Classified.csv MAN
+
