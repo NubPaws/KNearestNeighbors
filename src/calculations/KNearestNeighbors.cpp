@@ -57,7 +57,7 @@ void KNearestNeighbors::findClosestK(const Vector& item, size_t k) {
 	double d1 = distances[largestIndex];
 	double d2;
 	for (size_t i = 1; i < len; i++) {
-		double d2 = distances[i];
+		d2 = distances[i];
 		// If we have yet to find k elements:
 		if (foundCount < k) {
 			dataset.swap(foundCount, i);
