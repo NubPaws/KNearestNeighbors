@@ -7,7 +7,7 @@ BINDIR := $(PROJDIR)/bin
 VERBOSE = FALSE
 
 # Create the list of directories.
-DIRS = . calculations containers input utils
+DIRS = . calculations containers input utils networking
 # First add the prefixes
 _SOURCEDIRS = $(foreach dir, $(DIRS), $(addprefix $(SRCDIR)/, $(dir)))
 _TARGETDIRS = $(foreach dir, $(DIRS), $(addprefix $(BINDIR)/, $(dir)))
@@ -42,6 +42,8 @@ CC = g++ -std=c++11
 # OS Specific part.
 ifeq ($(OS),Windows_NT)
 	TARGET = a.exe
+	TARGET_CLIENT = client.exe
+	SERVER_CLIENT = server.exe
 	RM = del /F /Q
 	RMDIR = -rmdir /S /Q
 	MKDIR = -mkdir
@@ -49,6 +51,8 @@ ifeq ($(OS),Windows_NT)
 	SEP=\\ 
 else
 	TARGET = a.out
+	TARGET_CLIENT = client.out
+	SERVER_CLIENT = server.out
 	RM = rm -rf
 	RMDIR = rm -rf
 	MKDIR = mkdir -p
