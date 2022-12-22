@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "containers/VectorDataSet.h"
+#include "VectorDataSet.h"
 #include "VectorDistance.h"
 #include "Types.h"
 

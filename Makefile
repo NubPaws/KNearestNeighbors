@@ -9,12 +9,12 @@ VERBOSE = FALSE
 # Create the list of directories.
 DIRS = . calculations containers input utils networking
 # First add the prefixes
-_SOURCEDIRS = $(foreach dir, $(DIRS), $(addprefix $(SRCDIR)/, $(dir)))
-_TARGETDIRS = $(foreach dir, $(DIRS), $(addprefix $(BINDIR)/, $(dir)))
+SOURCEDIRS := $(foreach dir, $(DIRS), $(addprefix $(SRCDIR)/, $(dir)))
+TARGETDIRS := $(foreach dir, $(DIRS), $(addprefix $(BINDIR)/, $(dir)))
 # Then, whenever we encounter /. we we want to substitute it with nothing as
 # to not make paths that are valid, but weird, like /./
-SOURCEDIRS = $(foreach dir, $(_SOURCEDIRS), $(subst /.,,$(dir)))
-TARGETDIRS = $(foreach dir, $(_TARGETDIRS), $(subst /.,,$(dir)))
+SOURCEDIRS := $(foreach dir, $(SOURCEDIRS), $(subst /.,,$(dir)))
+TARGETDIRS := $(foreach dir, $(TARGETDIRS), $(subst /.,,$(dir)))
 
 # Generate the GCC includes parameters by adding -I before each source folder.
 INCLUDES = $(foreach dir, $(SOURCEDIRS), $(addprefix -I, $(dir)))
@@ -22,28 +22,34 @@ INCLUDES = $(foreach dir, $(SOURCEDIRS), $(addprefix -I, $(dir)))
 # Add this list to VPATH, the place make will look for the source files.
 VPATH = $(SOURCEDIRS)
 
-# CReate a list of *.cpp sources in DIRS.
+# Create a list of *.cpp sources in DIRS.
 SOURCES = $(foreach dir, $(SOURCEDIRS), $(wildcard $(dir)/*.cpp))
+MAINS_SRC = $(wildcard $(SRCDIR)/*.cpp)
 
 # Define objects for all sources.
 OBJS := $(subst $(SRCDIR),$(BINDIR),$(SOURCES:.cpp=.o))
+# Remove all files with a main function in them.
+MAINS_OBJS := $(BINDIR)/ClientProgram.o $(BINDIR)/Program.o $(BINDIR)/ServerProgram.o
+OBJS := $(subst $(MAINS_OBJS),,$(OBJS))
 
-# Define dependencies files for all objects
-DEPS = $(OBJS:.o=.d)
+# Define dependencies files for all objects.
+DEPS := $(OBJS:.o=.d)
 
 # Choose the compiler.
 CC = g++ -std=c++11
 
+# Print commands.
 # $(info $$SRCDIR is [${SRCDIR}])
 # $(info $$BINDIR is [${BINDIR}])
 # $(info $$OBJS is [${OBJS}])
+# $(info $$MAINS_OBJS is [${MAINS_OBJS}])
 # $(info $$TARGETDIRS is [${TARGETDIRS}])
 
 # OS Specific part.
 ifeq ($(OS),Windows_NT)
 	TARGET = a.exe
 	TARGET_CLIENT = client.exe
-	SERVER_CLIENT = server.exe
+	TARGET_SERVER = server.exe
 	RM = del /F /Q
 	RMDIR = -rmdir /S /Q
 	MKDIR = -mkdir
@@ -52,7 +58,7 @@ ifeq ($(OS),Windows_NT)
 else
 	TARGET = a.out
 	TARGET_CLIENT = client.out
-	SERVER_CLIENT = server.out
+	TARGET_SERVER = server.out
 	RM = rm -rf
 	RMDIR = rm -rf
 	MKDIR = mkdir -p
@@ -79,11 +85,11 @@ endef
 
 .PHONY: all clean directories
 
-all: directories $(TARGET)
-
-$(TARGET): $(OBJS)
-	$(HIDE)echo Linking $@
-	$(HIDE)$(CC) $(OBJS) -o $(TARGET)
+all: directories $(OBJS) $(MAINS_OBJS)
+	$(HIDE)echo Linking $(TARGET_CLIENT)
+	$(HIDE)$(CC) $(OBJS) $(BINDIR)/ClientProgram.o -o $(TARGET_CLIENT)
+	$(HIDE)echo Linking $(TARGET_SERVER)
+	$(HIDE)$(CC) $(OBJS) $(BINDIR)/ServerProgram.o -o $(TARGET_SERVER)
 
 # Include dependencies.
 -include $(DEPS)
@@ -98,13 +104,11 @@ directories:
 clean:
 	$(HIDE)$(RMDIR) $(subst /,$(PSEP),$(TARGETDIRS)) $(ERRIGNORE)
 	$(HIDE)$(RM) $(TARGET) $(ERRIGNORE)
+	$(HIDE)$(RM) $(TARGET_CLIENT) $(ERRIGNORE)
+	$(HIDE)$(RM) $(TARGET_SERVER) $(ERRIGNORE)
 	@echo Cleaning done!
 
 # Exercise 2 test.
-ex2_test1: all
-	./$(TARGET) 3 ./datasets/iris/iris_classified.csv MAN
-
-# Exercise 2 test.
-ex2_test2: all
+ex2_test: all
 	./$(TARGET) 3 ./datasets/beans/beans_Classified.csv MAN
 
