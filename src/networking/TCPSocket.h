@@ -51,4 +51,16 @@ class TCPServer : public TCPSocket {
     int handleClient();
 };
 
+class TCPClient : public TCPSocket {
+    public:
+    int initSocket() override;
+    /**
+     * @brief sending data to server
+     *
+     * @param data
+     */
+    int sendData(std::string data);
+    TCPClient(int port, std::string ip_address);
+};
+
 #endif /* TCP_SOCKET_H */

@@ -65,11 +65,13 @@ int TCPServer::handleClient() {
 		// connection is closed
 	}
 	else if (readBytes < 0) {
-			// error
+		// error
 	}
 	else {
-		std::cout << buffer;
+		std::cout << "Server received " << buffer << " from user" << std::endl;
 	}
+
+	std::cout << "Server sending " << buffer << " to user" << std::endl;
 	int sent_bytes = send(clientSocket, buffer, readBytes, 0);
 	if (sent_bytes < 0) {
 		perror("error sending to client");
@@ -79,4 +81,41 @@ int TCPServer::handleClient() {
     close(clientSocket);
 
     return 0;
+}
+
+TCPClient::TCPClient(int port, std::string ip_address) : TCPSocket(port, ip_address) {}
+
+int TCPClient::initSocket() {
+	TCPSocket::initSocket();
+    int connectReturnCode = connect(this->socketFileDescriptor, (struct sockaddr*)&(this->socketAddress), sizeof(this->socketAddress));
+    if (connectReturnCode < 0) {
+		perror("error connecting to server");
+        return -1;
+	}
+	return 0;
+}
+
+int TCPClient::sendData(std::string data) {
+    int dataLength = data.length();
+	std::cout << "client is sending: " << data << std::endl;
+    int sentBytes = send(this->socketFileDescriptor, data.c_str(), dataLength, 0);
+
+	if (sentBytes < 0)	{
+		// error
+        return -1;
+	}
+	char buffer[4096];
+    int expectedDataLength = sizeof(buffer);
+    int readBytes = recv(this->socketFileDescriptor, buffer, expectedDataLength, 0);
+	if (readBytes == 0) {
+		// connection is closed
+	}
+	else if (readBytes < 0) {
+		// error
+        return -1;
+	}
+	else {
+		std::cout << "Client received: " << buffer << " from server" << std::endl;
+	}
+	return 0;
 }

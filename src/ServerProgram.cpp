@@ -9,9 +9,7 @@
 #include "TCPSocket.h"
 
 int main(int argc, char const *argv[]) {
-	std::cout << "Hello from server!" << std::endl;
 	TCPServer tcpServer(1234, "127.0.0.1", 5);
-	
 	tcpServer.initSocket();
 	tcpServer.handleClient();
 	tcpServer.closeSocket();
