@@ -15,7 +15,7 @@ TCPSocket::TCPSocket(int port, std::string ip_address) {
 int TCPSocket::initSocket() {
     this->socketFileDescriptor = socket(AF_INET, SOCK_STREAM, 0);
     if (this->socketFileDescriptor < 0) {
-        perror("error creating socket");
+		std::cerr << "Error creating socket" << std::endl;
         return -1;
     }
     memset(&(this->socketAddress), 0, sizeof(this->socketAddress));
@@ -37,12 +37,12 @@ int TCPServer::initSocket() {
     TCPSocket::initSocket();
     int bindReturnCode = bind(this->socketFileDescriptor, (struct sockaddr*)&(this->socketAddress), sizeof(this->socketAddress));
     if (bindReturnCode < 0) {
-		perror("error binding socket");
+		std::cerr << "Error binding socket" <<std::endl;
         return -1;
     }
     int listenReturnCode = listen(this->socketFileDescriptor, this->backlog);
 	if (listenReturnCode< 0) {
-		perror("error listening to a socket");
+		std::cerr << "Error listening to a socket" <<std::endl;
         return -1;
 	}
     return 0;
@@ -54,7 +54,7 @@ int TCPServer::handleClient() {
 	unsigned int addressLength = sizeof(clientAddress);
 	int clientSocket = accept(this->socketFileDescriptor, (struct sockaddr*)&clientAddress, &addressLength);
 	if (clientSocket < 0) {
-		perror("error accepting client");
+		std::cerr << "Error accepting client" << std::endl;
         return -1;
 	}
 
@@ -74,7 +74,7 @@ int TCPServer::handleClient() {
 	std::cout << "Server sending " << buffer << " to user" << std::endl;
 	int sent_bytes = send(clientSocket, buffer, readBytes, 0);
 	if (sent_bytes < 0) {
-		perror("error sending to client");
+		std::cerr << "Error sending to client" << std::endl;
         return -1;
 	}
 
@@ -89,7 +89,7 @@ int TCPClient::initSocket() {
 	TCPSocket::initSocket();
     int connectReturnCode = connect(this->socketFileDescriptor, (struct sockaddr*)&(this->socketAddress), sizeof(this->socketAddress));
     if (connectReturnCode < 0) {
-		perror("error connecting to server");
+		std::cerr << "Error connecting to server" << std::endl;
         return -1;
 	}
 	return 0;
