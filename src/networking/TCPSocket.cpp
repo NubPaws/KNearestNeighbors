@@ -33,15 +33,20 @@ TCPServer::TCPServer(int port, std::string ip_address, int backlog) : TCPSocket(
     this->backlog = backlog;
 }
 
-int TCPServer::initSocket() {
-    TCPSocket::initSocket();
-    int bindReturnCode = bind(this->socketFileDescriptor, (struct sockaddr*)&(this->socketAddress), sizeof(this->socketAddress));
+int TCPServer::bindSocket() {
+    int bindReturnCode = bind(this->socketFileDescriptor,
+							  (struct sockaddr*)&(this->socketAddress),
+							  sizeof(this->socketAddress));
     if (bindReturnCode < 0) {
 		std::cerr << "Error binding socket" <<std::endl;
         return -1;
     }
+	return 0;
+}
+
+int TCPServer::listenForConnections() {
     int listenReturnCode = listen(this->socketFileDescriptor, this->backlog);
-	if (listenReturnCode< 0) {
+	if (listenReturnCode < 0) {
 		std::cerr << "Error listening to a socket" <<std::endl;
         return -1;
 	}
@@ -85,9 +90,10 @@ int TCPServer::handleClient() {
 
 TCPClient::TCPClient(int port, std::string ip_address) : TCPSocket(port, ip_address) {}
 
-int TCPClient::initSocket() {
-	TCPSocket::initSocket();
-    int connectReturnCode = connect(this->socketFileDescriptor, (struct sockaddr*)&(this->socketAddress), sizeof(this->socketAddress));
+int TCPClient::connectToServer() {
+    int connectReturnCode = connect(this->socketFileDescriptor,
+									(struct sockaddr*)&(this->socketAddress),
+									sizeof(this->socketAddress));
     if (connectReturnCode < 0) {
 		std::cerr << "Error connecting to server" << std::endl;
         return -1;

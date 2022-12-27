@@ -12,6 +12,7 @@ int main(int argc, char const *argv[])
 {
 	TCPClient tcpClient(1234, "127.0.0.1");
 	tcpClient.initSocket();
+	tcpClient.connectToServer();
 	tcpClient.sendData("Hey");
 	tcpClient.closeSocket();
 

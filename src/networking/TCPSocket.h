@@ -1,5 +1,5 @@
-#ifndef TCP_SOCKET_H
-#define TCP_SOCKET_H
+#ifndef _TCP_SOCKET_H
+#define _TCP_SOCKET_H
 
 #include <iostream>
 #include <netinet/in.h>
@@ -24,7 +24,7 @@ class TCPSocket {
      *
      * @return 0 on success, -1 otherwise.
      */
-    virtual int initSocket();
+    int initSocket();
     /**
      * @brief closing TCP socket.
      *
@@ -39,12 +39,23 @@ class TCPServer : public TCPSocket {
     /**
      * @brief Construct a new TCPServer object
      *
-     * @param port 
-     * @param ip_address 
+     * @param port
+     * @param ip_address
      * @param backlog number of client connections.
      */
     TCPServer(int port, std::string ip_address, int backlog);
-    int initSocket() override;
+    /**
+     * @brief binding server socket
+     *
+     * @return 0 on success, -1 otherwise.
+     */
+    int bindSocket();
+    /**
+     * @brief Listen for connections
+     *
+     * @return 0 on success, -1 otherwise.
+     */
+    int listenForConnections();
     /**
      * @brief handles client requests.
      */
@@ -53,14 +64,25 @@ class TCPServer : public TCPSocket {
 
 class TCPClient : public TCPSocket {
     public:
-    int initSocket() override;
     /**
      * @brief sending data to server
      *
      * @param data
      */
     int sendData(std::string data);
+    /**
+     * @brief connecting client to server
+     *
+     * @return 0 on success, -1 otherwise.
+     */
+    int connectToServer();
+    /**
+     * @brief Construct a new TCPClient object
+     *
+     * @param port
+     * @param ip_address
+     */
     TCPClient(int port, std::string ip_address);
 };
 
-#endif /* TCP_SOCKET_H */
+#endif /* _TCP_SOCKET_H */

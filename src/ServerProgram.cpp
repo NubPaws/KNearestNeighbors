@@ -11,6 +11,8 @@
 int main(int argc, char const *argv[]) {
 	TCPServer tcpServer(1234, "127.0.0.1", 5);
 	tcpServer.initSocket();
+	tcpServer.bindSocket();
+	tcpServer.listenForConnections();
 	tcpServer.handleClient();
 	tcpServer.closeSocket();
 
