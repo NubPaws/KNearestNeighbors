@@ -53,39 +53,42 @@ int TCPServer::listenForConnections() {
     return 0;
 }
 
-int TCPServer::handleClient() {
-    struct sockaddr_in clientAddress;
-
+int TCPServer::acceptConnection() {
+	struct sockaddr_in clientAddress;
 	unsigned int addressLength = sizeof(clientAddress);
 	int clientSocket = accept(this->socketFileDescriptor, (struct sockaddr*)&clientAddress, &addressLength);
 	if (clientSocket < 0) {
 		std::cerr << "Error accepting client" << std::endl;
         return -1;
 	}
+	return clientSocket;
+}
 
-	char buffer[4096];
-	int expectedDataLength = sizeof(buffer);
-	int readBytes = recv(clientSocket, buffer, expectedDataLength, 0);
-	if (readBytes == 0) {
-		// connection is closed
-	}
-	else if (readBytes < 0) {
-		// error
-	}
-	else {
-		std::cout << "Server received " << buffer << " from user" << std::endl;
-	}
-
-	std::cout << "Server sending " << buffer << " to user" << std::endl;
-	int sent_bytes = send(clientSocket, buffer, readBytes, 0);
-	if (sent_bytes < 0) {
+int TCPServer::sendData(int clientSocket, byte data[], size_t dataLength) {
+	int sentBytes = send(clientSocket, data, dataLength, 0);
+	if (sentBytes < 0) {
 		std::cerr << "Error sending to client" << std::endl;
         return -1;
 	}
+	return 0;
+}
 
-    close(clientSocket);
+int TCPServer::receiveData(int clientSocket, byte inputBuffer[], size_t expectedDataLength) {
+	int readBytes = recv(clientSocket, inputBuffer, expectedDataLength, 0);
+	if (readBytes == 0) {
+		std::cerr << "Closed connection" << std::endl;
+	}
+	else if (readBytes < 0) {
+		std::cerr << strerror(errno) << std::endl;
+	}
+	else {
+		std::cout << "Server received " << inputBuffer << " from user" << std::endl;
+	}
+	return 0;
+}
 
-    return 0;
+void TCPServer::closeClientConnection(int clientSocket) {
+	close(clientSocket);
 }
 
 TCPClient::TCPClient(int port, std::string ip_address) : TCPSocket(port, ip_address) {}

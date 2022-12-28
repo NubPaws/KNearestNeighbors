@@ -4,6 +4,8 @@
 #include <iostream>
 #include <netinet/in.h>
 
+#include "Types.h"
+
 class TCPSocket {
     protected:
     int socketFileDescriptor;
@@ -25,6 +27,8 @@ class TCPSocket {
      * @return 0 on success, -1 otherwise.
      */
     int initSocket();
+
+    int sendData(byte data[]);
     /**
      * @brief closing TCP socket.
      *
@@ -57,9 +61,34 @@ class TCPServer : public TCPSocket {
      */
     int listenForConnections();
     /**
+     * @brief Accepts incoming connection
+     *
+     * @return client socket file descriptor.
+     */
+    int acceptConnection();
+    /**
+     * @brief Sending data to client
+     *
+     * @param clientSocket
+     * @param data
+     * @return int
+     */
+    int sendData(int clientSocket, byte data[], size_t dataLength);
+    /**
+     * @brief Receives data from client
+     *
+     * @param clientSocket
+     * @param inputBuffer
+     * @return int
+     */
+    int receiveData(int clientSocket, byte inputBuffer[], size_t expectedDataLength);
+    /**
      * @brief handles client requests.
      */
-    int handleClient();
+    /**
+     * Closing client socket.
+    */
+    void closeClientConnection(int clientSocket);
 };
 
 class TCPClient : public TCPSocket {

@@ -7,13 +7,22 @@
 #include <string.h>
 
 #include "TCPSocket.h"
+#include "Types.h"
 
 int main(int argc, char const *argv[]) {
+	// Setting up server
 	TCPServer tcpServer(1234, "127.0.0.1", 5);
+	byte buffer[4096];
 	tcpServer.initSocket();
 	tcpServer.bindSocket();
 	tcpServer.listenForConnections();
-	tcpServer.handleClient();
+
+	int clientSocket = tcpServer.acceptConnection();
+	tcpServer.receiveData(clientSocket, buffer, sizeof(buffer));
+	std::cout << buffer << std::endl;
+
+	tcpServer.sendData(clientSocket, buffer, sizeof(buffer));
+	tcpServer.closeClientConnection(clientSocket);
 	tcpServer.closeSocket();
 
 	return 0;
