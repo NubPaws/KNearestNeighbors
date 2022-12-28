@@ -97,14 +97,23 @@ class TCPClient : public TCPSocket {
      * @brief sending data to server
      *
      * @param data
+     * @param dataLength
      */
-    int sendData(std::string data);
+    int sendData(byte data[], size_t dataLength);
     /**
      * @brief connecting client to server
      *
      * @return 0 on success, -1 otherwise.
      */
     int connectToServer();
+    /**
+     * @brief Receiving data from server
+     *
+     * @param inputBuffer
+     * @param expectedDataLength
+     * @return 0 on success, -1 otherwise.
+     */
+    int receiveData(byte inputBuffer[], size_t expectedDataLength);
     /**
      * @brief Construct a new TCPClient object
      *

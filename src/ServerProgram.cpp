@@ -19,8 +19,9 @@ int main(int argc, char const *argv[]) {
 
 	int clientSocket = tcpServer.acceptConnection();
 	tcpServer.receiveData(clientSocket, buffer, sizeof(buffer));
-	std::cout << buffer << std::endl;
+	std::cout << "Server received: " << buffer << std::endl;
 
+	std::cout << "Server is sending: " << buffer << std::endl;
 	tcpServer.sendData(clientSocket, buffer, sizeof(buffer));
 	tcpServer.closeClientConnection(clientSocket);
 	tcpServer.closeSocket();
