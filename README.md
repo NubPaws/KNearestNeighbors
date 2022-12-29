@@ -1,4 +1,4 @@
-# Ran & Rami's Project
+# Yuval & Rami's Project
 
 ## Compilation
 To compile the code run the following command.<br/>
