@@ -7,8 +7,7 @@
 #include <utility>
 
 #include "Types.h"
-
-typedef std::vector<byte> Packet;
+#include "Packet.h"
 
 enum class Status : size_t {
     Failed, Success
@@ -42,8 +41,18 @@ public:
      */
     void closeSocket();
 protected:
-    int sendPacket(int sockfd, const Packet& packet);
-    int recvPacket(int sockfd, Packet& packet);
+    /**
+     * @brief Sends a Socket::Packet over a socket file descriptor.
+     * 
+     * @return 0 on success -1 on failure.
+    */
+    int sendPacket(int sockfd, const Socket::Packet& packet);
+    /**
+     * @brief Receives a Socket::Packet from a file descriptor.
+     * 
+     * @return Socket::Packet with the data that was received.
+    */
+    Socket::Packet recvPacket(int sockfd);
 };
 
 class TCPServer : public TCPSocket {
@@ -83,15 +92,14 @@ public:
      * @param data
      * @return int
      */
-    int sendData(int clientSocket, Packet packet);
+    int sendData(int clientSocket, Socket::Packet packet);
     /**
      * @brief Receives data from client
      *
      * @param clientSocket
-     * @param inputBuffer
-     * @return int
+     * @return Socket::Packet with it being invalid if the connection failed.
      */
-    std::pair<Packet, Status> receiveData(int clientSocket);
+    Socket::Packet receiveData(int clientSocket);
     /**
      * @brief handles client requests.
      */
@@ -108,7 +116,7 @@ public:
      *
      * @param packet A vector of bytes containing the data.
      */
-    int sendData(const Packet& packet);
+    int sendData(const Socket::Packet& packet);
     /**
      * @brief connecting client to server
      *
@@ -118,9 +126,9 @@ public:
     /**
      * @brief Receiving data from server
      *
-     * @return 0 on success, -1 otherwise.
+     * @return Socket::Packet with it being not valid if an error occured..
      */
-    std::pair<Packet, Status> receiveData();
+    Socket::Packet receiveData();
     /**
      * @brief Construct a new TCPClient object
      *
@@ -130,4 +138,4 @@ public:
     TCPClient(int port, std::string ip_address);
 };
 
-#endif /* _TCP_SOCKET_H */
+#endif // _TCP_SOCKET_H

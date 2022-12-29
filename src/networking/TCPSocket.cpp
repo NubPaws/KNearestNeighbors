@@ -30,7 +30,7 @@ void TCPSocket::closeSocket() {
     close(this->socketFileDescriptor);
 }
 
-int TCPSocket::sendPacket(int sockfd, const Packet& packet) {
+int TCPSocket::sendPacket(int sockfd, const Socket::Packet& packet) {
 	int sentBytes;
 	size_t size = Socket::toNetwork(packet.size());
 	// First send the size of the packet.
@@ -39,32 +39,38 @@ int TCPSocket::sendPacket(int sockfd, const Packet& packet) {
 		return -1;
 	
 	// Then send the actual data.
-	sentBytes = send(sockfd, packet.data(), packet.size(), 0);
+	sentBytes = send(sockfd, packet.getData(), packet.size(), 0);
 	if (sentBytes < packet.size())
 		return -1;
 	
 	return 0;
 }
 
-int TCPSocket::recvPacket(int sockfd, Packet& packet) {
+Socket::Packet TCPSocket::recvPacket(int sockfd) {
 	int status;
 	
 	size_t size;
 	status = recv(sockfd, (byte*)&size, sizeof(size_t), 0);
-	if (status <= 0)
-		return status;
+	
+	if (status < 0)
+		return Socket::Packet(false);
+	else if (status == 0)
+		return Socket::Packet(true);
+	
 	size = Socket::toClient(size);
 	
 	byte *data = new byte[size];
 	status = recv(sockfd, data, size, 0);
-	if (status <= 0)
-		return status;
 	
-	for (size_t i = 0; i < size; i++)
-		packet.push_back(data[i]);
+	if (status < 0)
+		return Socket::Packet(false);
+	else if (status == 0)
+		return Socket::Packet(true);
+	
+	Socket::Packet packet(data, size);
 	
 	delete[] data;
-	return 1;
+	return packet;
 }
 
 TCPServer::TCPServer(int port, std::string ip_address, int backlog) : TCPSocket(port, ip_address) {
@@ -102,7 +108,7 @@ int TCPServer::acceptConnection() {
 	return clientSocket;
 }
 
-int TCPServer::sendData(int clientSocket, Packet packet) {
+int TCPServer::sendData(int clientSocket, Socket::Packet packet) {
 	int status = sendPacket(clientSocket, packet);
 	if (status == -1) {
 		std::cerr << "Error sending to client" << std::endl;
@@ -111,18 +117,12 @@ int TCPServer::sendData(int clientSocket, Packet packet) {
 	return 0;
 }
 
-std::pair<Packet, Status> TCPServer::receiveData(int clientSocket) {
-	Packet packet;
-	int status = recvPacket(clientSocket, packet);
-	std::pair<Packet, Status> result;
-	result.first = packet;
-	if (status < 0) {
+Socket::Packet TCPServer::receiveData(int clientSocket) {
+	Socket::Packet packet = recvPacket(clientSocket);
+	
+	if (!packet.isValid())
 		std::cerr << strerror(errno) << std::endl;
-		result.second = Status::Failed;
-		return result;
-	}
-	result.second = Status::Success;
-	return result;
+	return packet;
 }
 
 void TCPServer::closeClientConnection(int clientSocket) {
@@ -142,7 +142,7 @@ int TCPClient::connectToServer() {
 	return 0;
 }
 
-int TCPClient::sendData(const Packet& packet) {
+int TCPClient::sendData(const Socket::Packet& packet) {
 	if (sendPacket(socketFileDescriptor, packet) == -1) {
 		std::cerr << "Error sending to server" << std::endl;
 		return -1;
@@ -150,16 +150,11 @@ int TCPClient::sendData(const Packet& packet) {
 	return 0;
 }
 
-std::pair<Packet, Status> TCPClient::receiveData() {
-	Packet packet;
-	int status = recvPacket(socketFileDescriptor, packet);
-	std::pair<Packet, Status> result;
-	result.first = packet;
-	if (status < 0) {
+Socket::Packet TCPClient::receiveData() {
+	Socket::Packet packet = recvPacket(socketFileDescriptor);
+	
+	if (!packet.isValid()) {
 		std::cerr << strerror(errno) << std::endl;
-		result.second = Status::Failed;
-		return result;
 	}
-	result.second = Status::Success;
-	return result;
+	return packet;
 }
