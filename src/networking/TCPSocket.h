@@ -3,18 +3,26 @@
 
 #include <iostream>
 #include <netinet/in.h>
+#include <vector>
+#include <utility>
 
 #include "Types.h"
 
+typedef std::vector<byte> Packet;
+
+enum class Status : size_t {
+    Failed, Success
+};
+
 class TCPSocket {
-    protected:
+protected:
     int socketFileDescriptor;
     struct sockaddr_in socketAddress;
     private:
     int port;
     std::string ip_address;
 
-    public:
+public:
     /**
      * @brief TCPSocket constructor
      * @param port port number
@@ -27,19 +35,21 @@ class TCPSocket {
      * @return 0 on success, -1 otherwise.
      */
     int initSocket();
-
-    int sendData(byte data[]);
+    
     /**
      * @brief closing TCP socket.
      *
      */
     void closeSocket();
+protected:
+    int sendPacket(int sockfd, const Packet& packet);
+    int recvPacket(int sockfd, Packet& packet);
 };
 
 class TCPServer : public TCPSocket {
-    private:
+private:
     int backlog;
-    public:
+public:
     /**
      * @brief Construct a new TCPServer object
      *
@@ -73,7 +83,7 @@ class TCPServer : public TCPSocket {
      * @param data
      * @return int
      */
-    int sendData(int clientSocket, byte data[], size_t dataLength);
+    int sendData(int clientSocket, Packet packet);
     /**
      * @brief Receives data from client
      *
@@ -81,7 +91,7 @@ class TCPServer : public TCPSocket {
      * @param inputBuffer
      * @return int
      */
-    int receiveData(int clientSocket, byte inputBuffer[], size_t expectedDataLength);
+    std::pair<Packet, Status> receiveData(int clientSocket);
     /**
      * @brief handles client requests.
      */
@@ -92,14 +102,13 @@ class TCPServer : public TCPSocket {
 };
 
 class TCPClient : public TCPSocket {
-    public:
+public:
     /**
      * @brief sending data to server
      *
-     * @param data
-     * @param dataLength
+     * @param packet A vector of bytes containing the data.
      */
-    int sendData(byte data[], size_t dataLength);
+    int sendData(const Packet& packet);
     /**
      * @brief connecting client to server
      *
@@ -109,11 +118,9 @@ class TCPClient : public TCPSocket {
     /**
      * @brief Receiving data from server
      *
-     * @param inputBuffer
-     * @param expectedDataLength
      * @return 0 on success, -1 otherwise.
      */
-    int receiveData(byte inputBuffer[], size_t expectedDataLength);
+    std::pair<Packet, Status> receiveData();
     /**
      * @brief Construct a new TCPClient object
      *

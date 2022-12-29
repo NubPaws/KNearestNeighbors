@@ -1,6 +1,6 @@
-# Ran & Rami's Project
+# Yuval & Rami's Project
 
-- [Ran \& Rami's Project](#ran--ramis-project)
+- [Yuval \& Rami's Project](#yuval--ramis-project)
 	- [Compilation](#compilation)
 	- [Exercise 1 - Vector Distance Calculation](#exercise-1---vector-distance-calculation)
 		- [Distance Calculations Changes](#distance-calculations-changes)

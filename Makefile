@@ -36,7 +36,7 @@ OBJS := $(subst $(MAINS_OBJS),,$(OBJS))
 DEPS := $(OBJS:.o=.d)
 
 # Choose the compiler.
-CC = g++ -std=c++11
+CC = g++ -g -std=c++11
 
 # Print commands.
 # $(info $$SRCDIR is [${SRCDIR}])
