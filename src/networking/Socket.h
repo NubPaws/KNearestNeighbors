@@ -31,23 +31,18 @@ namespace Socket {
         TCPSocket(int port, std::string ip_address);
         /**
          * @brief initialize socket.
-         *
-         * @return 0 on success, -1 otherwise.
          */
-        int initSocket();
+        void initSocket();
         
         /**
          * @brief closing TCP socket.
-         *
          */
         void closeSocket();
     protected:
         /**
          * @brief Sends a Socket::Packet over a socket file descriptor.
-         * 
-         * @return 0 on success -1 on failure.
         */
-        int sendPacket(int sockfd, const Socket::Packet& packet);
+        void sendPacket(int sockfd, const Socket::Packet& packet);
         /**
          * @brief Receives a Socket::Packet from a file descriptor.
          * 
@@ -70,16 +65,12 @@ namespace Socket {
         TCPServer(int port, std::string ip_address, int backlog);
         /**
          * @brief binding server socket
-         *
-         * @return 0 on success, -1 otherwise.
          */
-        int bindSocket();
+        void bindSocket();
         /**
          * @brief Listen for connections
-         *
-         * @return 0 on success, -1 otherwise.
          */
-        int listenForConnections();
+        void listenForConnections();
         /**
          * @brief Accepts incoming connection
          *
@@ -93,7 +84,7 @@ namespace Socket {
          * @param data
          * @return int
          */
-        int sendData(int clientSocket, Socket::Packet packet);
+        void sendData(int clientSocket, Socket::Packet packet);
         /**
          * @brief Receives data from client
          *
@@ -117,17 +108,15 @@ namespace Socket {
          *
          * @param packet A vector of bytes containing the data.
          */
-        int sendData(const Socket::Packet& packet);
+        void sendData(const Socket::Packet& packet);
         /**
          * @brief connecting client to server
-         *
-         * @return 0 on success, -1 otherwise.
          */
-        int connectToServer();
+        void connectToServer();
         /**
          * @brief Receiving data from server
          *
-         * @return Socket::Packet with it being not valid if an error occured..
+         * @return Socket::Packet with it being not valid if an error occurred..
          */
         Socket::Packet receiveData();
         /**

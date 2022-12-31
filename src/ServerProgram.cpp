@@ -28,10 +28,16 @@ int main(int argc, char const *argv[]) {
 	
 	// Setting up server
 	TCPServer tcpServer(args.getInt(portIndex), "127.0.0.1", 5);
-	
-	tcpServer.initSocket();
-	tcpServer.bindSocket();
-	tcpServer.listenForConnections();
+	try {
+		tcpServer.initSocket();
+		tcpServer.bindSocket();
+		tcpServer.listenForConnections();
+	}
+	catch (std::exception exception){
+		std::cerr << exception.what() << std::endl;
+		// error in creating server socket means that there are no socket resources to free
+		return -1;
+	}
 	
 	using VectorDistance::Calculator;
 	
@@ -48,7 +54,7 @@ int main(int argc, char const *argv[]) {
 		 * Iterate over the open connections. Keep reading from the same connection
 		 * as long as we are getting a valid packet with a size not equal to zero.
 		 * If either of those cases are false then we know that the connection
-		 * either closed or some other error has occured.
+		 * either closed or some other error has occurred.
 		*/
 		while (packet.isValid() && packet.size() != 0) {
 			std::vector<std::string> data = packet.toVector();

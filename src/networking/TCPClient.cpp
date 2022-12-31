@@ -4,25 +4,27 @@
 
 using Socket::TCPClient;
 
+std::string SOCKET_CONNECT_ERROR = "Error connecting to server";
+
+
 TCPClient::TCPClient(int port, std::string ip_address) : TCPSocket(port, ip_address) {}
 
-int TCPClient::connectToServer() {
+void TCPClient::connectToServer() {
     int connectReturnCode = connect(this->socketFileDescriptor,
 									(struct sockaddr*)&(this->socketAddress),
 									sizeof(this->socketAddress));
     if (connectReturnCode < 0) {
-		std::cerr << "Error connecting to server" << std::endl;
-        return -1;
+		throw std::runtime_error(SOCKET_CONNECT_ERROR);
 	}
-	return 0;
 }
 
-int TCPClient::sendData(const Socket::Packet& packet) {
-	if (sendPacket(socketFileDescriptor, packet) == -1) {
-		std::cerr << "Error sending to server" << std::endl;
-		return -1;
-	}
-	return 0;
+void TCPClient::sendData(const Socket::Packet& packet) {
+    try {
+        sendPacket(socketFileDescriptor, packet);
+    }
+    catch (std::exception exception) {
+        throw exception;
+    }
 }
 
 Socket::Packet TCPClient::receiveData() {

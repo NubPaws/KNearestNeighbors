@@ -12,10 +12,12 @@
 
 using Socket::TCPClient;
 
+std::string FAILED_SERVER_CONNECTION = "Failed to connect to server";
+
 /**
  * @brief Reads the next line from the user and converts it to a vector of strings.
  * 
- * @return std::vector<std::string> Where each entry is the data (delimated by spaces).
+ * @return std::vector<std::string> Where each entry is the data (delimited by spaces).
 */
 static std::vector<std::string> readLineAsVector() {
 	std::string line;
@@ -108,9 +110,13 @@ int main(int argc, const char *argv[]) {
 	
 	// Initialize the client socket to do the connection.
 	TCPClient tcpClient(port, ip);
-	tcpClient.initSocket();
-	if (tcpClient.connectToServer() == -1)
-		return 0;
+	try {
+		tcpClient.initSocket();
+		tcpClient.connectToServer();
+	}
+	catch (...) {
+		std::cerr << FAILED_SERVER_CONNECTION << std::endl;
+	}
 	
 	bool keepSending = true;
 	std::vector<std::string> line;
