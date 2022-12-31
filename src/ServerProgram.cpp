@@ -4,13 +4,15 @@
 #include <utility>
 #include <vector>
 
-#include "TCPSocket.h"
+#include "Socket.h"
 #include "Types.h"
 #include "CommandLineArguments.h"
 #include "VectorDistance.h"
 #include "VectorDataSet.h"
 #include "KNearestNeighbors.h"
 #include "Packet.h"
+
+using Socket::TCPServer;
 
 int main(int argc, char const *argv[]) {
 	CommandLineArguments args(argc, argv);

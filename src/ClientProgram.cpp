@@ -5,10 +5,12 @@
 
 #include "CommandLineArguments.h"
 #include "Types.h"
-#include "TCPSocket.h"
+#include "Socket.h"
 #include "VectorDistance.h"
 #include "StringValidator.h"
 #include "Packet.h"
+
+using Socket::TCPClient;
 
 /**
  * @brief Reads the next line from the user and converts it to a vector of strings.
