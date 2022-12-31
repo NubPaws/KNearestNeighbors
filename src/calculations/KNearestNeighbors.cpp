@@ -1,6 +1,7 @@
 #include <map>
 #include <string>
 #include <utility>
+#include <iostream>
 
 #include "KNearestNeighbors.h"
 #include "VectorDataSet.h"
