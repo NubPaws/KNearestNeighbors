@@ -49,7 +49,7 @@ Regarding the Makefile, the code compiles using the C++11 standard. The Makefile
 
 # Exercise 3 - Server && Client
 ## Socket Implementation
-For this exercise we were only tasked with implementing a TCP socket connect. Therefore we made `TCPSocket` that is the base class for `TCPServer` and `TCPClient`. In the future if we'll need to implement a UDP socket we'll be able to create the Socket base class easily.
+For this exercise we were only tasked with implementing a TCP socket connect. Therefore we made `TCPSocket` that is the base class for `TCPServer` and `TCPClient`. In the future if we'll need to implement a UDP socket we'll be able to create the Socket base class easily. The files were made each in their own file all under the network folder.
 As per resources, the presentations and [Beej's Guide to Network Programming](https://beej.us/guide/bgnet/html/) were of great assistance in the research of the topic. The idea of the implementation is to have a Server that is able to accept connections from Clients. That way we are abstracting the nitty gritty details of the socket library making it simple to establish the connection.
 
 We have also added a `Packet` class that allows to pack the data from the user and the server and transfer them between one another. The idea for the packet is that when sending it or receiving we are are under the protocol of first receiving a `size_t` of the size of the actual data, and then we are receiving the data itself - which is just an array of `byte`s (`unsigned char`). In the future, if we want to transfer using JSon or XML we can just create a parser and then convert it to our Packet to transfer it back and forth.
