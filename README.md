@@ -9,7 +9,7 @@ Running the code on linux you should have an `./a.out` that you can run, on wind
 ## Exercise 2 - K Nearest Neighbors
 The exercise can be found on the [branch named ex2](https://github.com/NubPaws/AdvancedProgramming/tree/ex2)
 
-## Exercise 2 - Networking
+## Exercise 3 - Networking
 The exercise can be found on the [branch named ex3](https://github.com/NubPaws/AdvancedProgramming/tree/ex3)
 
 ## Exercise 1 - Vector Distance Calculation
