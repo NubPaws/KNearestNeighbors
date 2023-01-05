@@ -15,7 +15,9 @@
 
 ## Compilation
 To compile the code run the `make` command in the same directory the `Makefile` is located in.
-Running the code on linux you should have an `./a.out` that you can run, on windows an `a.exe`.
+Running the code should result in a `client.out` and a `server.out` that you can run.
+The `server.out` will receive a file location for a CSV dataset and the port to open the connection on.
+The `client.out` will receive the ip address and port to connect to.
 
 # Exercise 1 - Vector Distance Calculation
 ## Distance Calculations Changes
