@@ -12,6 +12,7 @@
 - [Exercise 3 - Server \&\& Client](#exercise-3---server--client)
 	- [Socket Implementation](#socket-implementation)
 	- [Makefile \&\& Folder Structure Change](#makefile--folder-structure-change-1)
+- [Ex4 - User Interface \&\& Multithreading](#ex4---user-interface--multithreading)
 
 ## Compilation
 To compile the code run the `make` command in the same directory the `Makefile` is located in.
@@ -58,3 +59,6 @@ We have also added a `Packet` class that allows to pack the data from the user a
 
 ## Makefile && Folder Structure Change
 The Makefile was made to export two executables `client.out` and `server.out`. That allows us to have two compilation units we can run. The folder structure was changed to also add a _network_ folder that stores our Socket and Socket related files.
+
+# Ex4 - User Interface && Multithreading
+
