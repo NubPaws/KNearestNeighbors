@@ -8,19 +8,9 @@
 class Command {
 private:
 	std::string description;
-	DefaultIO *dio;
-	
+	DefaultIO& dio;
 public:
-	Command();
-	Command(std::string desc, DefaultIO *io);
-	
-	Command(const Command& command) = delete;
-	Command& operator=(const Command& command) = delete;
-	
-	Command(Command&& command) = delete;
-	Command& operator=(Command&& command) = delete;
-	
-	virtual ~Command();
+	Command(const std::string& desc, DefaultIO& io);
 	
 	virtual void execute() = 0;
 	
