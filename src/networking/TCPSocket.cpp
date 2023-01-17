@@ -16,10 +16,7 @@ std::string DATA_SENDING_ERROR = "Error sending data";
 TCPSocket::TCPSocket(int port, std::string ip_address) {
     this->port = port;
     this->ip_address = ip_address;
-}
-
-void TCPSocket::initSocket() {
-    this->socketFileDescriptor = socket(AF_INET, SOCK_STREAM, 0);
+	this->socketFileDescriptor = socket(AF_INET, SOCK_STREAM, 0);
     if (this->socketFileDescriptor < 0) {
 		std::cerr << SOCKET_CREATION_ERROR << std::endl;
         throw std::runtime_error(SOCKET_CREATION_ERROR);
@@ -30,31 +27,35 @@ void TCPSocket::initSocket() {
 	this->socketAddress.sin_port = htons(this->port);
 }
 
+TCPSocket::TCPSocket(int socketFileDescriptor) {
+	this->socketFileDescriptor = socketFileDescriptor;
+}
+
 void TCPSocket::closeSocket() {
     close(this->socketFileDescriptor);
 }
 
-void TCPSocket::sendPacket(int sockfd, const Socket::Packet& packet) {
+void TCPSocket::sendPacket(const Socket::Packet& packet) {
 	int sentBytes;
 	size_t size = Socket::toNetwork(packet.size());
 	// First send the size of the packet.
-	sentBytes = send(sockfd, (byte*)&size, sizeof(size_t), 0);
+	sentBytes = send(this->socketFileDescriptor, (byte*)&size, sizeof(size_t), 0);
 	if (sentBytes < sizeof(size_t)) {
 		throw std::runtime_error(DATA_SENDING_ERROR);
 	}
 	
 	// Then send the actual data.
-	sentBytes = send(sockfd, packet.getData(), packet.size(), 0);
+	sentBytes = send(this->socketFileDescriptor, packet.getData(), packet.size(), 0);
 	if (sentBytes < packet.size()) {
 		throw std::runtime_error(DATA_SENDING_ERROR);
 	}
 }
 
-Socket::Packet TCPSocket::recvPacket(int sockfd) {
+Socket::Packet TCPSocket::recvPacket() {
 	int status;
 	
 	size_t size;
-	status = recv(sockfd, (byte*)&size, sizeof(size_t), 0);
+	status = recv(this->socketFileDescriptor, (byte*)&size, sizeof(size_t), 0);
 	
 	if (status < 0)
 		return Socket::Packet(false);
@@ -64,7 +65,7 @@ Socket::Packet TCPSocket::recvPacket(int sockfd) {
 	size = Socket::toClient(size);
 	
 	byte *data = new byte[size];
-	status = recv(sockfd, data, size, 0);
+	status = recv(this->socketFileDescriptor, data, size, 0);
 	
 	if (status < 0)
 		return Socket::Packet(false);
@@ -75,4 +76,8 @@ Socket::Packet TCPSocket::recvPacket(int sockfd) {
 	
 	delete[] data;
 	return packet;
+}
+
+bool TCPSocket::isValidSocket() {
+	return this->socketFileDescriptor != -1;
 }

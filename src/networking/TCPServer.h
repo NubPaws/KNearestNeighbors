@@ -28,31 +28,12 @@ namespace Socket
         /**
          * @brief Accepts incoming connection
          *
-         * @return client socket file descriptor.
+         * @return client socket.
          */
-        int acceptConnection();
-        /**
-         * @brief Sending data to client
-         *
-         * @param clientSocket
-         * @param data
-         * @return int
-         */
-        void sendData(int clientSocket, Socket::Packet packet);
-        /**
-         * @brief Receives data from client
-         *
-         * @param clientSocket
-         * @return Socket::Packet with it being invalid if the connection failed.
-         */
-        Socket::Packet receiveData(int clientSocket);
+        TCPSocket acceptConnection();
         /**
          * @brief handles client requests.
          */
-        /**
-         * Closing client socket.
-        */
-        void closeClientConnection(int clientSocket);
     };   
 }
 

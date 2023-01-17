@@ -2,6 +2,9 @@
 #define _TCP_SOCKET_H
 
 #include <netinet/in.h>
+#include <string>
+
+#include "Packet.h"
 
 namespace Socket {
 class TCPSocket {
@@ -19,26 +22,28 @@ class TCPSocket {
          * @param ip_address
          */
         TCPSocket(int port, std::string ip_address);
+
         /**
-         * @brief initialize socket.
+         * @brief Construct a new TCPSocket object based on existing file descriptor
+         * @param socketFileDescriptor
          */
-        void initSocket();
+        TCPSocket(int socketFileDescriptor);
         
         /**
          * @brief closing TCP socket.
          */
         void closeSocket();
-    protected:
         /**
          * @brief Sends a Socket::Packet over a socket file descriptor.
         */
-        void sendPacket(int sockfd, const Socket::Packet& packet);
+        void sendPacket(const Socket::Packet& packet);
         /**
          * @brief Receives a Socket::Packet from a file descriptor.
          * 
          * @return Socket::Packet with the data that was received.
         */
-        Socket::Packet recvPacket(int sockfd);
+        Socket::Packet recvPacket();
+        bool isValidSocket();
     };
 }
 

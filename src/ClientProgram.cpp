@@ -111,7 +111,6 @@ int main(int argc, const char *argv[]) {
 	// Initialize the client socket to do the connection.
 	TCPClient tcpClient(port, ip);
 	try {
-		tcpClient.initSocket();
 		tcpClient.connectToServer();
 	}
 	catch (...) {
@@ -132,10 +131,10 @@ int main(int argc, const char *argv[]) {
 		
 		// Generate the data and send it to the server.
 		Socket::Packet packet = generatePacket(line);
-		tcpClient.sendData(packet);
+		tcpClient.sendPacket(packet);
 		
 		// Receive the data back from the server.
-		packet = tcpClient.receiveData();
+		packet = tcpClient.recvPacket();
 		if (packet.isValid() && packet.size() == 0) {
 			std::cout << "The connection to the server was closed!" << std::endl;
 			keepSending = false;
