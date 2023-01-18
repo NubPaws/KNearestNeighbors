@@ -11,6 +11,7 @@ class KNearestNeighbors {
 private:
 	VectorDataSet dataset;
 	VectorDistance::Calculator distance;
+	size_t k;
 public:
 	/**
 	 * @brief Construct a new KNearestNeighbors object
@@ -18,7 +19,7 @@ public:
 	 * @param dataset A VectorDataSet containing the vectors to use as our knowledge.
 	 * @param distType The distance calculation type to use.
 	 */
-	KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType);
+	KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType, const size_t k);
 	
 	/**
 	 * @brief Finds the most probably type of the item that was given.
@@ -28,7 +29,7 @@ public:
 	 * @param k How deep to do the search.
 	 * @return std::string The name of what the item is like.
 	 */
-	std::string find(const Vector& item, const size_t k);
+	std::string find(const Vector& item);
 	
 	/**
 	 * @brief Set the distance calculation method.
@@ -36,6 +37,10 @@ public:
 	 * @param distType The type to set against.
 	 */
 	void setDistanceType(VectorDistance::Calculator::Type distType);
+	
+	int getK() const;
+	
+	std::string getMetric() const;
 private:
 	/**
 	 * @brief Sets the dataset to store all the closest vectors to be at the

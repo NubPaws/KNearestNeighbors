@@ -18,7 +18,7 @@ VectorDataSet::VectorDataSet(const std::string &filename)
 		line.pop_back();
 		
 		for (size_t i = 0; i < line.size(); i++) {
-			if (StringValidator::isDouble(line[i])) {
+			if (Utils::isDouble(line[i])) {
 				entry.first.push_back(std::stod(line[i]));
 			} else {
 				std::cout << "Problem with the format of the file in line "

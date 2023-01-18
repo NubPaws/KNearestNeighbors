@@ -88,6 +88,8 @@ namespace VectorDistance {
 		 */
 		void set(const Type& type, const int& p = 2);
 		
+		std::string getMetric() const;
+		
 		/**
 		 * @brief Operator to make the Calculator be callable as a function.
 		 * 

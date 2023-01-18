@@ -26,11 +26,11 @@ double CommandLineArguments::getDouble(const size_t& index) const {
 }
 
 bool CommandLineArguments::isInt(const size_t& index) const {
-	return index < args.size() && StringValidator::isInt(args[index]);
+	return index < args.size() && Utils::isInt(args[index]);
 }
 
 bool CommandLineArguments::isDouble(const size_t& index) const {
-	return index < args.size() && StringValidator::isDouble(args[index]);
+	return index < args.size() && Utils::isDouble(args[index]);
 }
 
 size_t CommandLineArguments::size() const {
