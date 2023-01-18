@@ -17,21 +17,3 @@ void TCPClient::connectToServer() {
 		throw std::runtime_error(SOCKET_CONNECT_ERROR);
 	}
 }
-
-void TCPClient::sendData(const Socket::Packet& packet) {
-    try {
-        sendPacket(socketFileDescriptor, packet);
-    }
-    catch (std::exception exception) {
-        throw exception;
-    }
-}
-
-Socket::Packet TCPClient::receiveData() {
-	Socket::Packet packet = recvPacket(socketFileDescriptor);
-	
-	if (!packet.isValid()) {
-		std::cerr << strerror(errno) << std::endl;
-	}
-	return packet;
-}

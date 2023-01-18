@@ -11,6 +11,7 @@
 #include "VectorDataSet.h"
 #include "KNearestNeighbors.h"
 #include "Packet.h"
+#include "DefaultIO.h"
 
 using Socket::TCPServer;
 
@@ -29,7 +30,7 @@ int main(int argc, char const *argv[]) {
 	// Setting up server
 	TCPServer tcpServer(args.getInt(portIndex), "127.0.0.1", 5);
 	try {
-		tcpServer.initSocket();
+		
 		tcpServer.bindSocket();
 		tcpServer.listenForConnections();
 	}
@@ -46,9 +47,10 @@ int main(int argc, char const *argv[]) {
 	KNearestNeighbors knn(vds, Calculator::Type::Empty);
 	
 	// Start accepting connections.
-	int clientSocket = tcpServer.acceptConnection();
-	while (clientSocket != -1) {
-		Socket::Packet packet = tcpServer.receiveData(clientSocket);
+	TCPSocket clientSocket = tcpServer.acceptConnection();
+	while (clientSocket.isValidSocket()) {
+		SocketIO clientIO(clientSocket);
+		Socket::Packet packet = clientIO.read();
 		
 		/**
 		 * Iterate over the open connections. Keep reading from the same connection
@@ -74,7 +76,7 @@ int main(int argc, char const *argv[]) {
 			
 			// As long as the vector is valid.
 			if (vec.size() != vds.width() || vec.size() == 0) {
-				tcpServer.sendData(clientSocket, Socket::Packet("invalid input"));
+				clientIO.write("invalid input");
 				continue;
 			}
 			
@@ -82,17 +84,17 @@ int main(int argc, char const *argv[]) {
 			std::string vectorClass = knn.find(vec, k);
 			
 			// Tell the user.
-			tcpServer.sendData(clientSocket, Socket::Packet(vectorClass));
+			clientIO.write(vectorClass);
 			
 			// Read the next vector.
-			packet = tcpServer.receiveData(clientSocket);
+			packet = clientIO.read();
 		}
 		
 		if (!packet.isValid())
 			std::cerr << "Failed to receive data from the client." << std::endl;
 		
 		// Close the current connection and open up another one.
-		tcpServer.closeClientConnection(clientSocket);
+		clientSocket.closeSocket();
 		clientSocket = tcpServer.acceptConnection();
 	}
 	

@@ -29,33 +29,13 @@ void TCPServer::listenForConnections() {
 	}
 }
 
-int TCPServer::acceptConnection() {
+TCPSocket TCPServer::acceptConnection() {
 	struct sockaddr_in clientAddress;
 	unsigned int addressLength = sizeof(clientAddress);
 	int clientSocket = accept(this->socketFileDescriptor, (struct sockaddr*)&clientAddress, &addressLength);
 	if (clientSocket < 0) {
 		throw std::runtime_error(SOCKET_ACCEPT_ERROR);
 	}
-	return clientSocket;
-}
-
-void TCPServer::sendData(int clientSocket, Socket::Packet packet) {
-	try {
-		sendPacket(clientSocket, packet);
-	}
-	catch (std::exception exception) {
-		throw exception;
-	}
-}
-
-Socket::Packet TCPServer::receiveData(int clientSocket) {
-	Socket::Packet packet = recvPacket(clientSocket);
-	
-	if (!packet.isValid())
-		std::cerr << strerror(errno) << std::endl;
-	return packet;
-}
-
-void TCPServer::closeClientConnection(int clientSocket) {
-	close(clientSocket);
+	TCPSocket client(clientSocket);
+	return client;
 }
