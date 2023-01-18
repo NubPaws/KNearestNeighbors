@@ -8,7 +8,8 @@
 class Command {
 private:
 	std::string description;
-	DefaultIO& dio;
+protected:
+	DefaultIO &io;
 public:
 	Command(const std::string& desc, DefaultIO& io);
 	

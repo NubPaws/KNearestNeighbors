@@ -32,6 +32,7 @@ namespace Socket {
 		 * @param line The line of data to be packed.
 		*/
 		Packet(const std::string& line);
+		Packet(const char *str);
 		/**
 		 * @brief Initializes a packet with the array of bytes given to it.
 		 * 

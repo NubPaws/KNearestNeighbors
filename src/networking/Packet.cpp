@@ -16,6 +16,16 @@ namespace Socket {
 		
 	}
 	
+	Packet::Packet(const char *str)
+		: valid(true), data() {
+		std::string line = str;
+		
+		const char *rPtr = line.c_str();
+		
+		data.reserve(line.size());
+		data.insert(data.end(), rPtr, rPtr + line.size());
+	}
+	
 	Packet::Packet(const std::string& line)
 		: valid(true), data() {
 		

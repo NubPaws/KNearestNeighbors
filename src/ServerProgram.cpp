@@ -14,6 +14,18 @@
 
 using Socket::TCPServer;
 
+Socket::Packet getWelcomeScreenMessage() {
+	return Socket::Packet(
+		"Welcome to the KNN Classifier Server. Please choose an option:\n"
+		"1. upload an unclassified csv data file\n"
+		"2. algorithm settings\n"
+		"3. classify data\n"
+		"4. display results\n"
+		"5. download results\n"
+		"8. exit\n"
+	);
+}
+
 int main(int argc, char const *argv[]) {
 	CommandLineArguments args(argc, argv);
 	
@@ -43,11 +55,13 @@ int main(int argc, char const *argv[]) {
 	
 	// Set up the KNN algorithm and load the file.
 	VectorDataSet vds(args[fileIndex]);
-	KNearestNeighbors knn(vds, Calculator::Type::Empty);
+	KNearestNeighbors knn(vds, Calculator::Type::Empty, 5);
 	
 	// Start accepting connections.
 	int clientSocket = tcpServer.acceptConnection();
 	while (clientSocket != -1) {
+		tcpServer.sendData(clientSocket, getWelcomeScreenMessage());
+		
 		Socket::Packet packet = tcpServer.receiveData(clientSocket);
 		
 		/**
@@ -79,7 +93,7 @@ int main(int argc, char const *argv[]) {
 			}
 			
 			// Calculate the KNN.
-			std::string vectorClass = knn.find(vec, k);
+			std::string vectorClass = knn.find(vec);
 			
 			// Tell the user.
 			tcpServer.sendData(clientSocket, Socket::Packet(vectorClass));

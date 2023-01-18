@@ -7,12 +7,12 @@
 #include "VectorDataSet.h"
 #include "Types.h"
 
-KNearestNeighbors::KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType)
-	: dataset(dataset), distance(distType) {
+KNearestNeighbors::KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType, const size_t k)
+	: dataset(dataset), distance(distType), k(k) {
 	
 }
 
-std::string KNearestNeighbors::find(const Vector& item, const size_t k) {
+std::string KNearestNeighbors::find(const Vector& item) {
 	findClosestK(item, k);
 	
 	const size_t len = (k >= dataset.size()) ? dataset.size() : k;
@@ -88,4 +88,12 @@ size_t KNearestNeighbors::findMaxDistanceIndex(const Vector& distances, size_t i
 		}
 	}
 	return maxIndex;
+}
+
+int KNearestNeighbors::getK() const {
+	return k;
+}
+
+std::string KNearestNeighbors::getMetric() const {
+	return distance.getMetric();
 }

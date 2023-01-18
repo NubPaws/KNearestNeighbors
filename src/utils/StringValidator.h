@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace StringValidator {
+namespace Utils {
 	/**
 	 * @brief Checks if a string can be converted to a double.
 	 * 

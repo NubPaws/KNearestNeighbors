@@ -84,6 +84,12 @@ namespace VectorDistance {
 		}
 	}
 	
+	std::string Calculator::getMetric() const {
+		if (type == Type::Empty)
+			return "";
+		return TYPES[(size_t)type];
+	}
+	
 	double Calculator::operator()(const Vector& v1, const Vector& v2) const {
 		if (!distCalc)
 			return -1;

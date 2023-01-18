@@ -47,7 +47,7 @@ static bool isInputValid(std::vector<std::string> line) {
 		return false;
 	}
 	
-	if (!StringValidator::isInt(line[line.size() - 1]))
+	if (!Utils::isInt(line[line.size() - 1]))
 		return false;
 	
 	using VectorDistance::Calculator;
@@ -56,7 +56,7 @@ static bool isInputValid(std::vector<std::string> line) {
 		return false;
 	
 	for (int i = 0; i < line.size() - 2; i++)
-		if (!StringValidator::isDouble(line[i]))
+		if (!Utils::isDouble(line[i]))
 			return false;
 	
 	return true;
@@ -118,38 +118,7 @@ int main(int argc, const char *argv[]) {
 		std::cerr << FAILED_SERVER_CONNECTION << std::endl;
 	}
 	
-	bool keepSending = true;
-	std::vector<std::string> line;
-	
-	while (keepSending) {
-		line = readLineAsVector();
-		if (!isInputValid(line)) {
-			std::cout << "invalid input" << std::endl;
-			continue;
-		}
-		if (line.size() == 1 && line[0] == "-1")
-			break;
-		
-		// Generate the data and send it to the server.
-		Socket::Packet packet = generatePacket(line);
-		tcpClient.sendData(packet);
-		
-		// Receive the data back from the server.
-		packet = tcpClient.receiveData();
-		if (packet.isValid() && packet.size() == 0) {
-			std::cout << "The connection to the server was closed!" << std::endl;
-			keepSending = false;
-			continue;
-		}
-		
-		if (!packet.isValid()) {
-			std::cerr << "Failed to receive data from the server." << std::endl;
-			continue;
-		}
-		
-		// Output to the screen the data from the server.
-		std::cout << packet.toString() << std::endl;
-	}
+	std::cout << tcpClient.receiveData().toString();
 	
 	// When all's said and done, close the connection.
 	tcpClient.closeSocket();

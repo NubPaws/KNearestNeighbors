@@ -1,6 +1,6 @@
 #include "StringValidator.h"
 
-bool StringValidator::isDouble(const std::string& str) {
+bool Utils::isDouble(const std::string& str) {
 	if (str.length() == 0)
 		return false;
 	
@@ -37,7 +37,7 @@ bool StringValidator::isDouble(const std::string& str) {
 	return str.length() != (isNegative + hasDecimal + isExponent);
 }
 
-bool StringValidator::isInt(const std::string& str) {
+bool Utils::isInt(const std::string& str) {
 	if (str.length() == 0)
 		return false;
 	
