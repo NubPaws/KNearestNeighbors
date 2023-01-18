@@ -11,6 +11,7 @@
 #include "VectorDataSet.h"
 #include "KNearestNeighbors.h"
 #include "Packet.h"
+#include "DefaultIO.h"
 
 using Socket::TCPServer;
 
@@ -48,7 +49,8 @@ int main(int argc, char const *argv[]) {
 	// Start accepting connections.
 	TCPSocket clientSocket = tcpServer.acceptConnection();
 	while (clientSocket.isValidSocket()) {
-		Socket::Packet packet = clientSocket.recvPacket();
+		SocketIO clientIO(clientSocket);
+		Socket::Packet packet = clientIO.read();
 		
 		/**
 		 * Iterate over the open connections. Keep reading from the same connection
@@ -74,7 +76,7 @@ int main(int argc, char const *argv[]) {
 			
 			// As long as the vector is valid.
 			if (vec.size() != vds.width() || vec.size() == 0) {
-				clientSocket.sendPacket(Socket::Packet("invalid input"));
+				clientIO.write("invalid input");
 				continue;
 			}
 			
@@ -82,10 +84,10 @@ int main(int argc, char const *argv[]) {
 			std::string vectorClass = knn.find(vec, k);
 			
 			// Tell the user.
-			clientSocket.sendPacket(Socket::Packet(vectorClass));
+			clientIO.write(vectorClass);
 			
 			// Read the next vector.
-			packet = clientSocket.recvPacket();
+			packet = clientIO.read();
 		}
 		
 		if (!packet.isValid())
