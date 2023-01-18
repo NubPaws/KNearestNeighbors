@@ -111,7 +111,6 @@ int main(int argc, const char *argv[]) {
 	// Initialize the client socket to do the connection.
 	TCPClient tcpClient(port, ip);
 	try {
-		tcpClient.initSocket();
 		tcpClient.connectToServer();
 	}
 	catch (...) {
