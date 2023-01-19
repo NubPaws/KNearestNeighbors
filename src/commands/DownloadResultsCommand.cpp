@@ -1,13 +1,15 @@
-#include "DisplayResultCommand.h"
+#include "DownloadResultsCommand.h"
 
 #include <sstream>
 
-DisplayResultCommand::DisplayResultCommand(DefaultIO& io, const VectorDataSet& dataset)
-	: Command("Displays the results of the classification.", io), dataset(dataset) {
+const std::string DownloadResultsCommand::START_FILE_WRITER_SYMBOL = "/-\\";
+
+DownloadResultsCommand::DownloadResultsCommand(DefaultIO& io, const VectorDataSet& dataset)
+	: Command("Downloads the results of the classification.", io), dataset(dataset) {
 	
 }
 
-void DisplayResultCommand::execute() {
+void DownloadResultsCommand::execute() {
 	if (dataset.size() == 0) {
 		io.write("please upload data\n");
 		return;
@@ -16,6 +18,8 @@ void DisplayResultCommand::execute() {
 		io.write("please classify the data\n");
 		return;
 	}
+	
+	io.write(START_FILE_WRITER_SYMBOL);
 	
 	std::stringstream ss;
 	for (size_t i = 0; i < dataset.size(); i++) {
