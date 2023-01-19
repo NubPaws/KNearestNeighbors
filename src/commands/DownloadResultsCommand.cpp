@@ -25,7 +25,8 @@ void DownloadResultsCommand::execute() {
 	for (size_t i = 0; i < dataset.size(); i++) {
 		ss << i + 1 << "\t" << dataset[i].second << "\n";
 		io->write(ss.str());
-		ss.clear();
+		ss.str(std::string());
 	}
 	io->write("Done.\n");
+	io->write(Command::DONE_WRITING_SYMBOL);
 }

@@ -7,8 +7,6 @@
 #include "VectorDataSet.h"
 #include "Types.h"
 
-using CalcType = VectorDistance::Calculator::Type;
-
 // Default values given by the assignment.
 KNearestNeighbors::KNearestNeighbors()
 	: dataset(), distance(CalcType::Euclidean), k(5) {
@@ -108,6 +106,10 @@ void KNearestNeighbors::setK(size_t k) {
 
 std::string KNearestNeighbors::getMetric() const {
 	return distance.getMetric();
+}
+
+void KNearestNeighbors::setDataSet(VectorDataSet dataset) {
+	dataset = dataset;
 }
 
 bool KNearestNeighbors::isValidDataSet() const {

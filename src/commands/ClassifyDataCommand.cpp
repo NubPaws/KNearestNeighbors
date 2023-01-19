@@ -1,13 +1,13 @@
 #include "ClassifyDataCommand.h"
 
-ClassifyData::ClassifyData(DefaultIO* io, KNearestNeighbors& knn, VectorDataSet& train)
+ClassifyDataCommand::ClassifyDataCommand(DefaultIO* io, KNearestNeighbors& knn, VectorDataSet& train)
 	: Command("Classifies the vector data set.", io), knn(knn), train(train) {
 	
 }
 
-void ClassifyData::execute() {
-	if (knn.isValidDataSet()) {
-		io->write("please upload data");
+void ClassifyDataCommand::execute() {
+	if (!knn.isValidDataSet()) {
+		io->write("please upload data\n");
 		return;
 	}
 	

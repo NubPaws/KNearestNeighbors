@@ -1,6 +1,8 @@
 #ifndef _DISPLAY_RESULTS_COMMAND
 #define _DISPLAY_RESULTS_COMMAND
 
+#include <string>
+
 #include "Command.h"
 #include "VectorDataSet.h"
 

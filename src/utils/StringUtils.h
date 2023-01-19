@@ -9,5 +9,7 @@
 
 namespace Utils {
 	std::vector<std::string> readLineAsVector(std::string line);
+	
+	std::string trimWhiteSpace(std::string str);
 }
 #endif // _STRING_UTILS_H

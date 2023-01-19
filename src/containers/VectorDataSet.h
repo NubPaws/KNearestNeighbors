@@ -14,7 +14,7 @@ private:
 public:
 	VectorDataSet();
 	
-	VectorDataSet(const std::string& filename);
+	VectorDataSet(const std::string& filename, bool isClassified = true);
 	
 	size_t width() const;
 	
@@ -22,9 +22,11 @@ public:
 	
 	void swap(const size_t& i, const size_t& j);
 	
+	
 	void setEntryType(const size_t& i, const std::string& type);
 	
 	const DataEntry& operator[](size_t index) const;
+	
 };
 
 #endif // _VECTOR_DATA_SET_H

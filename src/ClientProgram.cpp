@@ -9,6 +9,7 @@
 #include "VectorDistance.h"
 #include "StringValidator.h"
 #include "Packet.h"
+#include "CommandClasses.h"
 
 using Socket::TCPClient;
 
@@ -91,7 +92,7 @@ static Socket::Packet generatePacket(std::vector<std::string>& line) {
 	return Socket::Packet(out.str());
 }
 
-void optionAlgorithmSettings(Socket::TCPClient client) {
+void optionAlgorithmSettings(Socket::TCPClient& client) {
 	client.sendPacket("2");
 	
 	std::cout << client.recvPacket().toString();
@@ -151,9 +152,19 @@ int main(int argc, const char *argv[]) {
 			optionAlgorithmSettings(tcpClient);
 			break;
 		case 3:
+			tcpClient.sendPacket(input);
+			std::cout << tcpClient.recvPacket().toString();
 			break;
-		case 4:
+		case 4: {
+			tcpClient.sendPacket(input);
+			
+			input = tcpClient.recvPacket().toString();
+			while (input != Command::DONE_WRITING_SYMBOL) {
+				std::cout << input;
+				input = tcpClient.recvPacket().toString();
+			}
 			break;
+		}
 		case 5:
 			break;
 		case 8:

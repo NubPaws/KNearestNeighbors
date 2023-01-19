@@ -8,6 +8,7 @@
 #include "Types.h"
 
 class KNearestNeighbors {
+	using CalcType = VectorDistance::Calculator::Type;
 private:
 	VectorDataSet dataset;
 	VectorDistance::Calculator distance;
@@ -25,7 +26,7 @@ public:
 	 * @param dataset A VectorDataSet containing the vectors to use as our knowledge.
 	 * @param distType The distance calculation type to use.
 	 */
-	KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType, const size_t k);
+	KNearestNeighbors(VectorDataSet dataset, CalcType distType, const size_t k);
 	
 	/**
 	 * @brief Finds the most probably type of the item that was given.
@@ -48,6 +49,8 @@ public:
 	void setK(size_t k);
 	
 	std::string getMetric() const;
+	
+	void setDataSet(VectorDataSet dataset);
 	
 	bool isValidDataSet() const;
 private:

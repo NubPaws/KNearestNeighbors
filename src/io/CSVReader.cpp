@@ -4,6 +4,7 @@
 
 #include "CSVReader.h"
 #include "Types.h"
+#include "StringUtils.h"
 
 CSVReader::CSVReader(const std::string& filename)
 	: length(0), in(filename, std::ios::in) {
@@ -14,7 +15,7 @@ CSVReader::CSVReader(const std::string& filename)
 	}
 	
 	loadNextLine();
-	length = line.size(); 
+	length = line.size();
 }
 
 CSVReader::~CSVReader() {
@@ -50,5 +51,6 @@ void CSVReader::loadNextLine() {
 		line.push_back(token);
 		ln.erase(0, pos + delimeter.length());
 	}
+	ln = Utils::trimWhiteSpace(ln);
 	line.push_back(ln);
 }

@@ -30,8 +30,9 @@ std::string getWelcomeScreenMessage() {
 void handleClient(Socket::TCPSocket socket) {
 	DefaultIO *clientIO = new SocketIO(socket);
 	
-	VectorDataSet vds;
-	KNearestNeighbors knn;
+	VectorDataSet train = VectorDataSet("./datasets/iris/iris_Unclassified.csv", false);
+	VectorDataSet tmp("./datasets/iris/iris_classified.csv");
+	KNearestNeighbors knn(tmp, VectorDistance::Calculator::Type::Euclidean, 5);
 	
 	clientIO->write(getWelcomeScreenMessage());
 	
@@ -61,10 +62,16 @@ void handleClient(Socket::TCPSocket socket) {
 			asc.execute();
 			break;
 		}
-		case 3:
+		case 3: {
+			ClassifyDataCommand cdc(clientIO, knn, train);
+			cdc.execute();
 			break;
-		case 4:
+		}
+		case 4: {
+			DisplayResultsCommand drc(clientIO, train);
+			drc.execute();
 			break;
+		}
 		case 5:
 			break;
 		case 8:

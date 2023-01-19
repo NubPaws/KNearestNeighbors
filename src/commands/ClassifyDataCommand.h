@@ -5,7 +5,7 @@
 #include "KNearestNeighbors.h"
 #include "VectorDataSet.h"
 
-class ClassifyData : public Command {
+class ClassifyDataCommand : public Command {
 private:
 	KNearestNeighbors& knn;
 	VectorDataSet& train;
@@ -17,7 +17,7 @@ public:
 	 * @param knn The KNN algorithm
 	 * @param train The dataset uploaded from the user, to be classified.
 	 */
-	ClassifyData(DefaultIO* io, KNearestNeighbors& knn, VectorDataSet& train);
+	ClassifyDataCommand(DefaultIO* io, KNearestNeighbors& knn, VectorDataSet& train);
 	
 	void execute() override;
 };

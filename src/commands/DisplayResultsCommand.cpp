@@ -1,6 +1,6 @@
-#include "DisplayResultsCommand.h"
-
 #include <sstream>
+
+#include "DisplayResultsCommand.h"
 
 DisplayResultsCommand::DisplayResultsCommand(DefaultIO* io, const VectorDataSet& dataset)
 	: Command("Displays the results of the classification.", io), dataset(dataset) {
@@ -21,7 +21,8 @@ void DisplayResultsCommand::execute() {
 	for (size_t i = 0; i < dataset.size(); i++) {
 		ss << i + 1 << "\t" << dataset[i].second << "\n";
 		io->write(ss.str());
-		ss.clear();
+		ss.str(std::string());
 	}
 	io->write("Done.\n");
+	io->write(Command::DONE_WRITING_SYMBOL);
 }

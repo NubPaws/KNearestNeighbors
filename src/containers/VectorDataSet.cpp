@@ -12,21 +12,25 @@ VectorDataSet::VectorDataSet()
 	
 }
 
-VectorDataSet::VectorDataSet(const std::string &filename)
+VectorDataSet::VectorDataSet(const std::string& filename, bool isClassified)
 	: dataset() {
 	CSVReader reader(filename);
 	
 	std::vector<std::string> line = reader.readLine();
 	while (!line.empty()) {
 		DataEntry entry;
-		entry.second = line[line.size() - 1];
-		line.pop_back();
+		if (isClassified) {
+			entry.second = line[line.size() - 1];
+			line.pop_back();
+		} else {
+			entry.second = ""; // Emptry string.
+		}
 		
 		for (size_t i = 0; i < line.size(); i++) {
 			if (Utils::isDouble(line[i])) {
 				entry.first.push_back(std::stod(line[i]));
 			} else {
-				std::cout << "Problem with the format of the file in line "
+				std::cerr << "Problem with the format of the file in line "
 					<< dataset.size() + 1 << "." << std::endl;
 				std::exit(0);
 			}
@@ -43,6 +47,7 @@ VectorDataSet::VectorDataSet(const std::string &filename)
 			std::exit(0);
 		}
 	}
+	
 }
 
 size_t VectorDataSet::width() const {
@@ -64,6 +69,7 @@ void VectorDataSet::swap(const size_t& i, const size_t& j) {
 void VectorDataSet::setEntryType(const size_t& i, const std::string& type) {
 	dataset[i].second = type;
 }
+
 
 const VectorDataSet::DataEntry& VectorDataSet::operator[](size_t index) const {
 	if (index < dataset.size())
