@@ -30,9 +30,9 @@ std::string getWelcomeScreenMessage() {
 void handleClient(Socket::TCPSocket socket) {
 	DefaultIO *clientIO = new SocketIO(socket);
 	
-	VectorDataSet train = VectorDataSet("./datasets/iris/iris_Unclassified.csv", false);
-	VectorDataSet tmp("./datasets/iris/iris_classified.csv");
-	KNearestNeighbors knn(tmp, VectorDistance::Calculator::Type::Euclidean, 5);
+	VectorDataSet train;
+	VectorDataSet test;
+	KNearestNeighbors knn;
 	
 	std::string clientInput;
 	int option = 0;
@@ -55,8 +55,11 @@ void handleClient(Socket::TCPSocket socket) {
 		option = std::stoi(clientInput);
 		
 		switch (option) {
-		case 1:
+		case 1: {
+			UploadFileCommand ufc(clientIO, train, test);
+			ufc.execute();
 			break;
+		}
 		case 2: {
 			AlgorithmSettingsCommand asc(clientIO, knn);
 			asc.execute();

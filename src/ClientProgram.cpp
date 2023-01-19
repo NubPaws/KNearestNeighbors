@@ -151,6 +151,63 @@ int main(int argc, const char *argv[]) {
 		
 		switch (option) {
 		case 1: {
+			// Send the number to server to start the command.
+			tcpClient.sendPacket(input);
+			std::string path;
+			
+			// Read the message, to upload the first file, from the server.
+			std::cout << tcpClient.recvPacket().toString();
+			// Read the path of the file.
+			std::getline(std::cin, path);
+			
+			std::ifstream inFile;
+			// Open the file.
+			inFile.open(path);
+			
+			// Check that the file has opened successfully.
+			if (!inFile.is_open()) {
+				std::cout << "invalid file\n";
+				break;
+			}
+			
+			std::stringstream buffer;
+			// Read the entire file into a buffer.
+			buffer << inFile.rdbuf();
+			// Close the file.
+			inFile.close();
+			
+			// Send the data from the file to the server.
+			tcpClient.sendPacket(buffer.str());
+			// Clear the buffer.
+			buffer.str(std::string());
+			// Receive the "upload done" message from the server.
+			std::cout << tcpClient.recvPacket().toString();
+			
+			// Read the message, to upload the second (test) file, from the server.
+			std::cout << tcpClient.recvPacket().toString();
+			
+			// Read the path for the second file.
+			std::getline(std::cin, path);
+			// Open the second file.
+			inFile.open(path);
+			
+			// Check that the file is valid.
+			if (!inFile.is_open()) {
+				std::cout << "invalid file\n";
+				break;
+			}
+			
+			// Read the entire data from the file to the buffer.
+			buffer << inFile.rdbuf();
+			// Close the file.
+			inFile.close();
+			
+			// Send the second file to the server.
+			tcpClient.sendPacket(buffer.str());
+			// Clear the buffer.
+			buffer.str(std::string());
+			// Receive the "upload done" message from the server.
+			std::cout << tcpClient.recvPacket().toString();
 			
 			break;
 		}

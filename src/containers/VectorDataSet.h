@@ -2,6 +2,7 @@
 #define _VECTOR_DATA_SET_H
 
 #include <string>
+#include <sstream>
 #include <vector>
 
 #include "Types.h"
@@ -14,7 +15,7 @@ private:
 public:
 	VectorDataSet();
 	
-	VectorDataSet(const std::string& filename, bool isClassified = true);
+	VectorDataSet(std::stringstream& buffer, bool isClassified = true);
 	
 	size_t width() const;
 	

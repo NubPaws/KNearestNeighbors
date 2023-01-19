@@ -6,19 +6,22 @@
 #include "VectorDataSet.h"
 #include "StringValidator.h"
 #include "CSVReader.h"
+#include "StringUtils.h"
 
 VectorDataSet::VectorDataSet()
 	: dataset() {
 	
 }
 
-VectorDataSet::VectorDataSet(const std::string& filename, bool isClassified)
+VectorDataSet::VectorDataSet(std::stringstream& buffer, bool isClassified)
 	: dataset() {
-	CSVReader reader(filename);
 	
-	std::vector<std::string> line = reader.readLine();
+	std::string ln;
+	std::getline(buffer, ln);
+	std::vector<std::string> line = Utils::seperate(ln, ",");
 	while (!line.empty()) {
 		DataEntry entry;
+		
 		if (isClassified) {
 			entry.second = line[line.size() - 1];
 			line.pop_back();
@@ -37,7 +40,8 @@ VectorDataSet::VectorDataSet(const std::string& filename, bool isClassified)
 		}
 		
 		dataset.push_back(entry);
-		line = reader.readLine();
+		std::getline(buffer, ln);
+		line = Utils::seperate(ln, ",");
 	}
 	
 	for (size_t i = 1; i < dataset.size(); i++) {

@@ -34,7 +34,7 @@ namespace Utils {
 	
 	std::vector<std::string> seperate(std::string& str, const std::string& sep) {
 		std::vector<std::string> line;
-		size_t pos;
+		size_t pos = 0;
 		std::string token;
 		while ((pos = str.find(sep)) != std::string::npos) {
 			token = str.substr(0, pos);
@@ -43,6 +43,7 @@ namespace Utils {
 		}
 		str = trimWhiteSpace(str);
 		line.push_back(str);
+		
 		return line;
 	}
 	
