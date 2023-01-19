@@ -7,10 +7,13 @@ To compile the code run the following command.<br/>
 Running the code on linux you should have an `./a.out` that you can run, on windows an `./a.exe`.
 
 ## Exercise 2 - K Nearest Neighbors
-The exercise can be found on the [branch named ex2](https://github.com/NubPaws/AdvancedProgramming/tree/ex2)
+The exercise can be found on the [branch named ex2](https://github.com/NubPaws/AdvancedProgramming/tree/ex2).
 
 ## Exercise 3 - Networking
-The exercise can be found on the [branch named ex3](https://github.com/NubPaws/AdvancedProgramming/tree/ex3)
+The exercise can be found on the [branch named ex3](https://github.com/NubPaws/AdvancedProgramming/tree/ex3).
+
+## Exercise 4 - Multithreading
+The exercise can be found on the [branch named ex4](https://github.com/NubPaws/AdvancedProgramming/tree/ex4).
 
 ## Exercise 1 - Vector Distance Calculation
 All distance calculation algorithms were placed under the namespace VectorDistanceCalculator. Each algorithm receives at least two `const std::vector<double>&` to do the calculations on. Each function uses the minimum of the two sizes of the vectors to run the calculations on - this is done to make sure that there is no index out of bounds.
