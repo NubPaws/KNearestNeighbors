@@ -102,7 +102,11 @@ void optionAlgorithmSettings(Socket::TCPClient& client) {
 	client.sendPacket(line);
 }
 
+#include "SocketConversion.h"
+
 int main(int argc, const char *argv[]) {
+	std::cout << Socket::toClient(Socket::toNetwork(257)) << std::endl;
+	
 	// Load the command line arguments and validate the data.
 	CommandLineArguments args(argc, argv);
 	
@@ -157,12 +161,7 @@ int main(int argc, const char *argv[]) {
 			break;
 		case 4: {
 			tcpClient.sendPacket(input);
-			
-			input = tcpClient.recvPacket().toString();
-			while (input != Command::DONE_WRITING_SYMBOL) {
-				std::cout << input;
-				input = tcpClient.recvPacket().toString();
-			}
+			std::cout << tcpClient.recvPacket().toString();
 			break;
 		}
 		case 5:

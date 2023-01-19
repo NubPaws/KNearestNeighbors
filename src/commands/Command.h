@@ -6,8 +6,6 @@
 #include "DefaultIO.h"
 
 class Command {
-public:
-	static const std::string DONE_WRITING_SYMBOL;
 private:
 	std::string description;
 protected:

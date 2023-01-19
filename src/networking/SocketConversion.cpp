@@ -16,11 +16,12 @@ namespace Socket {
 			return host;
 		
 		size_t result = 0;
-		byte *b = (byte*)&host;
+		byte *b1 = (byte*)&host;
+		byte *b2 = (byte*)&result;
 		const size_t s = sizeof(size_t);
 		
 		for (size_t i = 0; i < s; i++) {
-			result |= (b[i] << (sizeof(byte) * i));
+			b2[i] = b1[s - i - 1];
 		}
 		
 		return result;

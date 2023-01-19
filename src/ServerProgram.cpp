@@ -72,7 +72,9 @@ void handleClient(Socket::TCPSocket socket) {
 			drc.execute();
 			break;
 		}
-		case 5:
+		case 5: {
+			
+		}
 			break;
 		case 8:
 			break;

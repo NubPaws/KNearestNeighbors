@@ -45,9 +45,12 @@ void TCPSocket::sendPacket(const Socket::Packet& packet) {
 	}
 	
 	// Then send the actual data.
-	sentBytes = send(this->socketFileDescriptor, packet.getData(), packet.size(), 0);
-	if (sentBytes < packet.size()) {
-		throw std::runtime_error(DATA_SENDING_ERROR);
+	size_t offset = 0;
+	while (offset < packet.size()) {
+		sentBytes = send(this->socketFileDescriptor, packet.getData() + offset, packet.size() - offset, 0);
+		if (sentBytes < 0)
+			throw std::runtime_error(DATA_SENDING_ERROR);
+		offset += sentBytes;
 	}
 }
 
@@ -65,12 +68,14 @@ Socket::Packet TCPSocket::recvPacket() {
 	size = Socket::toClient(size);
 	
 	byte *data = new byte[size];
-	status = recv(this->socketFileDescriptor, data, size, 0);
 	
-	if (status < 0)
-		return Socket::Packet(false);
-	else if (status == 0)
-		return Socket::Packet(true);
+	size_t offset = 0;
+	while (offset < size) {
+		status = recv(this->socketFileDescriptor, data + offset, size - offset, 0);
+		if (status < 0)
+			return Socket::Packet(false);
+		offset += status;
+	}
 	
 	Socket::Packet packet(data, size);
 	

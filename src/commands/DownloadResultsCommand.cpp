@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-const std::string DownloadResultsCommand::START_FILE_WRITER_SYMBOL = "/-\\";
+const std::string DownloadResultsCommand::START_FILE_WRITER_SYMBOL = "/-\\"; // lol
 
 DownloadResultsCommand::DownloadResultsCommand(DefaultIO* io, const VectorDataSet& dataset)
 	: Command("Downloads the results of the classification.", io), dataset(dataset) {
@@ -24,9 +24,6 @@ void DownloadResultsCommand::execute() {
 	std::stringstream ss;
 	for (size_t i = 0; i < dataset.size(); i++) {
 		ss << i + 1 << "\t" << dataset[i].second << "\n";
-		io->write(ss.str());
-		ss.str(std::string());
 	}
-	io->write("Done.\n");
-	io->write(Command::DONE_WRITING_SYMBOL);
+	io->write(ss.str());
 }
