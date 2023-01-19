@@ -7,7 +7,15 @@
 #include "VectorDataSet.h"
 #include "Types.h"
 
-KNearestNeighbors::KNearestNeighbors(VectorDataSet dataset, VectorDistance::Calculator::Type distType, const size_t k)
+using CalcType = VectorDistance::Calculator::Type;
+
+// Default values given by the assignment.
+KNearestNeighbors::KNearestNeighbors()
+	: dataset(), distance(CalcType::Euclidean), k(5) {
+	
+}
+
+KNearestNeighbors::KNearestNeighbors(VectorDataSet dataset, CalcType distType, const size_t k)
 	: dataset(dataset), distance(distType), k(k) {
 	
 }
@@ -38,7 +46,7 @@ std::string KNearestNeighbors::find(const Vector& item) {
 	return result;
 }
 
-void KNearestNeighbors::setDistanceType(VectorDistance::Calculator::Type distType) {
+void KNearestNeighbors::setDistanceType(CalcType distType) {
 	distance.set(distType);
 }
 
@@ -96,4 +104,8 @@ int KNearestNeighbors::getK() const {
 
 std::string KNearestNeighbors::getMetric() const {
 	return distance.getMetric();
+}
+
+bool KNearestNeighbors::isValidDataSet() const {
+	return dataset.size() != 0;
 }

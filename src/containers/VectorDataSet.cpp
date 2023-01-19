@@ -7,6 +7,11 @@
 #include "StringValidator.h"
 #include "CSVReader.h"
 
+VectorDataSet::VectorDataSet()
+	: dataset() {
+	
+}
+
 VectorDataSet::VectorDataSet(const std::string &filename)
 	: dataset() {
 	CSVReader reader(filename);
@@ -54,6 +59,10 @@ void VectorDataSet::swap(const size_t& i, const size_t& j) {
 	DataEntry tmp = dataset[i];
 	dataset[i] = dataset[j];
 	dataset[j] = tmp;
+}
+
+void VectorDataSet::setEntryType(const size_t& i, const std::string& type) {
+	dataset[i].second = type;
 }
 
 const VectorDataSet::DataEntry& VectorDataSet::operator[](size_t index) const {

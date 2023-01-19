@@ -12,6 +12,8 @@ public:
 private:
 	std::vector<DataEntry> dataset;
 public:
+	VectorDataSet();
+	
 	VectorDataSet(const std::string& filename);
 	
 	size_t width() const;
@@ -19,6 +21,8 @@ public:
 	size_t size() const;
 	
 	void swap(const size_t& i, const size_t& j);
+	
+	void setEntryType(const size_t& i, const std::string& type);
 	
 	const DataEntry& operator[](size_t index) const;
 };

@@ -13,6 +13,8 @@ private:
 	VectorDistance::Calculator distance;
 	size_t k;
 public:
+	KNearestNeighbors();
+	
 	/**
 	 * @brief Construct a new KNearestNeighbors object
 	 * 
@@ -41,6 +43,8 @@ public:
 	int getK() const;
 	
 	std::string getMetric() const;
+	
+	bool isValidDataSet() const;
 private:
 	/**
 	 * @brief Sets the dataset to store all the closest vectors to be at the

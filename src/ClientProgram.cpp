@@ -117,7 +117,7 @@ int main(int argc, const char *argv[]) {
 		std::cerr << FAILED_SERVER_CONNECTION << std::endl;
 	}
 	
-	std::cout << tcpClient.receiveData().toString();
+	std::cout << tcpClient.recvPacket().toString();
 	
 	// When all's said and done, close the connection.
 	tcpClient.closeSocket();
