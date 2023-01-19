@@ -22,8 +22,10 @@ void DownloadResultsCommand::execute() {
 	io->write(START_FILE_WRITER_SYMBOL);
 	
 	std::stringstream ss;
-	for (size_t i = 0; i < dataset.size(); i++) {
+	size_t i;
+	for (i = 0; i < dataset.size() - 1; i++) {
 		ss << i + 1 << "\t" << dataset[i].second << "\n";
 	}
+	ss << i + 1 << "\t" << dataset[i].second;
 	io->write(ss.str());
 }

@@ -42,15 +42,5 @@ void CSVReader::loadNextLine() {
 		in.close();
 	}
 	
-	const std::string delimeter = ",";
-	
-	size_t pos;
-	std::string token;
-	while ((pos = ln.find(delimeter)) != std::string::npos) {
-		token = ln.substr(0, pos);
-		line.push_back(token);
-		ln.erase(0, pos + delimeter.length());
-	}
-	ln = Utils::trimWhiteSpace(ln);
-	line.push_back(ln);
+	line = Utils::seperate(ln, ",");
 }

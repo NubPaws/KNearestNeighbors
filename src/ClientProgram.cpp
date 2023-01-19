@@ -1,7 +1,9 @@
 #include <iostream>
+#include <ios>
 #include <vector>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 #include "CommandLineArguments.h"
 #include "Types.h"
@@ -105,8 +107,6 @@ void optionAlgorithmSettings(Socket::TCPClient& client) {
 #include "SocketConversion.h"
 
 int main(int argc, const char *argv[]) {
-	std::cout << Socket::toClient(Socket::toNetwork(257)) << std::endl;
-	
 	// Load the command line arguments and validate the data.
 	CommandLineArguments args(argc, argv);
 	
@@ -133,13 +133,13 @@ int main(int argc, const char *argv[]) {
 		return 0;
 	}
 	
-	// Read the menu from the server.
-	std::cout << tcpClient.recvPacket().toString();
-	
 	std::string input;
 	int option;
 	bool keepSending = true;
 	while (keepSending) {
+		// Read the menu from the server.
+		std::cout << tcpClient.recvPacket().toString();
+		
 		std::getline(std::cin, input);
 		
 		if (!Utils::isInt(input)) {
@@ -150,8 +150,10 @@ int main(int argc, const char *argv[]) {
 		option = std::stoi(input);
 		
 		switch (option) {
-		case 1:
+		case 1: {
+			
 			break;
+		}
 		case 2:
 			optionAlgorithmSettings(tcpClient);
 			break;
@@ -164,8 +166,32 @@ int main(int argc, const char *argv[]) {
 			std::cout << tcpClient.recvPacket().toString();
 			break;
 		}
-		case 5:
+		case 5: {
+			std::string path;
+			std::getline(std::cin, path);
+			
+			std::ofstream out;
+			out.open(path);
+			if (!out.is_open()) {
+				std::cout << "Failed loading the file " << path << std::endl;
+				break;
+			}
+			
+			tcpClient.sendPacket(input);
+			
+			input = tcpClient.recvPacket().toString();
+			if (input != DownloadResultsCommand::START_FILE_WRITER_SYMBOL) {
+				std::cout << input;
+				out.close();
+				break;
+			}
+			
+			Socket::Packet packet = tcpClient.recvPacket();
+			out << packet.toString();
+			out.close();
+			
 			break;
+		}
 		case 8:
 			keepSending = false;
 			break;

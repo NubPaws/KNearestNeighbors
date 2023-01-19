@@ -11,5 +11,8 @@ namespace Utils {
 	std::vector<std::string> readLineAsVector(std::string line);
 	
 	std::string trimWhiteSpace(std::string str);
+	
+	std::vector<std::string> seperate(std::string& str, const std::string& sep);
+	
 }
 #endif // _STRING_UTILS_H

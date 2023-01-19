@@ -34,12 +34,12 @@ void handleClient(Socket::TCPSocket socket) {
 	VectorDataSet tmp("./datasets/iris/iris_classified.csv");
 	KNearestNeighbors knn(tmp, VectorDistance::Calculator::Type::Euclidean, 5);
 	
-	clientIO->write(getWelcomeScreenMessage());
-	
 	std::string clientInput;
 	int option = 0;
 	
 	do {
+		clientIO->write(getWelcomeScreenMessage());
+		
 		clientInput = clientIO->read();
 		
 		if (clientInput == "") {
@@ -73,9 +73,10 @@ void handleClient(Socket::TCPSocket socket) {
 			break;
 		}
 		case 5: {
-			
-		}
+			DownloadResultsCommand drc(clientIO, train);
+			drc.execute();
 			break;
+		}
 		case 8:
 			break;
 		default:
