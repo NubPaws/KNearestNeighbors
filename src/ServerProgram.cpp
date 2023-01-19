@@ -12,30 +12,81 @@
 #include "KNearestNeighbors.h"
 #include "Packet.h"
 #include "DefaultIO.h"
+#include "StringUtils.h"
+#include "CommandClasses.h"
 
 using Socket::TCPServer;
 
-Socket::Packet getWelcomeScreenMessage() {
-	return Socket::Packet(
-		"Welcome to the KNN Classifier Server. Please choose an option:\n"
+std::string getWelcomeScreenMessage() {
+	return "Welcome to the KNN Classifier Server. Please choose an option:\n"
 		"1. upload an unclassified csv data file\n"
 		"2. algorithm settings\n"
 		"3. classify data\n"
 		"4. display results\n"
 		"5. download results\n"
-		"8. exit\n"
-	);
+		"8. exit\n";
+}
+
+void handleClient(Socket::TCPSocket socket) {
+	DefaultIO *clientIO = new SocketIO(socket);
+	
+	VectorDataSet vds;
+	KNearestNeighbors knn;
+	
+	clientIO->write(getWelcomeScreenMessage());
+	
+	std::string clientInput;
+	int option = 0;
+	
+	do {
+		clientInput = clientIO->read();
+		
+		if (clientInput == "") {
+			clientIO->write("invalid packet\n");
+			continue;
+		}
+		
+		if (!Utils::isInt(clientInput)) {
+			clientIO->write("invalid input\n");
+			continue;
+		}
+		
+		option = std::stoi(clientInput);
+		
+		switch (option) {
+		case 1:
+			break;
+		case 2: {
+			AlgorithmSettingsCommand asc(clientIO, knn);
+			asc.execute();
+			break;
+		}
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 8:
+			break;
+		default:
+			clientIO->write("invalid input\n");
+		}
+		
+	} while (option != 8);
+	
+	// Close the current connection and open up another one.
+	socket.closeSocket();
 }
 
 int main(int argc, char const *argv[]) {
 	CommandLineArguments args(argc, argv);
 	
-	const size_t fileIndex = 1;
-	const size_t portIndex = 2;
+	const size_t portIndex = 1;
 	
-	if (args.size() < 2 || !args.isInt(portIndex)) {
+	if (args.size() < 1 || !args.isInt(portIndex)) {
 		std::cout << "Invalid use of the command.\n"
-			<< "Usage: " << args[0] << " [file] [port]" << std::endl;
+			<< "Usage: " << args[0] << " [port]" << std::endl;
 		return 0;
 	}
 	
@@ -54,15 +105,10 @@ int main(int argc, char const *argv[]) {
 	
 	using VectorDistance::Calculator;
 	
-	// Set up the KNN algorithm and load the file.
-	VectorDataSet vds(args[fileIndex]);
-	KNearestNeighbors knn(vds, Calculator::Type::Empty, 5);
-	
 	// Start accepting connections.
 	TCPSocket clientSocket = tcpServer.acceptConnection();
 	while (clientSocket.isValidSocket()) {
-		SocketIO clientIO(clientSocket);
-		Socket::Packet packet = clientIO.read();
+		handleClient(clientSocket);
 		
 		/**
 		 * Iterate over the open connections. Keep reading from the same connection
@@ -70,7 +116,7 @@ int main(int argc, char const *argv[]) {
 		 * If either of those cases are false then we know that the connection
 		 * either closed or some other error has occurred.
 		*/
-		while (packet.isValid() && packet.size() != 0) {
+		/*while (packet.isValid() && packet.size() != 0) {
 			std::vector<std::string> data = packet.toVector();
 			
 			int k = std::stoi(data[data.size() - 1]);
@@ -100,13 +146,9 @@ int main(int argc, char const *argv[]) {
 			
 			// Read the next vector.
 			packet = clientIO.read();
-		}
+		}*/
 		
-		if (!packet.isValid())
-			std::cerr << "Failed to receive data from the client." << std::endl;
 		
-		// Close the current connection and open up another one.
-		clientSocket.closeSocket();
 		clientSocket = tcpServer.acceptConnection();
 	}
 	

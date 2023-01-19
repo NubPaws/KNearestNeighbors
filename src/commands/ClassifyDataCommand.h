@@ -7,8 +7,8 @@
 
 class ClassifyData : public Command {
 private:
-	KNearestNeighbors &knn;
-	VectorDataSet &train;
+	KNearestNeighbors& knn;
+	VectorDataSet& train;
 public:
 	/**
 	 * @brief Construct a new Classify Data object.
@@ -17,7 +17,7 @@ public:
 	 * @param knn The KNN algorithm
 	 * @param train The dataset uploaded from the user, to be classified.
 	 */
-	ClassifyData(DefaultIO &io, KNearestNeighbors &knn, VectorDataSet &train);
+	ClassifyData(DefaultIO* io, KNearestNeighbors& knn, VectorDataSet& train);
 	
 	void execute() override;
 };

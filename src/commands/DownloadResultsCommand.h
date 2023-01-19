@@ -12,7 +12,7 @@ public:
 private:
 	const VectorDataSet& dataset;
 public:
-	DownloadResultsCommand(DefaultIO& io, const VectorDataSet& dataset);
+	DownloadResultsCommand(DefaultIO* io, const VectorDataSet& dataset);
 	
 	void execute() override;
 };

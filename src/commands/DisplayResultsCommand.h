@@ -8,7 +8,7 @@ class DisplayResultsCommand : public Command {
 private:
 	const VectorDataSet& dataset;
 public:
-	DisplayResultsCommand(DefaultIO& io, const VectorDataSet& dataset);
+	DisplayResultsCommand(DefaultIO* io, const VectorDataSet& dataset);
 	
 	void execute() override;
 };

@@ -9,9 +9,9 @@ class Command {
 private:
 	std::string description;
 protected:
-	DefaultIO &io;
+	DefaultIO *io;
 public:
-	Command(const std::string& desc, DefaultIO& io);
+	Command(const std::string& desc, DefaultIO* io);
 	
 	virtual void execute() = 0;
 	

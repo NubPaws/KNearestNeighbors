@@ -3,7 +3,7 @@
 #include "AlgorithmSettingsCommand.h"
 #include "StringUtils.h"
 
-AlgorithmSettingsCommand::AlgorithmSettingsCommand(KNearestNeighbors &knn, DefaultIO &io)
+AlgorithmSettingsCommand::AlgorithmSettingsCommand(DefaultIO* io, KNearestNeighbors& knn)
 	: Command("Sets the settings of the KNN algorithm.", io), knn(knn) {
 	
 }
@@ -16,22 +16,22 @@ void AlgorithmSettingsCommand::execute() {
 		<< ", distance metric = "
 		<< knn.getMetric()
 		<< "\n";
-	io.write(ss.str());
+	io->write(ss.str());
 	
-	std::string in = io.read();
+	std::string in = io->read();
 	if (in.size() == 0)
 		return;
 	
 	std::vector<std::string> user = Utils::readLineAsVector(in);
 	
 	if (!Utils::isInt(user[0])) {
-		io.write("Invalid value for K\n");
+		io->write("Invalid value for K\n");
 		return;
 	}
 	
 	int k = std::stoi(user[0]);
-	if (k > 0) {
-		io.write("Invalid value for K\n");
+	if (k <= 0) {
+		io->write("Invalid value for K\n");
 		return;
 	}
 	
@@ -39,8 +39,9 @@ void AlgorithmSettingsCommand::execute() {
 	
 	Calc::Type type = Calc::getType(user[1]);
 	if (type == Calc::Type::Empty) {
-		io.write("Invalid value for metric\n");
+		io->write("Invalid value for metric\n");
 		return;
 	}
 	knn.setDistanceType(type);
+	knn.setK(k);
 }

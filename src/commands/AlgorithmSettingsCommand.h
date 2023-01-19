@@ -8,7 +8,7 @@ class AlgorithmSettingsCommand : public Command {
 private:
 	KNearestNeighbors &knn;
 public:
-	AlgorithmSettingsCommand(KNearestNeighbors &knn, DefaultIO &io);
+	AlgorithmSettingsCommand(DefaultIO* io, KNearestNeighbors& knn);
 	void execute() override;
 };
 

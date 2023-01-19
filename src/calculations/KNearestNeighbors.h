@@ -13,6 +13,10 @@ private:
 	VectorDistance::Calculator distance;
 	size_t k;
 public:
+	/**
+	 * @brief Construct a new KNearestNeighbors object.
+	 * Assigns the default values for k = 5 and distance type = euclidean distance.
+	 */
 	KNearestNeighbors();
 	
 	/**
@@ -41,6 +45,7 @@ public:
 	void setDistanceType(VectorDistance::Calculator::Type distType);
 	
 	int getK() const;
+	void setK(size_t k);
 	
 	std::string getMetric() const;
 	

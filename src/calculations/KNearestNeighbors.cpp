@@ -102,6 +102,10 @@ int KNearestNeighbors::getK() const {
 	return k;
 }
 
+void KNearestNeighbors::setK(size_t k) {
+	this->k = k;
+}
+
 std::string KNearestNeighbors::getMetric() const {
 	return distance.getMetric();
 }

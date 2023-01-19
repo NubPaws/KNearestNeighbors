@@ -1,6 +1,6 @@
 #include "Command.h"
 
-Command::Command(const std::string& desc, DefaultIO& io)
+Command::Command(const std::string& desc, DefaultIO* io)
 	: description(desc), io(io) {
 	
 }

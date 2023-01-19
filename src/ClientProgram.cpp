@@ -91,6 +91,16 @@ static Socket::Packet generatePacket(std::vector<std::string>& line) {
 	return Socket::Packet(out.str());
 }
 
+void optionAlgorithmSettings(Socket::TCPClient client) {
+	client.sendPacket("2");
+	
+	std::cout << client.recvPacket().toString();
+	
+	std::string line;
+	std::getline(std::cin, line);
+	client.sendPacket(line);
+}
+
 int main(int argc, const char *argv[]) {
 	// Load the command line arguments and validate the data.
 	CommandLineArguments args(argc, argv);
@@ -115,9 +125,44 @@ int main(int argc, const char *argv[]) {
 	}
 	catch (...) {
 		std::cerr << FAILED_SERVER_CONNECTION << std::endl;
+		return 0;
 	}
 	
+	// Read the menu from the server.
 	std::cout << tcpClient.recvPacket().toString();
+	
+	std::string input;
+	int option;
+	bool keepSending = true;
+	while (keepSending) {
+		std::getline(std::cin, input);
+		
+		if (!Utils::isInt(input)) {
+			std::cout << "wrong input.\n";
+			continue;
+		}
+		
+		option = std::stoi(input);
+		
+		switch (option) {
+		case 1:
+			break;
+		case 2:
+			optionAlgorithmSettings(tcpClient);
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 8:
+			keepSending = false;
+			break;
+		default:
+			std::cout << "wrong input.\n";
+		}
+	}
 	
 	// When all's said and done, close the connection.
 	tcpClient.closeSocket();
