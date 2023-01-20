@@ -17,12 +17,13 @@ public:
 	
 	VectorDataSet(std::stringstream& buffer, bool isClassified = true);
 	
+	void set(std::stringstream& buffer, bool isClassified);
+	
 	size_t width() const;
 	
 	size_t size() const;
 	
 	void swap(const size_t& i, const size_t& j);
-	
 	
 	void setEntryType(const size_t& i, const std::string& type);
 	

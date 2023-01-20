@@ -15,9 +15,16 @@ VectorDataSet::VectorDataSet()
 
 VectorDataSet::VectorDataSet(std::stringstream& buffer, bool isClassified)
 	: dataset() {
+	this->set(buffer, isClassified);
+}
+
+void VectorDataSet::set(std::stringstream& buffer, bool isClassified) {
+	dataset.clear();
 	
+	buffer << "\n";
 	std::string ln;
 	std::getline(buffer, ln);
+	ln = Utils::trimWhiteSpace(ln);
 	std::vector<std::string> line = Utils::seperate(ln, ",");
 	while (!line.empty()) {
 		DataEntry entry;
@@ -41,6 +48,7 @@ VectorDataSet::VectorDataSet(std::stringstream& buffer, bool isClassified)
 		
 		dataset.push_back(entry);
 		std::getline(buffer, ln);
+		ln = Utils::trimWhiteSpace(ln);
 		line = Utils::seperate(ln, ",");
 	}
 	
@@ -51,7 +59,6 @@ VectorDataSet::VectorDataSet(std::stringstream& buffer, bool isClassified)
 			std::exit(0);
 		}
 	}
-	
 }
 
 size_t VectorDataSet::width() const {

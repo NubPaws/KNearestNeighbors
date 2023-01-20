@@ -50,7 +50,7 @@ public:
 	
 	std::string getMetric() const;
 	
-	void setDataSet(VectorDataSet dataset);
+	void setDataSet(VectorDataSet& dataset);
 	
 	bool isValidDataSet() const;
 private:

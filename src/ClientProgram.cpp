@@ -104,8 +104,6 @@ void optionAlgorithmSettings(Socket::TCPClient& client) {
 	client.sendPacket(line);
 }
 
-#include "SocketConversion.h"
-
 int main(int argc, const char *argv[]) {
 	// Load the command line arguments and validate the data.
 	CommandLineArguments args(argc, argv);
@@ -167,6 +165,7 @@ int main(int argc, const char *argv[]) {
 			// Check that the file has opened successfully.
 			if (!inFile.is_open()) {
 				std::cout << "invalid file\n";
+				tcpClient.sendPacket("");
 				break;
 			}
 			
@@ -194,6 +193,7 @@ int main(int argc, const char *argv[]) {
 			// Check that the file is valid.
 			if (!inFile.is_open()) {
 				std::cout << "invalid file\n";
+				tcpClient.sendPacket("");
 				break;
 			}
 			
@@ -201,6 +201,8 @@ int main(int argc, const char *argv[]) {
 			buffer << inFile.rdbuf();
 			// Close the file.
 			inFile.close();
+			
+			std::cout << buffer.str() << std::endl;
 			
 			// Send the second file to the server.
 			tcpClient.sendPacket(buffer.str());

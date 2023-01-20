@@ -56,7 +56,7 @@ void handleClient(Socket::TCPSocket socket) {
 		
 		switch (option) {
 		case 1: {
-			UploadFileCommand ufc(clientIO, train, test);
+			UploadFileCommand ufc(clientIO, knn, train, test);
 			ufc.execute();
 			break;
 		}
@@ -66,12 +66,12 @@ void handleClient(Socket::TCPSocket socket) {
 			break;
 		}
 		case 3: {
-			ClassifyDataCommand cdc(clientIO, knn, train);
+			ClassifyDataCommand cdc(clientIO, knn, test);
 			cdc.execute();
 			break;
 		}
 		case 4: {
-			DisplayResultsCommand drc(clientIO, train);
+			DisplayResultsCommand drc(clientIO, test);
 			drc.execute();
 			break;
 		}
@@ -122,45 +122,6 @@ int main(int argc, char const *argv[]) {
 	TCPSocket clientSocket = tcpServer.acceptConnection();
 	while (clientSocket.isValidSocket()) {
 		handleClient(clientSocket);
-		
-		/**
-		 * Iterate over the open connections. Keep reading from the same connection
-		 * as long as we are getting a valid packet with a size not equal to zero.
-		 * If either of those cases are false then we know that the connection
-		 * either closed or some other error has occurred.
-		*/
-		/*while (packet.isValid() && packet.size() != 0) {
-			std::vector<std::string> data = packet.toVector();
-			
-			int k = std::stoi(data[data.size() - 1]);
-			data.pop_back();
-			
-			// Prepare the distance algorithm.
-			knn.setDistanceType((Calculator::Type)std::stoi(data[data.size() - 1]));
-			data.pop_back();
-			
-			// Load the vector to match against.
-			Vector vec;
-			for (const std::string& str : data)
-				vec.push_back(std::stod(str));
-			data.clear();
-			
-			// As long as the vector is valid.
-			if (vec.size() != vds.width() || vec.size() == 0) {
-				clientIO.write("invalid input");
-				continue;
-			}
-			
-			// Calculate the KNN.
-			std::string vectorClass = knn.find(vec);
-			
-			// Tell the user.
-			clientIO.write(vectorClass);
-			
-			// Read the next vector.
-			packet = clientIO.read();
-		}*/
-		
 		
 		clientSocket = tcpServer.acceptConnection();
 	}

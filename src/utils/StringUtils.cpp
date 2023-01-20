@@ -34,6 +34,9 @@ namespace Utils {
 	
 	std::vector<std::string> seperate(std::string& str, const std::string& sep) {
 		std::vector<std::string> line;
+		if (str == "")
+			return line;
+		
 		size_t pos = 0;
 		std::string token;
 		while ((pos = str.find(sep)) != std::string::npos) {

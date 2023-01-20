@@ -3,13 +3,15 @@
 
 #include "Command.h"
 #include "VectorDataSet.h"
+#include "KNearestNeighbors.h"
 
 class UploadFileCommand : public Command {
 private:
+	KNearestNeighbors& knn;
 	VectorDataSet& train;
 	VectorDataSet& test;
 public:
-	UploadFileCommand(DefaultIO* io, VectorDataSet& train, VectorDataSet& test);
+	UploadFileCommand(DefaultIO* io, KNearestNeighbors& knn, VectorDataSet& train, VectorDataSet& test);
 	
 	void execute() override;
 };

@@ -108,8 +108,8 @@ std::string KNearestNeighbors::getMetric() const {
 	return distance.getMetric();
 }
 
-void KNearestNeighbors::setDataSet(VectorDataSet dataset) {
-	dataset = dataset;
+void KNearestNeighbors::setDataSet(VectorDataSet& dataset) {
+	this->dataset = dataset;
 }
 
 bool KNearestNeighbors::isValidDataSet() const {
