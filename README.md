@@ -67,10 +67,10 @@ The Makefile was made to export two executables `client.out` and `server.out`. T
 
 # Ex4 - User Interface && Multithreading
 ## Socket Refactoring
-The socket class has been refactored to allow an easier implementations for the `SocketIO`.
-The `acceptConnection()` function has been changed to return TCPSocket object. In order to do so, a new constructor was added to `TCPSocket` which accepts file descriptor as its input.
-By doing so, after the call to `accept()` system call has been made, is is possible to create `TCPSocket` object based on the returned file descriptor.
-Since `acceptConnection()` returns `TCPSocket`, it is now possible to create `SocketIO` based on the returned `TCPSocket`.
+The socket class has been refactored to allow an easier implementation for the `SocketIO`.
+The `acceptConnection()` function has been changed to return a TCPSocket object. In order to do so, a new constructor was added to `TCPSocket` which accepts file descriptor as an argument.
+By doing so, after the call to `accept()` system call has been made, it is possible to create a `TCPSocket` object based on the returned file descriptor.
+Since `acceptConnection()` returns `TCPSocket`, it is now possible to create `SocketIO` based on the returned value from `acceptConnection()`.
 
 ## Input/Output Classes
 We've created a `DefaultIO` interface that can read and write into different stream like objects. `StandardIO` extends the `DefaultIO` class and allows us to write into the standard output and read from the standard input. The `SocketIO` also extends the `DefaultIO` and allows us to write to a client connection and read from a client connect - in general it allows us to read and write between any two sockets, but in this specific implementation we are only writing to the client and reading from it.
