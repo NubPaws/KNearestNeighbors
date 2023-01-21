@@ -13,9 +13,9 @@ VectorDataSet::VectorDataSet()
 	
 }
 
-VectorDataSet::VectorDataSet(std::stringstream& buffer, bool isClassified)
+VectorDataSet::VectorDataSet(std::string& input, bool isClassified)
 	: dataset() {
-	this->set(buffer, isClassified);
+	this->set(input, isClassified);
 }
 
 bool VectorDataSet::set(std::string& input, bool isClassified) {
@@ -55,49 +55,6 @@ bool VectorDataSet::set(std::string& input, bool isClassified) {
 		}
 	}
 	return true;
-}
-
-void VectorDataSet::set(std::stringstream& buffer, bool isClassified) {
-	dataset.clear();
-	
-	buffer << "\n";
-	std::string ln;
-	std::getline(buffer, ln);
-	ln = Utils::trimWhiteSpace(ln);
-	std::vector<std::string> line = Utils::seperate(ln, ",");
-	while (!line.empty()) {
-		DataEntry entry;
-		
-		if (isClassified) {
-			entry.second = line[line.size() - 1];
-			line.pop_back();
-		} else {
-			entry.second = ""; // Emptry string.
-		}
-		
-		for (size_t i = 0; i < line.size(); i++) {
-			if (Utils::isDouble(line[i])) {
-				entry.first.push_back(std::stod(line[i]));
-			} else {
-				std::cerr << "Problem with the format of the file in line "
-					<< dataset.size() + 1 << "." << std::endl;
-				std::exit(0);
-			}
-		}
-		
-		dataset.push_back(entry);
-		std::getline(buffer, ln);
-		ln = Utils::trimWhiteSpace(ln);
-		line = Utils::seperate(ln, ",");
-	}
-	
-	for (size_t i = 1; i < dataset.size(); i++) {
-		if (dataset[i].first.size() != dataset[0].first.size()) {
-			std::cout << "Problem with the number of parameters in line "
-				<< i << "." << std::endl;
-			std::exit(0);
-		}
-	}
 }
 
 size_t VectorDataSet::width() const {

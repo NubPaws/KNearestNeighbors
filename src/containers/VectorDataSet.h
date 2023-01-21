@@ -15,10 +15,9 @@ private:
 public:
 	VectorDataSet();
 	
-	VectorDataSet(std::stringstream& buffer, bool isClassified = true);
+	VectorDataSet(std::string& input, bool isClassified = true);
 	
 	bool set(std::string& input, bool isClassified);
-	void set(std::stringstream& buffer, bool isClassified);
 	
 	size_t width() const;
 	
