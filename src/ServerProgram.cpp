@@ -10,9 +10,9 @@
 #include "CommandLineInterface.h"
 #include "ThreadPool.h"
 
-using Socket::TCPServer;
+using namespace Socket;
 
-void handleClient(Socket::TCPSocket socket) {
+void handleClient(TCPSocket socket) {
 	DefaultIO *clientIO = new SocketIO(socket);
 	
 	CLI cli(clientIO);
@@ -48,14 +48,17 @@ int main(int argc, char const *argv[]) {
 		return -1;
 	}
 	
+	// Create the thread pool.
 	ThreadPool<TCPSocket> threadPool(5);
+	// Start the thread pool.
 	threadPool.start();
 	
 	// Start accepting connections.
 	TCPSocket clientSocket = tcpServer.acceptConnection();
 	while (clientSocket.isValidSocket()) {
+		// Queue the next connection.
 		threadPool.queue(handleClient, clientSocket);
-		
+		// Wait for the next connection.
 		clientSocket = tcpServer.acceptConnection();
 	}
 	

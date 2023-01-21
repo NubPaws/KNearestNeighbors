@@ -13,6 +13,11 @@
 	- [Socket Implementation](#socket-implementation)
 	- [Makefile \&\& Folder Structure Change](#makefile--folder-structure-change-1)
 - [Ex4 - User Interface \&\& Multithreading](#ex4---user-interface--multithreading)
+	- [Socket Refactoring](#socket-refactoring)
+	- [Input/Output Classes](#inputoutput-classes)
+	- [Commands \&\& Command Line Interface](#commands--command-line-interface)
+	- [Threads \&\& Thead Pool Implementation](#threads--thead-pool-implementation)
+	- [Folder Structure Changes](#folder-structure-changes)
 
 ## Compilation
 To compile the code run the `make` command in the same directory the `Makefile` is located in.
@@ -61,4 +66,18 @@ We have also added a `Packet` class that allows to pack the data from the user a
 The Makefile was made to export two executables `client.out` and `server.out`. That allows us to have two compilation units we can run. The folder structure was changed to also add a _network_ folder that stores our Socket and Socket related files.
 
 # Ex4 - User Interface && Multithreading
+## Socket Refactoring
+The socket class has been refactored to allow an easier implementations for the `SocketIO`. 
 
+## Input/Output Classes
+We've created a `DefaultIO` interface that can read and write into different stream like objects. `StandardIO` extends the `DefaultIO` class and allows us to write into the standard output and read from the standard input. The `SocketIO` also extends the `DefaultIO` and allows us to write to a client connection and read from a client connect - in general it allows us to read and write between any two sockets, but in this specific implementation we are only writing to the client and reading from it.
+
+## Commands && Command Line Interface
+We have implemented a `Command` base class to allow us to execute different commands that communicate between the client and the server. There is a seperate class for one of each of the commands that are available for the user to choose. The commands are `UploadFileCommand`, `AlgorithmSettingsCommand`, `ClassifyDataCommand`, `DisplayResultsCommand`, and `DownloadResultsCommand`. Then the `CommandLineInterface`, shortend as CLI, handles calling the proper command based on the input that was received from the user, passing it the proper arguments using polymorphism.
+
+## Threads && Thead Pool Implementation
+The fifth command has been made to execute on the seperate thread.
+For the server, in order to handle multiple clients at once, a `ThreadPool` class was made that stores the jobs that are needed to be done in a queue and executes them up to a max number of available threads. Each job is a client connect that needs to be handled. That way multiple clients can talk to the server at once, each has their own instance of a CLI. That way the data in the application is sort of seperated. This will enable us to not experience starvation, deadlocking and other problems that can appear when working with threads.
+
+## Folder Structure Changes
+The `CSVReader` has been moved into the `utils/` folder to make it a bit more logical. The `io` folder has been filled with the `SocketIO`, `DefaultIO` and the `StandardIO` classes. A `threading/` folder has also been made to put in it threading related code and objects.

@@ -19,6 +19,10 @@ VectorDataSet::VectorDataSet(std::string& input, bool isClassified)
 }
 
 bool VectorDataSet::set(std::string& input, bool isClassified) {
+	for (auto it = input.begin(); it != input.end(); it++) {
+		if (*it == '\r')
+			input.erase(it, it);
+	}
 	std::vector<std::string> buffer = Utils::seperate(input, "\n");
 	
 	while (!buffer.empty()) {

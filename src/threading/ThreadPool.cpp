@@ -14,6 +14,7 @@ ThreadPool<T>::ThreadPool(const size_t& maxNumThreads)
 
 template<typename T>
 void ThreadPool<T>::start() {
+	// Start all of the threads to enter the loop method.
 	for (size_t i = 0; i < maxNumThreads; i++) {
 		threads[i] = std::thread(&ThreadPool::loop, this);
 	}

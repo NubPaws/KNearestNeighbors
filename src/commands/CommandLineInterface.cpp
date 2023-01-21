@@ -21,7 +21,7 @@ static std::string getWelcomeScreenMessage() {
 
 void CommandLineInterface::start() {
 	std::string clientInput;
-	int option = 0;
+	Option option = Option::Empty;
 	
 	do {
 		io->write(getWelcomeScreenMessage());
@@ -38,40 +38,37 @@ void CommandLineInterface::start() {
 			continue;
 		}
 		
-		option = std::stoi(clientInput);
+		option = (Option)std::stoi(clientInput);
 		
+		Command *cmd = nullptr;
 		switch (option) {
-		case 1: {
-			UploadFileCommand ufc(io, knn, train, test);
-			ufc.execute();
+		case Option::Upload:
+			cmd = new UploadFileCommand(io, knn, train, test);
 			break;
-		}
-		case 2: {
-			AlgorithmSettingsCommand asc(io, knn);
-			asc.execute();
+		case Option::Settings:
+			cmd = new AlgorithmSettingsCommand(io, knn);
 			break;
-		}
-		case 3: {
-			ClassifyDataCommand cdc(io, knn, test);
-			cdc.execute();
+		case Option::Classifiy:
+			cmd = new ClassifyDataCommand(io, knn, test);
 			break;
-		}
-		case 4: {
-			DisplayResultsCommand drc(io, test);
-			drc.execute();
+		case Option::Display:
+			cmd = new DisplayResultsCommand(io, test);
 			break;
-		}
-		case 5: {
-			DownloadResultsCommand drc(io, test);
-			drc.execute();
+		case Option::Download:
+			cmd = new DownloadResultsCommand(io, test);
 			break;
-		}
-		case 8:
+		case Option::Exit:
 			break;
 		default:
 			io->write("invalid input\n");
 		}
 		
-	} while (option != 8);
+		if (cmd != nullptr) {
+			cmd->execute();
+			delete cmd;
+			cmd = nullptr;
+		}
+		
+	} while (option != Option::Exit);
 	
 }

@@ -1,4 +1,5 @@
 #include "DownloadResultsCommand.h"
+#include "TCPSocket.h"
 
 #include <sstream>
 
@@ -28,4 +29,5 @@ void DownloadResultsCommand::execute() {
 	}
 	ss << i + 1 << "\t" << dataset[i].second;
 	io->write(ss.str());
+	
 }
