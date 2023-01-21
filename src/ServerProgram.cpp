@@ -8,6 +8,7 @@
 #include "Packet.h"
 #include "SocketIO.h"
 #include "CommandLineInterface.h"
+#include "ThreadPool.h"
 
 using Socket::TCPServer;
 
@@ -47,15 +48,19 @@ int main(int argc, char const *argv[]) {
 		return -1;
 	}
 	
-	using VectorDistance::Calculator;
+	ThreadPool<TCPSocket> threadPool(5);
+	threadPool.start();
 	
 	// Start accepting connections.
 	TCPSocket clientSocket = tcpServer.acceptConnection();
 	while (clientSocket.isValidSocket()) {
-		handleClient(clientSocket);
+		threadPool.queue(handleClient, clientSocket);
 		
 		clientSocket = tcpServer.acceptConnection();
 	}
+	
+	// Terminate the threads.
+	threadPool.stop();
 	
 	// Close the server.
 	tcpServer.closeSocket();
