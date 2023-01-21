@@ -11,7 +11,7 @@
 #include "VectorDataSet.h"
 #include "KNearestNeighbors.h"
 #include "Packet.h"
-#include "DefaultIO.h"
+#include "SocketIO.h"
 #include "StringUtils.h"
 #include "CommandClasses.h"
 
