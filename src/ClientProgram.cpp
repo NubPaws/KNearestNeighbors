@@ -256,6 +256,7 @@ int main(int argc, const char *argv[]) {
 			break;
 		}
 		case 8:
+			tcpClient.sendPacket(input);
 			keepSending = false;
 			break;
 		default:
