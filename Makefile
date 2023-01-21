@@ -7,7 +7,7 @@ BINDIR := $(PROJDIR)/bin
 VERBOSE = FALSE
 
 # Create the list of directories.
-DIRS = . calculations commands containers io networking utils
+DIRS = . calculations commands containers io networking threading utils
 # First add the prefixes
 SOURCEDIRS := $(foreach dir, $(DIRS), $(addprefix $(SRCDIR)/, $(dir)))
 TARGETDIRS := $(foreach dir, $(DIRS), $(addprefix $(BINDIR)/, $(dir)))
