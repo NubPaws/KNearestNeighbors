@@ -14,21 +14,40 @@ void UploadFileCommand::execute() {
 		
 	io->write("Please upload your local train CSV file.\n");
 	input = io->read();
-	if (input == "")
+	if (input == Command::ERROR_SYMBOL) {
+		clearDataSets();
 		return;
+	}
 	
-	train.set(input, true);
+	if (!train.set(input, true)) {
+		io->write(Command::ERROR_SYMBOL);
+		io->write("Error parsing the data\n");
+		clearDataSets();
+		return;
+	}
 	
 	io->write("Upload complete.\n");
 	
 	io->write("Please upload your local test CSV file.\n");
 	input = io->read();
-	if (input == "")
+	if (input == Command::ERROR_SYMBOL) {
+		clearDataSets();
 		return;
+	}
 	
-	test.set(input, false);
+	if (test.set(input, false)) {
+		io->write(Command::ERROR_SYMBOL);
+		io->write("Error parsing the data\n");
+		clearDataSets();
+		return;
+	}
 	
 	io->write("Upload complete.\n");
 	
 	knn.setDataSet(train);
+}
+
+void UploadFileCommand::clearDataSets() {
+	train.clear();
+	test.clear();
 }

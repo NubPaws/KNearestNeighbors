@@ -152,6 +152,7 @@ int main(int argc, const char *argv[]) {
 			// Send the number to server to start the command.
 			tcpClient.sendPacket(input);
 			std::string path;
+			std::string input;
 			
 			// Read the message, to upload the first file, from the server.
 			std::cout << tcpClient.recvPacket().toString();
@@ -165,7 +166,7 @@ int main(int argc, const char *argv[]) {
 			// Check that the file has opened successfully.
 			if (!inFile.is_open()) {
 				std::cout << "invalid file\n";
-				tcpClient.sendPacket("");
+				tcpClient.sendPacket(Command::ERROR_SYMBOL);
 				break;
 			}
 			
@@ -179,8 +180,13 @@ int main(int argc, const char *argv[]) {
 			tcpClient.sendPacket(buffer.str());
 			// Clear the buffer.
 			buffer.str(std::string());
-			// Receive the "upload done" message from the server.
+			// Receive the string from the server.
+			input = tcpClient.recvPacket().toString();
+			// Print the next message to the screen (whether it is an error message or not).
 			std::cout << tcpClient.recvPacket().toString();
+			// If it is an error message, stop executing.
+			if (input == Command::ERROR_SYMBOL)
+				break;
 			
 			// Read the message, to upload the second (test) file, from the server.
 			std::cout << tcpClient.recvPacket().toString();
@@ -193,7 +199,7 @@ int main(int argc, const char *argv[]) {
 			// Check that the file is valid.
 			if (!inFile.is_open()) {
 				std::cout << "invalid file\n";
-				tcpClient.sendPacket("");
+				tcpClient.sendPacket(Command::ERROR_SYMBOL);
 				break;
 			}
 			
@@ -206,8 +212,13 @@ int main(int argc, const char *argv[]) {
 			tcpClient.sendPacket(buffer.str());
 			// Clear the buffer.
 			buffer.str(std::string());
-			// Receive the "upload done" message from the server.
+			// Receive the string from the server.
+			input = tcpClient.recvPacket().toString();
+			// Print the next message to the screen (whether it is an error message or not).
 			std::cout << tcpClient.recvPacket().toString();
+			// If it is an error message, stop executing.
+			if (input == Command::ERROR_SYMBOL)
+				break;
 			
 			break;
 		}

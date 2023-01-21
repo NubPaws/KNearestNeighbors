@@ -6,6 +6,8 @@
 #include "DefaultIO.h"
 
 class Command {
+public:
+	static const std::string ERROR_SYMBOL;
 private:
 	std::string description;
 protected:

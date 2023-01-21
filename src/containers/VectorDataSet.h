@@ -23,6 +23,8 @@ public:
 	
 	size_t size() const;
 	
+	void clear();
+	
 	void swap(const size_t& i, const size_t& j);
 	
 	void setEntryType(const size_t& i, const std::string& type);

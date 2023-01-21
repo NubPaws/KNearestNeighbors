@@ -67,6 +67,10 @@ size_t VectorDataSet::size() const {
 	return dataset.size();
 }
 
+void VectorDataSet::clear() {
+	dataset.clear();
+}
+
 void VectorDataSet::swap(const size_t& i, const size_t& j) {
 	DataEntry tmp = dataset[i];
 	dataset[i] = dataset[j];
