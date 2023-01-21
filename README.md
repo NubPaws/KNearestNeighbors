@@ -27,14 +27,14 @@ The `client.out` will receive the ip address and port to connect to.
 
 # Exercise 1 - Vector Distance Calculation
 ## Distance Calculations Changes
-Distance calculations are now under the [Strategy Design Pattern](https://en.wikipedia.org/wiki/Strategy_pattern). That way we can create an instance of the `VectorDistance::Calculator` and pass to it a `VectorDistance::Calculator::Type` to select which calculation we want to do. We can also change the calcualtion method on the fly. It also makes adding a new type of vector distance calculation easier as we only need to add the new method into the tuple and it's string representation into the `VectorDistance::Calculator::TYPES` array.
+Distance calculations are now under the [Strategy Design Pattern](https://en.wikipedia.org/wiki/Strategy_pattern). That way we can create an instance of the `VectorDistance::Calculator` and pass to it a `VectorDistance::Calculator::Type` to select which calculation we want to do. We can also change the calculation method on the fly. It also makes adding a new type of vector distance calculation easier as we only need to add the new method into the tuple and it's string representation into the `VectorDistance::Calculator::TYPES` array.
 
 The Euclidean and the Manhattan distance calculations are now subclasses of the Minkowski distance calculation class. They still have their own default constructors but they construct their super class with the related `p` value that they have.<br/>
 The Euclidean with `p=2`.<br/>
 The Manhattan with `p=2`.<br/>
 
 ## Strategy Design Pattern
-The idea in this case, for the strategy design pattern, was that we have a main class that should be used when a generic calculator is needed. That class is the `VectorDistance::Calculator` that receives the type of calculation you'd like to calculate (or not paremeters at all). The class dynamically allocates space for the pointer of the specific vector calculation class.
+The idea in this case, for the strategy design pattern, was that we have a main class that should be used when a generic calculator is needed. That class is the `VectorDistance::Calculator` that receives the type of calculation you'd like to calculate (or not parameters at all). The class dynamically allocates space for the pointer of the specific vector calculation class.
 
 # Exercise 2 - K Nearest Neighbors
 ## K Nearest Neighbors
@@ -46,12 +46,12 @@ Using that knowledge the KNN algorithm `KNearestNeighbors::find` gets the vector
 To make the algorithm a bit faster all distances relative to the vector that is given into the function are pre-calculated and stored in a vector. Every swap in the dataset is followed by a swap in the distances' vector. The distances' vector is pretty big, therefore it is a must to pass it around as a reference to save on copying time.
 
 ## Small Code Refactoring
-Some functions (such as the function that checks if a string is double convertable and int convertable) were moved into seperate namespaces. In the future, if they will fit as part of a class they will be moved to be part of a class, otherwise, they'll stay in a seperate namespace - as to seperate their logic.
+Some functions (such as the function that checks if a string is double convertable and int convertable) were moved into separate namespaces. In the future, if they will fit as part of a class they will be moved to be part of a class, otherwise, they'll stay in a separate namespace - as to separate their logic.
 
-We have also added a `Types.h` file that for now only has two declartion/using definitions as thise were used quite a lot (and we wanted to save some time typing/abstract a bit of the implementation). In the future, we might give different names to types and even integral int types to make the code a bit more readable.
+We have also added a `Types.h` file that for now only has two declaration/using definitions as these were used quite a lot (and we wanted to save some time typing/abstract a bit of the implementation). In the future, we might give different names to types and even integral int types to make the code a bit more readable.
 
 ## Makefile && Folder Structure Change
-All files were moved into seperate folders to make their seperation a bit more logical. This has also made the need for a Makefile to be much more important. A Makefile was made and made to work with the multiple nested folders. For the Makefile construction we have followed the Makefile example [in this link](https://riptutorial.com/makefile/example/21376/building-from-different-source-folders-to-different-target-folders). There have been a few changes (regarding running the code on the Windows OS or running it on the Unix OS).
+All files were moved into separate folders to make their separation a bit more logical. This has also made the need for a Makefile to be much more important. A Makefile was made and made to work with the multiple nested folders. For the Makefile construction we have followed the Makefile example [in this link](https://riptutorial.com/makefile/example/21376/building-from-different-source-folders-to-different-target-folders). There have been a few changes (regarding running the code on the Windows OS or running it on the Unix OS).
 
 Regarding the Makefile, the code compiles using the C++11 standard. The Makefile is also simple to edit as if we were to add a new folder we only need to change the `DIRS` variable to add the new folder - adding new files does not require changes to the Makefile at all.. The Makefile also listens to changes not only in the `.cpp` files but also in their corresponding `.h` files.
 
@@ -73,10 +73,10 @@ The socket class has been refactored to allow an easier implementations for the 
 We've created a `DefaultIO` interface that can read and write into different stream like objects. `StandardIO` extends the `DefaultIO` class and allows us to write into the standard output and read from the standard input. The `SocketIO` also extends the `DefaultIO` and allows us to write to a client connection and read from a client connect - in general it allows us to read and write between any two sockets, but in this specific implementation we are only writing to the client and reading from it.
 
 ## Commands && Command Line Interface
-We have implemented a `Command` base class to allow us to execute different commands that communicate between the client and the server. There is a seperate class for one of each of the commands that are available for the user to choose. The commands are `UploadFileCommand`, `AlgorithmSettingsCommand`, `ClassifyDataCommand`, `DisplayResultsCommand`, and `DownloadResultsCommand`. Then the `CommandLineInterface`, shortend as CLI, handles calling the proper command based on the input that was received from the user, passing it the proper arguments using polymorphism.
+We have implemented a `Command` base class to allow us to execute different commands that communicate between the client and the server. There is a separate class for one of each of the commands that are available for the user to choose. The commands are `UploadFileCommand`, `AlgorithmSettingsCommand`, `ClassifyDataCommand`, `DisplayResultsCommand`, and `DownloadResultsCommand`. Then the `CommandLineInterface`, shortened as CLI, handles calling the proper command based on the input that was received from the user, passing it the proper arguments using polymorphism.
 
 ## Threads && Thead Pool Implementation
-The fifth command has been made to execute on the seperate thread.
+The fifth command has been made to execute on the separate thread.
 For the server, in order to handle multiple clients at once, a `ThreadPool` class was made that stores the jobs that are needed to be done in a queue and executes them up to a max number of available threads. Each job is a client connect that needs to be handled. That way multiple clients can talk to the server at once, each has their own instance of a CLI. That way the data in the application is sort of seperated. This will enable us to not experience starvation, deadlocking and other problems that can appear when working with threads.
 
 ## Folder Structure Changes
