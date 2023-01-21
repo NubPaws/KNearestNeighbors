@@ -76,7 +76,7 @@ void handleClient(Socket::TCPSocket socket) {
 			break;
 		}
 		case 5: {
-			DownloadResultsCommand drc(clientIO, train);
+			DownloadResultsCommand drc(clientIO, test);
 			drc.execute();
 			break;
 		}

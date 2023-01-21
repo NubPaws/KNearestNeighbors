@@ -10,25 +10,23 @@ UploadFileCommand::UploadFileCommand(DefaultIO* io, KNearestNeighbors& knn, Vect
 }
 
 void UploadFileCommand::execute() {
-	std::stringstream ss;
-	
+	std::string input;
+		
 	io->write("Please upload your local train CSV file.\n");
-	ss << io->read();
-	if (ss.str() == "")
+	input = io->read();
+	if (input == "")
 		return;
 	
-	train.set(ss, true);
-	ss.str(std::string());
+	train.set(input, true);
 	
 	io->write("Upload complete.\n");
 	
 	io->write("Please upload your local test CSV file.\n");
-	ss << io->read();
-	if (ss.str() == "")
+	input = io->read();
+	if (input == "")
 		return;
 	
-	test.set(ss, false);
-	ss.str(std::string());
+	test.set(input, false);
 	
 	io->write("Upload complete.\n");
 	

@@ -202,8 +202,6 @@ int main(int argc, const char *argv[]) {
 			// Close the file.
 			inFile.close();
 			
-			std::cout << buffer.str() << std::endl;
-			
 			// Send the second file to the server.
 			tcpClient.sendPacket(buffer.str());
 			// Clear the buffer.

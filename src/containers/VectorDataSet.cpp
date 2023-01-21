@@ -18,6 +18,45 @@ VectorDataSet::VectorDataSet(std::stringstream& buffer, bool isClassified)
 	this->set(buffer, isClassified);
 }
 
+bool VectorDataSet::set(std::string& input, bool isClassified) {
+	std::vector<std::string> buffer = Utils::seperate(input, "\n");
+	
+	while (!buffer.empty()) {
+		std::vector<std::string> line = Utils::seperate(buffer[0], ",");
+		
+		DataEntry entry;
+		
+		if (isClassified) {
+			entry.second = line[line.size() - 1];
+			line.pop_back();
+		} else {
+			entry.second = ""; // Emptry string.
+		}
+		
+		for (size_t i = 0; i < line.size(); i++) {
+			if (Utils::isDouble(line[i])) {
+				entry.first.push_back(std::stod(line[i]));
+			} else {
+				std::cerr << "Problem with the format of the file in line "
+					<< dataset.size() + 1 << "." << std::endl;
+				std::exit(0);
+			}
+		}
+		
+		dataset.push_back(entry);
+		buffer.erase(buffer.begin());
+	}
+	
+	for (size_t i = 1; i < dataset.size(); i++) {
+		if (dataset[i].first.size() != dataset[i - 1].first.size()) {
+			std::cout << "Problem with the number of parameters in line "
+				<< i << "." << std::endl;
+			return false;
+		}
+	}
+	return true;
+}
+
 void VectorDataSet::set(std::stringstream& buffer, bool isClassified) {
 	dataset.clear();
 	
