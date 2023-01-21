@@ -104,6 +104,36 @@ void optionAlgorithmSettings(Socket::TCPClient& client) {
 	client.sendPacket(line);
 }
 
+bool uploadFileToServer(Socket::TCPClient& client) {
+	std::string path;
+
+	// Read the path of the file.
+	std::getline(std::cin, path);
+
+	std::ifstream inFile;
+	// Open the file.
+	inFile.open(path);
+
+	// Check that the file has opened successfully.
+	if (!inFile.is_open()) {
+		std::cout << "invalid file\n";
+		client.sendPacket(Command::ERROR_SYMBOL);
+		return false;
+	}
+
+	std::stringstream buffer;
+	// Read the entire file into a buffer.
+	buffer << inFile.rdbuf();
+	// Close the file.
+	inFile.close();
+
+	// Send the data from the file to the server.
+	client.sendPacket(buffer.str());
+	// Clear the buffer.
+	buffer.str(std::string());
+	return true;
+}
+
 int main(int argc, const char *argv[]) {
 	// Load the command line arguments and validate the data.
 	CommandLineArguments args(argc, argv);
@@ -156,66 +186,31 @@ int main(int argc, const char *argv[]) {
 			
 			// Read the message, to upload the first file, from the server.
 			std::cout << tcpClient.recvPacket().toString();
-			// Read the path of the file.
-			std::getline(std::cin, path);
-			
-			std::ifstream inFile;
-			// Open the file.
-			inFile.open(path);
-			
-			// Check that the file has opened successfully.
-			if (!inFile.is_open()) {
-				std::cout << "invalid file\n";
-				tcpClient.sendPacket(Command::ERROR_SYMBOL);
+
+			bool isUploadSucceed = uploadFileToServer(tcpClient);
+			if (!isUploadSucceed) {
 				break;
 			}
 			
-			std::stringstream buffer;
-			// Read the entire file into a buffer.
-			buffer << inFile.rdbuf();
-			// Close the file.
-			inFile.close();
-			
-			// Send the data from the file to the server.
-			tcpClient.sendPacket(buffer.str());
-			// Clear the buffer.
-			buffer.str(std::string());
-			// Receive the string from the server.
-			input = tcpClient.recvPacket().toString();
-			// Print the next message to the screen (whether it is an error message or not).
+			// Print "upload complete" message
 			std::cout << tcpClient.recvPacket().toString();
+			
+			// Print the next message to the screen (whether it is an error message or not).
+			input = tcpClient.recvPacket().toString();
 			// If it is an error message, stop executing.
 			if (input == Command::ERROR_SYMBOL)
 				break;
 			
-			// Read the message, to upload the second (test) file, from the server.
-			std::cout << tcpClient.recvPacket().toString();
-			
-			// Read the path for the second file.
-			std::getline(std::cin, path);
-			// Open the second file.
-			inFile.open(path);
-			
-			// Check that the file is valid.
-			if (!inFile.is_open()) {
-				std::cout << "invalid file\n";
-				tcpClient.sendPacket(Command::ERROR_SYMBOL);
+			std::cout << input;
+			isUploadSucceed = uploadFileToServer(tcpClient);
+			if (!isUploadSucceed) {
 				break;
 			}
-			
-			// Read the entire data from the file to the buffer.
-			buffer << inFile.rdbuf();
-			// Close the file.
-			inFile.close();
-			
-			// Send the second file to the server.
-			tcpClient.sendPacket(buffer.str());
-			// Clear the buffer.
-			buffer.str(std::string());
+
 			// Receive the string from the server.
 			input = tcpClient.recvPacket().toString();
 			// Print the next message to the screen (whether it is an error message or not).
-			std::cout << tcpClient.recvPacket().toString();
+			std::cout << input;
 			// If it is an error message, stop executing.
 			if (input == Command::ERROR_SYMBOL)
 				break;

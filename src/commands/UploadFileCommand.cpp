@@ -35,7 +35,7 @@ void UploadFileCommand::execute() {
 		return;
 	}
 	
-	if (test.set(input, false)) {
+	if (!test.set(input, false)) {
 		io->write(Command::ERROR_SYMBOL);
 		io->write("Error parsing the data\n");
 		clearDataSets();
