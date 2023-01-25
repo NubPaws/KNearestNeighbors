@@ -88,6 +88,7 @@ void optionAlgorithmSettings(Socket::TCPClient& client) {
 	std::string line;
 	std::getline(std::cin, line);
 	client.sendPacket(line);
+	std::cout << client.recvPacket().toString();
 }
 
 void optionDownloadFile(TCPClient& tcpClient, std::string input) {
@@ -147,16 +148,22 @@ int main(int argc, const char *argv[]) {
 		return 0;
 	}
 	
+	bool printMenu = true;
 	std::string input;
 	CLI::Option option = CLI::Option::Empty;
 	while (option != CLI::Option::Exit) {
 		// Read the menu from the server.
-		std::cout << tcpClient.recvPacket().toString();
+		if (printMenu) {
+			std::cout << tcpClient.recvPacket().toString();
+		} else {
+			printMenu = false;
+		}
 		
 		std::getline(std::cin, input);
 		
 		if (!Utils::isInt(input)) {
 			std::cout << "wrong input.\n";
+			printMenu = false;
 			continue;
 		}
 		
@@ -188,6 +195,7 @@ int main(int argc, const char *argv[]) {
 			break;
 		default:
 			std::cout << "wrong input.\n";
+			printMenu = false;
 		}
 	}
 	

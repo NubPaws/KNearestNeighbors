@@ -19,8 +19,10 @@ void AlgorithmSettingsCommand::execute() {
 	io->write(ss.str());
 	
 	std::string in = io->read();
-	if (in.size() == 0)
+	if (in.size() == 0) {
+		io->write("");
 		return;
+	}
 	
 	std::vector<std::string> user = Utils::readLineAsVector(in);
 	
@@ -44,4 +46,5 @@ void AlgorithmSettingsCommand::execute() {
 	}
 	knn.setDistanceType(type);
 	knn.setK(k);
+	io->write("");
 }
