@@ -12,9 +12,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY . /app
 RUN mkdir -p build
-RUN cd build
-RUN cmake ..
-RUN make
+RUN cd build && cmake .. && make
 
 # Expose the port the server listens on.
 EXPOSE 8080
