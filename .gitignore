@@ -4,4 +4,3 @@ datasets/
 *.exe
 *.out
 *.o
-CMakeLists.txt
