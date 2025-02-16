@@ -1,20 +1,30 @@
-FROM ubuntu:22.04
+FROM ubuntu:22.04 AS builder
 
-# Install dependencies.
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-	g++ \
-	cmake \
-	make \
-	libpthread-stubs0-dev \
-	&& rm -rf /var/lib/apt/lists/*
+    g++ \
+    cmake \
+    make \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set the working directory.
+# Set working directory
 WORKDIR /app
 COPY . /app
-RUN mkdir -p build
-RUN cd build && cmake .. && make
 
-# Expose the port the server listens on.
+# Build the project
+RUN mkdir -p build && cd build && cmake .. && make
+
+# Use a minimal runtime image
+FROM ubuntu:22.04 AS runtime
+
+# Set working directory
+WORKDIR /app
+
+# Copy the built binaries from builder stage
+COPY --from=builder /app/bin/server /app/server
+
+# Expose the port used by the server
 EXPOSE 8080
 
-CMD ["./bin/server", "8080"]
+# Run the server
+CMD ["/app/server", "8080"]

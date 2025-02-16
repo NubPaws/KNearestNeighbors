@@ -1,8 +1,8 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  server:
+  knn-server:
     build: .
     ports:
       - "8080:8080"
-    container_name: "k_nearest_neighbors_server"
+    restart: unless-stopped
