@@ -75,10 +75,6 @@ KNearestNeighbors/
 - Performance optimizations
 - Improved client-server communication protocols
 
-## Screenshots
-
-*(Add images of running server, client interaction, and results here)*
-
 ---
 
 Developed by Yuval & Rami.
